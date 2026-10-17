@@ -382,13 +382,17 @@ test('every report generates, prints and exports', async ({ page }) => {
     expect(types.length).toBeGreaterThanOrEqual(10);
     for (const type of types) {
         await page.locator('#rptType').selectOption(type);
+        // Clear the previous report so we wait for this one, not the old content
+        await page.evaluate(() => (document.getElementById('reportContent').innerHTML = ''));
         await page.getByRole('button', { name: '📊 Generate Report' }).click();
-        await expect(page.locator('#reportResults')).toBeVisible();
+        const title = page.locator('#reportContent h3').first();
+        await expect(title).not.toBeEmpty();
         await page.getByRole('button', { name: '🖨️ Print' }).click();
-        await expect(page.frameLocator('#printFrame').locator('body')).not.toBeEmpty();
+        await expect(page.frameLocator('#printFrame').locator('h3').first()).toHaveText(await title.textContent());
     }
     await page.locator('#rptType').selectOption('sales');
     await page.getByRole('button', { name: '📊 Generate Report' }).click();
+    await expect(page.locator('#reportContent h3').first()).toHaveText('📊 Sales Report');
     const [download] = await Promise.all([page.waitForEvent('download'), page.getByRole('button', { name: '📥 Export CSV' }).click()]);
     const csv = fs.readFileSync(await download.path(), 'utf8');
     expect(csv).toContain('"INV-0001"');
