@@ -89,6 +89,7 @@ test('first run shows onboarding and every page renders', async ({ page }) => {
     for (const p of pages) {
         await nav(page, p);
         await expect(page.locator('#pageContent')).not.toBeEmpty();
+        expect(await page.locator('#pageContent .table-search-bar').count(), `search boxes on ${p}`).toBeLessThanOrEqual(1);
     }
 });
 
@@ -466,4 +467,10 @@ test('long lists show 200 rows and search finds the rest', async ({ page }) => {
     await page.locator('#listSearch').fill('');
     await page.getByRole('button', { name: 'Show all' }).click();
     await expect(page.locator('#custTable tbody tr')).toHaveCount(250);
+});
+
+test('version shown in Settings matches package.json', async ({ page }) => {
+    await createCompany(page);
+    await nav(page, 'settings');
+    await expect(page.locator('#appVersion')).toHaveText(`v${require('../package.json').version}`);
 });

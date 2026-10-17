@@ -31,6 +31,7 @@
     "format:check": "prettier --check .",
     "test": "playwright test",
     "benchmark": "node scripts/benchmark.js",
+    "demo": "node scripts/record-demo.js",
     "icons": "node scripts/make-icons.js",
     "dist": "electron-builder",
     "dist:win": "electron-builder --win",

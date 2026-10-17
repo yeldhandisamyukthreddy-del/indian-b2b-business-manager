@@ -1814,7 +1814,7 @@
 
     <script>
         // ===== CONFIG =====
-        const APP = { dbName: 'VyaparEasyDB', dbVersion: 2 };
+        const APP = { dbName: 'VyaparEasyDB', dbVersion: 2, version: '1.0.0' }; // keep version in sync with package.json (a test checks)
         let db = null, currentLang = localStorage.getItem('lang') || 'en';
         let currentCompanyId = localStorage.getItem('companyId') || null;
 
@@ -2198,7 +2198,6 @@
             return `
         <div class="page-header"><h1 class="page-title">${t('customers')}</h1><button class="btn btn-primary" onclick="showCustomerForm()">${t('addNew')}</button></div>
         <div class="card">${listSearchBox('Search customers...')}
-        <div class="table-search-bar"><input id="custSearch" placeholder="🔍 Search customers..." oninput="document.querySelectorAll('#custTable tbody tr').forEach(r=>r.style.display=r.textContent.toLowerCase().includes(this.value.toLowerCase())?'':'none')"></div>
         <table id="custTable"><thead><tr><th class="sortable">${t('name')}</th><th class="sortable">${t('phone')}</th><th>GSTIN</th><th>${t('state')}</th><th class="sortable">${t('creditLimit')}</th><th class="sortable">Balance</th><th>${t('actions')}</th></tr></thead>
         <tbody>${listRows(customers.slice().sort(byName)).map(c => `<tr><td>${esc(c.name)}</td><td>${esc(c.phone) || '-'}</td><td>${esc(c.gstin) || '-'}</td><td>${esc(stateName(c.stateCode)) || '-'}</td><td>${formatCurrency(c.creditLimit)}</td><td>${formatCurrency(c.balance)}</td>
             <td><button class="action-btn edit" onclick="editCustomer(${c.id})">✏️</button><button class="action-btn" onclick="showLedger('customer',${c.id})" title="Ledger">📋</button><button class="action-btn delete" onclick="deleteCustomer(${c.id})">🗑️</button></td></tr>`).join('') || `<tr><td colspan="7" style="text-align:center">${t('noData')}</td></tr>`}${listFooter(7)}</tbody></table></div>`;
@@ -2261,7 +2260,6 @@
             return `
         <div class="page-header"><h1 class="page-title">${t('vendors')}</h1><button class="btn btn-primary" onclick="showVendorForm()">${t('addNew')}</button></div>
         <div class="card">${listSearchBox('Search vendors...')}
-        <div class="table-search-bar"><input placeholder="🔍 Search vendors..." oninput="document.querySelectorAll('#vendTable tbody tr').forEach(r=>r.style.display=r.textContent.toLowerCase().includes(this.value.toLowerCase())?'':'none')"></div>
         <table id="vendTable"><thead><tr><th class="sortable">${t('name')}</th><th class="sortable">${t('phone')}</th><th>GSTIN</th><th>${t('state')}</th><th class="sortable">Balance</th><th>${t('actions')}</th></tr></thead>
         <tbody>${listRows(vendors.slice().sort(byName)).map(v => `<tr><td>${esc(v.name)}</td><td>${esc(v.phone) || '-'}</td><td>${esc(v.gstin) || '-'}</td><td>${esc(stateName(v.stateCode)) || '-'}</td><td>${formatCurrency(v.balance)}</td>
             <td><button class="action-btn edit" onclick="editVendor(${v.id})">✏️</button><button class="action-btn" onclick="showLedger('vendor',${v.id})" title="Ledger">📋</button><button class="action-btn delete" onclick="deleteVendor(${v.id})">🗑️</button></td></tr>`).join('') || `<tr><td colspan="6" style="text-align:center">${t('noData')}</td></tr>`}${listFooter(6)}</tbody></table></div>`;
@@ -2318,7 +2316,6 @@
             return `
         <div class="page-header"><h1 class="page-title">${t('products')}</h1><button class="btn btn-primary" onclick="showProductForm()">${t('addNew')}</button></div>
         <div class="card">${listSearchBox('Search products...')}
-        <div class="table-search-bar"><input placeholder="🔍 Search products..." oninput="document.querySelectorAll('#prodTable tbody tr').forEach(r=>r.style.display=r.textContent.toLowerCase().includes(this.value.toLowerCase())?'':'none')"></div>
         <table id="prodTable"><thead><tr><th class="sortable">${t('name')}</th><th>HSN/SAC</th><th class="sortable">GST%</th><th>${t('unit')}</th><th class="sortable">${t('salePrice')}</th><th class="sortable">${t('stockQty')}</th><th>${t('actions')}</th></tr></thead>
         <tbody>${listRows(products.slice().sort(byName)).map(p => `<tr><td>${esc(p.name)}</td><td>${esc(p.hsn) || '-'}</td><td>${p.gstRate || 0}%</td><td>${esc(p.unit) || '-'}</td><td>${formatCurrency(p.salePrice)}</td><td class="${isLowStock(p) ? 'low-stock-alert' : ''}">${p.stockQty || 0}</td>
             <td><button class="action-btn edit" onclick="editProduct(${p.id})">✏️</button><button class="action-btn delete" onclick="deleteProduct(${p.id})">🗑️</button></td></tr>`).join('') || `<tr><td colspan="7" style="text-align:center">${t('noData')}</td></tr>`}${listFooter(7)}</tbody></table></div>`;
@@ -2481,7 +2478,6 @@
             return `
         <div class="page-header"><h1 class="page-title">${t('invoices')}</h1><button class="btn btn-primary" onclick="showInvoiceForm()">${t('addNew')}</button></div>
         <div class="card">${listSearchBox('Search invoices...')}
-        <div class="table-search-bar"><input placeholder="🔍 Search invoices..." oninput="document.querySelectorAll('#invTable tbody tr').forEach(r=>r.style.display=r.textContent.toLowerCase().includes(this.value.toLowerCase())?'':'none')"></div>
         <table id="invTable"><thead><tr><th class="sortable">Invoice #</th><th class="sortable">Date</th><th class="sortable">Customer</th><th class="sortable">Amount</th><th>Balance Due</th><th>Status</th><th>${t('actions')}</th></tr></thead>
         <tbody>${listRows(invoices.slice().reverse()).map(i => {
             const cust = customers.find(c => c.id === i.customerId);
@@ -4055,6 +4051,10 @@
                 <div class="form-group"><label class="form-label">Start invoice numbers from</label><input class="form-control" type="number" id="settInvCounter" value="${settings.invCounter || 1}"></div>
             </div>
             <button class="btn btn-primary" onclick="saveSettings()" style="margin-top:10px">Save Settings</button>
+        </div>
+        <div class="card"><h3 style="margin-bottom:10px">ℹ️ About</h3>
+            <p>VyaparEasy <strong id="appVersion">v${APP.version}</strong>, free and open source (MIT).</p>
+            <p style="color:var(--text-gray)">Found a bug or have an idea? <a href="https://github.com/yeldhandisamyukthreddy-del/indian-b2b-business-manager/issues/new/choose" target="_blank" rel="noopener">Open an issue on GitHub</a> and mention this version.</p>
         </div>
         <div class="card"><h3 style="margin-bottom:20px">⌨️ Keyboard Shortcuts</h3>
             <table><tbody>
