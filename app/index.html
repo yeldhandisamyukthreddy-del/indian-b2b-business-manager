@@ -2575,6 +2575,7 @@
             const customer = await dbOps.get('customers', inv.customerId);
             const banks = await dbOps.getByCompany('bankAccounts');
             const s = getSettings();
+            const terms = s.terms ?? DEFAULT_TERMS;
             const split = gstSplit(inv, company, customer);
             const igst = split.igst > 0;
             const pos = inv.placeOfSupply ?? customer?.stateCode ?? '';
@@ -2605,7 +2606,7 @@
                     <tr><th>Grand Total</th><th class="r">${formatCurrency(inv.grandTotal)}</th></tr>
                 </tbody></table>
             </div>
-            ${s.terms ? `<p style="margin-top:15px"><strong>Terms & Conditions:</strong><br>${esc(s.terms).replace(/\n/g, '<br>')}</p>` : ''}
+            ${terms ? `<p style="margin-top:15px"><strong>Terms & Conditions:</strong><br>${esc(terms).replace(/\n/g, '<br>')}</p>` : ''}
             <div style="text-align:right;margin-top:40px">For <strong>${esc(company?.name)}</strong><br><br><br>Authorised Signatory</div>`;
             printDocument(`Invoice ${inv.number}`, body);
         }
@@ -3552,6 +3553,7 @@
         async function deleteFuel(id) { if (confirm('Delete?')) { await dbOps.delete('fuelExpenses', id); showToast('Deleted'); renderPage('fuel'); } }
 
         // ===== REPORTS =====
+        let lastReportData = [];
         async function renderReports() {
             if (!currentCompanyId) return `<div class="empty-state"><h3>${t('selectCompanyFirst')}</h3></div>`;
             const customers = await dbOps.getByCompany('customers');
@@ -3974,18 +3976,12 @@
         function exportReportCSV() {
             if (!lastReportData.length) { showToast('No data to export!', 'error'); return; }
             const headers = Object.keys(lastReportData[0]);
-            const csv = [headers.join(','), ...lastReportData.map(row => headers.map(h => `"${row[h] || ''}"`).join(','))].join('\n');
-            const blob = new Blob([csv], { type: 'text/csv' });
-            const a = document.createElement('a'); a.href = URL.createObjectURL(blob);
-            a.download = `report-${todayStr()}.csv`; a.click();
+            downloadFile(`report-${todayStr()}.csv`, toCSV(headers, lastReportData.map(row => headers.map(h => row[h] ?? ''))), 'text/csv');
             showToast('CSV downloaded!');
         }
 
         function printReport() {
-            const content = document.getElementById('reportContent').innerHTML;
-            const w = window.open('', '_blank');
-            w.document.write(`<html><head><title>Report</title><style>body{font-family:Arial;padding:20px}table{width:100%;border-collapse:collapse;margin:15px 0}th,td{border:1px solid #ddd;padding:8px;text-align:left}th{background:#6366f1;color:white}.stat-card{display:inline-block;padding:15px;margin:5px;border:1px solid #ddd;border-radius:8px;min-width:120px}.stat-label{font-size:12px;color:#666}.stat-value{font-size:20px;font-weight:bold}.dashboard-grid{display:flex;flex-wrap:wrap}</style></head><body>${content}</body></html>`);
-            w.document.close(); w.print();
+            printDocument('Report', document.getElementById('reportContent').innerHTML, '.stat-card{display:inline-block;padding:10px;margin:5px;border:1px solid #bbb;border-radius:6px;min-width:120px}.stat-label{font-size:12px;color:#555}.stat-value{font-size:18px;font-weight:bold}.dashboard-grid{display:flex;flex-wrap:wrap}');
         }
 
         async function generateReport(type) { showReportWithFilters(type); }
@@ -4007,7 +4003,7 @@
                 <div class="form-group"><label class="form-label">Default GST Rate (%)</label><select class="form-control" id="settDefaultGst">${gstRateOpts(settings.defaultGst ?? 18)}</select></div>
             </div>
             <div class="form-group"><label><input type="checkbox" id="settRoundOff" ${settings.roundOff === false ? '' : 'checked'}> Round off invoice totals to the nearest rupee</label></div>
-            <div class="form-group"><label class="form-label">Invoice Terms & Conditions</label><textarea class="form-control" id="settTerms" rows="3">${esc(settings.terms ?? 'Goods once sold cannot be returned.\nPayment due within credit period.\nSubject to local jurisdiction.')}</textarea></div>
+            <div class="form-group"><label class="form-label">Invoice Terms & Conditions</label><textarea class="form-control" id="settTerms" rows="3">${esc(settings.terms ?? DEFAULT_TERMS)}</textarea></div>
         </div>
         <div class="card"><h3 style="margin-bottom:20px">🔢 Document Numbering</h3>
             <div class="form-row">
@@ -4050,6 +4046,7 @@
             localStorage.setItem('vyaparSettings', JSON.stringify(settings));
             showToast('Settings saved!');
         }
+        const DEFAULT_TERMS = 'Goods once sold cannot be returned.\nPayment due within credit period.\nSubject to local jurisdiction.';
         function getSettings() {
             try { return JSON.parse(localStorage.getItem('vyaparSettings') || '{}'); } catch { return {}; }
         }

@@ -327,3 +327,80 @@ test('web app installs and works offline', async ({ page, context }) => {
     expect(await page.evaluate(() => document.fonts.check('16px "Plus Jakarta Sans"'))).toBe(true);
     await context.setOffline(false);
 });
+
+test('every report generates, prints and exports', async ({ page }) => {
+    await createCompany(page);
+    await addParty(page, 'customers', { name: 'Anil Stores' });
+    await addProduct(page);
+    await createInvoice(page, 'Anil', 2);
+    await nav(page, 'reports');
+    await expect(page.locator('#rptType')).toBeVisible();
+    const types = await page.locator('#rptType option').evaluateAll(o => o.map(x => x.value));
+    expect(types.length).toBeGreaterThanOrEqual(10);
+    for (const type of types) {
+        await page.locator('#rptType').selectOption(type);
+        await page.getByRole('button', { name: '📊 Generate Report' }).click();
+        await expect(page.locator('#reportResults')).toBeVisible();
+        await page.getByRole('button', { name: '🖨️ Print' }).click();
+        await expect(page.frameLocator('#printFrame').locator('body')).not.toBeEmpty();
+    }
+    await page.locator('#rptType').selectOption('sales');
+    await page.getByRole('button', { name: '📊 Generate Report' }).click();
+    const [download] = await Promise.all([page.waitForEvent('download'), page.getByRole('button', { name: '📥 Export CSV' }).click()]);
+    const csv = fs.readFileSync(await download.path(), 'utf8');
+    expect(csv).toContain('"INV-0001"');
+    expect(csv).toContain('"Anil Stores"');
+});
+
+test('quotation to order to challan to invoice, and every document prints', async ({ page }) => {
+    await createCompany(page);
+    await addParty(page, 'customers', { name: 'Anil Stores' });
+    await addParty(page, 'vendors', { name: 'Ultra Cement Ltd' });
+    await addProduct(page);
+    const printed = page.frameLocator('#printFrame').locator('body');
+
+    await nav(page, 'quotations');
+    await addNew(page);
+    await selectByText(page.locator('#quoteCustomer'), 'Anil');
+    await addLine(page, 'Cement 50kg', 10);
+    await saved(page);
+    await page.locator('button[title="Print / PDF"]').first().click();
+    await expect(printed).toContainText('QUOTATION');
+    await page.locator('button[title="Convert to Sales Order"]').click();
+    await expect(page.locator('.page-title')).toHaveText('Sales Orders');
+    await page.locator('button[title="Print"]').first().click();
+    await expect(printed).toContainText('SALES ORDER');
+    await page.locator('button[title="Create Delivery Challan"]').click();
+    await expect(page.locator('.page-title')).toHaveText('Delivery Challans');
+    await page.locator('button[title="Print"]').first().click();
+    await expect(printed).toContainText('DELIVERY CHALLAN');
+    await nav(page, 'sales-orders');
+    await page.locator('button[title="Create Invoice"]').click();
+    await expect(page.locator('.page-title')).toHaveText('Tax Invoices');
+    const [inv] = await db(page, 'invoices');
+    expect(inv).toMatchObject({ number: 'INV-0001', salesOrderNumber: 'SO-0001', grandTotal: 4720, cgst: 360 });
+    expect((await db(page, 'products'))[0].stockQty).toBe(90);
+
+    await nav(page, 'purchase-orders');
+    await addNew(page);
+    await selectByText(page.locator('#poVendor'), 'Ultra');
+    await addLine(page, 'Cement 50kg', 5);
+    await saved(page);
+    await page.locator('button[title="Print"]').first().click();
+    await expect(printed).toContainText('PURCHASE ORDER');
+    await page.locator('button[title="Record purchase bill"]').click();
+    await expectModal(page, 'Record Purchase Bill');
+    await page.locator('#billForm [name=vendorInvoiceNo]').fill('V-1');
+    await saved(page);
+    expect((await db(page, 'purchaseOrders'))[0].status).toBe('received');
+
+    await nav(page, 'employees');
+    await addNew(page);
+    await page.locator('#employeeForm [name=name]').fill(`D'Souza "Joe"`);
+    await page.locator('#employeeForm [name=salary]').fill('30000');
+    await saved(page);
+    await page.locator('button.action-btn.view').first().click();
+    await page.getByRole('button', { name: '🖨️ Print' }).click();
+    await expect(printed).toContainText(`D'Souza "Joe"`);
+    await expect(printed).toContainText('Net Pay');
+});
