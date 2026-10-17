@@ -1,85 +1,98 @@
 {
-  "name": "indian-b2b-business-manager",
+  "name": "vyapareasy",
+  "productName": "VyaparEasy",
+  "desktopName": "vyapareasy.desktop",
   "version": "1.0.0",
-  "description": "Comprehensive offline B2B business management app for Indian businesses",
-  "main": "src/main.js",
-  "scripts": {
-    "start": "electron src/main.js",
-    "dev": "concurrently \"npm run start-react\" \"wait-on http://localhost:3000 && electron src/main.js\"",
-    "start-react": "react-scripts start",
-    "build": "react-scripts build",
-    "build-electron": "npm run build && electron-builder",
-    "test": "react-scripts test",
-    "eject": "react-scripts eject"
+  "description": "Free, open-source, offline GST billing, inventory and accounting app for Indian businesses",
+  "main": "electron/main.js",
+  "homepage": "https://github.com/yeldhandisamyukthreddy-del/indian-b2b-business-manager",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/yeldhandisamyukthreddy-del/indian-b2b-business-manager.git"
   },
-  "keywords": [
-    "business-management",
-    "gst-compliance",
-    "indian-taxation",
-    "offline-erp",
-    "multi-company",
-    "accounting",
-    "inventory",
-    "tds-automation"
-  ],
-  "author": "Your Name",
+  "author": "VyaparEasy contributors",
   "license": "MIT",
-  "dependencies": {
-    "electron": "^25.0.0",
-    "react": "^18.2.0",
-    "react-dom": "^18.2.0",
-    "react-scripts": "^5.0.1",
-    "sqlite3": "^5.1.6",
-    "express": "^4.18.2",
-    "cors": "^2.8.5",
-    "moment": "^2.29.4",
-    "react-router-dom": "^6.11.0",
-    "antd": "^5.6.0",
-    "@ant-design/icons": "^5.1.0",
-    "recharts": "^2.6.0",
-    "jspdf": "^2.5.1",
-    "html2canvas": "^1.4.1",
-    "xlsx": "^0.18.5",
-    "crypto-js": "^4.1.1",
-    "node-cron": "^3.0.2",
-    "nodemailer": "^6.9.3",
-    "qrcode": "^1.5.3",
-    "pdf-lib": "^1.17.1"
+  "keywords": [
+    "gst",
+    "billing",
+    "invoicing",
+    "inventory",
+    "accounting",
+    "india",
+    "offline",
+    "pwa",
+    "electron"
+  ],
+  "scripts": {
+    "serve": "node scripts/serve.js",
+    "start": "electron .",
+    "lint": "eslint .",
+    "format": "prettier --write .",
+    "format:check": "prettier --check .",
+    "test": "playwright test",
+    "benchmark": "node scripts/benchmark.js",
+    "demo": "node scripts/record-demo.js",
+    "icons": "node scripts/make-icons.js",
+    "dist": "electron-builder",
+    "dist:win": "electron-builder --win",
+    "dist:mac": "electron-builder --mac",
+    "dist:linux": "electron-builder --linux"
   },
   "devDependencies": {
-    "concurrently": "^8.2.0",
-    "wait-on": "^7.0.1",
-    "electron-builder": "^24.4.0",
-    "@testing-library/jest-dom": "^5.16.5",
-    "@testing-library/react": "^13.4.0",
-    "@testing-library/user-event": "^13.5.0"
+    "@eslint/js": "9.39.4",
+    "@playwright/test": "1.56.1",
+    "electron": "44.5.1",
+    "electron-builder": "26.16.1",
+    "eslint": "9.39.5",
+    "eslint-plugin-html": "8.2.1",
+    "globals": "16.5.0",
+    "prettier": "3.9.9"
   },
-  "homepage": "./",
   "build": {
-    "appId": "com.indianb2b.businessmanager",
-    "productName": "Indian B2B Business Manager",
+    "appId": "io.github.vyapareasy.app",
+    "productName": "VyaparEasy",
+    "files": [
+      "electron/**",
+      "app/**",
+      "package.json"
+    ],
     "directories": {
+      "buildResources": "build",
       "output": "dist"
     },
-    "files": [
-      "build/**/*",
-      "src/main.js",
-      "src/database/**/*",
-      "src/utils/**/*",
-      "public/electron.js",
-      "node_modules/**/*"
-    ],
+    "publish": null,
     "win": {
-      "target": "nsis",
-      "icon": "public/icon.ico"
+      "target": [
+        "nsis"
+      ],
+      "artifactName": "VyaparEasy-Setup-${version}.${ext}"
     },
-    "linux": {
-      "target": "AppImage",
-      "icon": "public/icon.png"
+    "nsis": {
+      "oneClick": false,
+      "allowToChangeInstallationDirectory": true
     },
     "mac": {
-      "target": "dmg",
-      "icon": "public/icon.icns"
+      "target": [
+        {
+          "target": "dmg",
+          "arch": [
+            "x64",
+            "arm64"
+          ]
+        }
+      ],
+      "category": "public.app-category.business",
+      "artifactName": "VyaparEasy-${version}-${arch}.${ext}"
+    },
+    "linux": {
+      "target": [
+        "AppImage",
+        "deb"
+      ],
+      "category": "Office",
+      "maintainer": "VyaparEasy contributors",
+      "artifactName": "VyaparEasy-${version}-${arch}.${ext}",
+      "syncDesktopName": true
     }
   }
 }
