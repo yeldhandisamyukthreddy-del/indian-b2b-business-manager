@@ -77,5 +77,5 @@ Menu labels live in the `i18n` object near the top of the script (`en`, `te`). T
 ## Releasing (maintainers)
 
 1. Bump `version` in `package.json` **and** `APP.version` in `app/index.html` (a test checks they match). Commit as `chore(release): vX.Y.Z`.
-2. `git tag vX.Y.Z && git push origin vX.Y.Z`. GitHub Actions builds the installers and creates the release.
+2. Push a tag (`git tag vX.Y.Z && git push origin vX.Y.Z`), or run the _Release desktop app_ workflow from the Actions tab with the tag `vX.Y.Z`. GitHub Actions checks the tag matches `package.json`, builds the installers and creates the release.
 3. The web app deploys on every push to `main`. If you changed the list of cached files, bump `CACHE` in `app/sw.js`.
