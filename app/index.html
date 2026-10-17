@@ -4558,6 +4558,8 @@
         // ===== INIT =====
         async function initApp() {
             await initDB();
+            // Ask the browser not to evict our data when the disk is low (granted automatically for installed apps)
+            navigator.storage?.persist?.().catch(() => {});
             try { await migrateLegacyData(); } catch (e) { console.error('Data migration failed', e); }
             if (localStorage.getItem('theme') === 'light') {
                 document.body.classList.add('light');
