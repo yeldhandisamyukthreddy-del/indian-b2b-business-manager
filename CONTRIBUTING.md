@@ -5,6 +5,7 @@ Thanks for helping! Bug reports, GST-rule corrections, translations and code are
 ## Reporting a problem
 
 Open an issue with:
+
 - what you did, what you expected and what happened instead
 - web app or desktop app (and your OS/browser)
 - for wrong tax amounts: the GSTINs/states involved, rates, quantities and the amounts you expected
@@ -13,14 +14,14 @@ Please **don't attach your backup file** or screenshots containing real customer
 
 ## Project layout
 
-| Path | What it is |
-| --- | --- |
-| `app/index.html` | The entire app: HTML, CSS and JavaScript in one file, with no framework and no build step |
-| `app/sw.js`, `app/manifest.webmanifest` | Offline support and install metadata for the web app |
-| `app/fonts/`, `app/icons/` | Bundled font and icons (`npm run icons` regenerates PNGs from `icon.svg`) |
-| `electron/main.js` | Desktop wrapper; serves `app/` from the `app://vyapareasy/` origin |
-| `tests/` | Playwright end-to-end tests (browser and Electron) |
-| `scripts/serve.js` | Static server used by `npm run serve` and the tests |
+| Path                                    | What it is                                                                                |
+| --------------------------------------- | ----------------------------------------------------------------------------------------- |
+| `app/index.html`                        | The entire app: HTML, CSS and JavaScript in one file, with no framework and no build step |
+| `app/sw.js`, `app/manifest.webmanifest` | Offline support and install metadata for the web app                                      |
+| `app/fonts/`, `app/icons/`              | Bundled font and icons (`npm run icons` regenerates PNGs from `icon.svg`)                 |
+| `electron/main.js`                      | Desktop wrapper; serves `app/` from the `app://vyapareasy/` origin                        |
+| `tests/`                                | Playwright end-to-end tests (browser and Electron)                                        |
+| `scripts/serve.js`                      | Static server used by `npm run serve` and the tests                                       |
 
 ## Working on the app
 

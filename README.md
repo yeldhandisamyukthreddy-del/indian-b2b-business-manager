@@ -12,7 +12,7 @@
 - **GST tax invoices** with automatic CGST + SGST (same state) or IGST (other state), HSN/SAC codes, place of supply, amount in words and round-off. Print or save as PDF.
 - **Sales flow:** quotation → sales order → delivery challan → tax invoice, plus credit notes (sales returns)
 - **Purchases:** purchase orders, purchase bills (with or without a PO) and debit notes (purchase returns)
-- **Receipts and payments** linked to invoices and bills, so you see *Paid / Partial / Overdue* at a glance. Bank balances update automatically.
+- **Receipts and payments** linked to invoices and bills, so you see _Paid / Partial / Overdue_ at a glance. Bank balances update automatically.
 - **Inventory:** stock moves with every sale, purchase and return; low-stock alerts per product
 - **GST reports:** GSTR-1 summary (B2B / B2CL / B2CS, credit notes, HSN summary) and GSTR-3B summary, with CSV export
 - **Reports:** sales, purchases, outstanding, day book, item-wise, party-wise, simple profit & loss; customer and vendor ledgers
@@ -30,18 +30,18 @@ Pick whichever suits you. Both give you the same app.
 ### Option 1: Web app (no download; works on Windows, Mac, Linux, Android, ChromeOS)
 
 1. Open **https://yeldhandisamyukthreddy-del.github.io/indian-b2b-business-manager/** in Chrome or Edge.
-2. Click the **Install** icon in the address bar (on Android: menu ⋮ → *Add to Home screen* / *Install app*).
+2. Click the **Install** icon in the address bar (on Android: menu ⋮ → _Add to Home screen_ / _Install app_).
 3. It now opens like a normal app and works without internet. Updates arrive automatically when you're online.
 
 ### Option 2: Desktop app
 
 Download the installer for your computer from the [Releases page](https://github.com/yeldhandisamyukthreddy-del/indian-b2b-business-manager/releases/latest):
 
-| System | File |
-| --- | --- |
-| Windows | `VyaparEasy-Setup-x.y.z.exe` |
+| System                        | File                                                      |
+| ----------------------------- | --------------------------------------------------------- |
+| Windows                       | `VyaparEasy-Setup-x.y.z.exe`                              |
 | macOS (Apple Silicon / Intel) | `VyaparEasy-x.y.z-arm64.dmg` / `VyaparEasy-x.y.z-x64.dmg` |
-| Linux | `VyaparEasy-x.y.z-x86_64.AppImage` or `.deb` |
+| Linux                         | `VyaparEasy-x.y.z-x86_64.AppImage` or `.deb`              |
 
 The installers are not code-signed yet (signing certificates cost money), so your computer will warn you the first time:
 
@@ -53,9 +53,9 @@ The installers are not code-signed yet (signing certificates cost money), so you
 
 - Everything is stored **only on your device**, inside the app (the browser's IndexedDB storage). Nothing is uploaded anywhere.
 - The web app and the desktop app keep **separate** data. Use one of them, or move data between them with backup and restore.
-- **Back up regularly:** *Settings → Backup All Data* downloads a `.json` file. Keep copies somewhere safe (Google Drive, a pen drive, email to yourself). The app reminds you if you haven't backed up for 7 days.
+- **Back up regularly:** _Settings → Backup All Data_ downloads a `.json` file. Keep copies somewhere safe (Google Drive, a pen drive, email to yourself). The app reminds you if you haven't backed up for 7 days.
 - Clearing your browser's site data, uninstalling the web app or losing the device **deletes your data** unless you have a backup.
-- *Settings → Restore Data* replaces everything in the app with a backup file.
+- _Settings → Restore Data_ replaces everything in the app with a backup file.
 
 ## Limitations (please read)
 
@@ -86,8 +86,8 @@ See [CONTRIBUTING.md](CONTRIBUTING.md) for how the code is organised and how to 
 
 ### Publishing (maintainers)
 
-- **Web app:** in GitHub, open *Settings → Pages* and set **Source** to **GitHub Actions** (one time). Every push to `main` then deploys `app/` to GitHub Pages.
-- **Desktop installers:** bump `version` in `package.json`, commit, then `git tag v1.0.1 && git push origin v1.0.1`. The *Release desktop app* workflow builds Windows, macOS and Linux installers and attaches them to a GitHub Release.
+- **Web app:** in GitHub, open _Settings → Pages_ and set **Source** to **GitHub Actions** (one time). Every push to `main` then deploys `app/` to GitHub Pages.
+- **Desktop installers:** bump `version` in `package.json`, commit, then `git tag v1.0.1 && git push origin v1.0.1`. The _Release desktop app_ workflow builds Windows, macOS and Linux installers and attaches them to a GitHub Release.
 
 ## License
 

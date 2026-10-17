@@ -3527,7 +3527,6 @@
         async function renderFuel() {
             if (!currentCompanyId) return `<div class="empty-state"><h3>${t('selectCompanyFirst')}</h3></div>`;
             const fuel = await dbOps.getByCompany('fuelExpenses');
-            const vehicles = await dbOps.getByCompany('vehicles');
             const totalFuel = fuel.reduce((s, f) => s + (f.amount || 0), 0);
             const thisMonth = todayStr().slice(0, 7);
             const monthlyFuel = fuel.filter(f => f.date?.startsWith(thisMonth)).reduce((s, f) => s + (f.amount || 0), 0);
@@ -3779,7 +3778,6 @@
             const payments = await dbOps.getByCompany('payments');
             const customers = await dbOps.getByCompany('customers');
             const vendors = await dbOps.getByCompany('vendors');
-            const products = await dbOps.getByCompany('products');
 
             // Filter by date
             const filterDate = (arr) => arr.filter(x => {
@@ -3819,7 +3817,7 @@
             lastReportData = [];
 
             switch (type) {
-                case 'sales':
+                case 'sales': {
                     title = '📊 Sales Report';
                     const salesTotal = filteredInv.reduce((s, i) => s + (i.grandTotal || 0), 0);
                     const taxTotal = filteredInv.reduce((s, i) => s + (i.tax || 0), 0);
@@ -3833,8 +3831,9 @@
                 <tbody>${filteredInv.map(i => `<tr><td>${esc(i.number || i.id)}</td><td>${formatDate(i.date)}</td><td>${esc(i.customerName)}</td><td>${formatCurrency(i.taxable)}</td><td>${formatCurrency(i.tax)}</td><td>${formatCurrency(i.grandTotal)}</td></tr>`).join('') || '<tr><td colspan="6" style="text-align:center">No data</td></tr>'}</tbody></table>`;
                     lastReportData = filteredInv.map(i => ({ Invoice: i.number || i.id, Date: i.date, Customer: i.customerName, Taxable: i.taxable, Tax: i.tax, Total: i.grandTotal }));
                     break;
+                }
 
-                case 'purchase':
+                case 'purchase': {
                     title = '📦 Purchase Report';
                     const purchTotal = filteredBills.reduce((s, b) => s + (b.grandTotal || 0), 0);
                     const purchTax = filteredBills.reduce((s, b) => s + (b.tax || 0), 0);
@@ -3848,8 +3847,9 @@
                 <tbody>${filteredBills.map(b => `<tr><td>${esc(b.number || b.id)}</td><td>${formatDate(b.date)}</td><td>${esc(b.vendorName)}</td><td>${formatCurrency(b.subtotal)}</td><td>${formatCurrency(b.tax)}</td><td>${formatCurrency(b.grandTotal)}</td></tr>`).join('') || '<tr><td colspan="6" style="text-align:center">No data</td></tr>'}</tbody></table>`;
                     lastReportData = filteredBills.map(b => ({ Bill: b.number || b.id, Date: b.date, Vendor: b.vendorName, Taxable: b.subtotal, Tax: b.tax, Total: b.grandTotal }));
                     break;
+                }
 
-                case 'outstanding':
+                case 'outstanding': {
                     title = '💰 Outstanding Report';
                     const custOut = customers.filter(c => (c.balance || 0) !== 0);
                     const vendOut = vendors.filter(v => (v.balance || 0) !== 0);
@@ -3869,8 +3869,9 @@
                 <tbody>${vendOut.filter(v => v.balance > 0).map(v => `<tr><td>${esc(v.name)}</td><td>${esc(v.phone) || '-'}</td><td style="color:red">${formatCurrency(v.balance)}</td></tr>`).join('') || '<tr><td colspan="3">None</td></tr>'}</tbody></table>`;
                     lastReportData = [...custOut.map(c => ({ Type: 'Receivable', Name: c.name, Phone: c.phone, Balance: c.balance })), ...vendOut.map(v => ({ Type: 'Payable', Name: v.name, Phone: v.phone, Balance: v.balance }))];
                     break;
+                }
 
-                case 'daybook':
+                case 'daybook': {
                     title = '📅 Day Book';
                     const allTx = [
                         ...filteredInv.map(i => ({ date: i.date, type: 'Sale', ref: i.number || i.id, party: i.customerName, credit: i.grandTotal, debit: 0 })),
@@ -3890,8 +3891,9 @@
                 <tbody>${allTx.map(t => `<tr><td>${formatDate(t.date)}</td><td>${esc(t.type)}</td><td>${esc(t.ref)}</td><td>${esc(t.party) || '-'}</td><td style="color:green">${t.credit ? formatCurrency(t.credit) : '-'}</td><td style="color:red">${t.debit ? formatCurrency(t.debit) : '-'}</td></tr>`).join('') || '<tr><td colspan="6" style="text-align:center">No transactions</td></tr>'}</tbody></table>`;
                     lastReportData = allTx;
                     break;
+                }
 
-                case 'itemwise':
+                case 'itemwise': {
                     title = '📋 Item-wise Sales Report';
                     const itemSales = {};
                     filteredInv.forEach(inv => {
@@ -3907,8 +3909,9 @@
                 <tbody>${itemArr.map(i => `<tr><td>${esc(i.name)}</td><td>${esc(i.hsn) || '-'}</td><td>${i.qty}</td><td>${formatCurrency(i.amount)}</td></tr>`).join('') || '<tr><td colspan="4" style="text-align:center">No sales</td></tr>'}</tbody></table>`;
                     lastReportData = itemArr;
                     break;
+                }
 
-                case 'partywise':
+                case 'partywise': {
                     title = '👥 Party-wise Ledger';
                     const partySales = {};
                     filteredInv.forEach(inv => {
@@ -3933,8 +3936,9 @@
                 <tbody>${purchArr.map(p => `<tr><td>${esc(p.name)}</td><td>${p.bills}</td><td>${formatCurrency(p.amount)}</td></tr>`).join('') || '<tr><td colspan="3">No data</td></tr>'}</tbody></table>`;
                     lastReportData = [...salesArr, ...purchArr];
                     break;
+                }
 
-                case 'profit-loss':
+                case 'profit-loss': {
                     title = '📈 Profit & Loss Statement';
                     const salesRev = filteredInv.reduce((s, i) => s + (i.taxable || 0), 0);
                     const purchCost = filteredBills.reduce((s, b) => s + (b.subtotal || 0), 0);
@@ -3950,8 +3954,9 @@
                 <p style="color:var(--text-gray);margin-top:20px">Note: This is a simplified P&L. Actual P&L should include operating expenses.</p>`;
                     lastReportData = [{ Revenue: salesRev, Purchases: purchCost, GrossProfit: grossProfit }];
                     break;
+                }
 
-                case 'gst-summary':
+                case 'gst-summary': {
                     title = '📋 GST Summary Report';
                     const outputGST = filteredInv.reduce((s, i) => s + (i.tax || 0), 0);
                     const inputGST = filteredBills.reduce((s, b) => s + (b.tax || 0), 0);
@@ -3971,8 +3976,9 @@
                 </table>`;
                     lastReportData = [{ OutputGST: outputGST, InputGST: inputGST, NetGST: netGST }];
                     break;
+                }
 
-                case 'receipts':
+                case 'receipts': {
                     title = '💵 Receipts Report';
                     const totalReceipts = filteredReceipts.reduce((s, r) => s + (r.amount || 0), 0);
                     html = `<h3>${title}</h3>
@@ -3984,8 +3990,9 @@
                 <tbody>${filteredReceipts.map(r => `<tr><td>${esc(r.number || r.id)}</td><td>${formatDate(r.date)}</td><td>${esc(r.customerName)}</td><td>${esc(r.mode) || '-'}</td><td>${formatCurrency(r.amount)}</td></tr>`).join('') || '<tr><td colspan="5" style="text-align:center">No receipts</td></tr>'}</tbody></table>`;
                     lastReportData = filteredReceipts.map(r => ({ Receipt: r.number || r.id, Date: r.date, Customer: r.customerName, Mode: r.mode, Amount: r.amount }));
                     break;
+                }
 
-                case 'payments':
+                case 'payments': {
                     title = '💸 Payments Report';
                     const totalPayments = filteredPayments.reduce((s, p) => s + (p.amount || 0), 0);
                     html = `<h3>${title}</h3>
@@ -3997,6 +4004,7 @@
                 <tbody>${filteredPayments.map(p => `<tr><td>${esc(p.number || p.id)}</td><td>${formatDate(p.date)}</td><td>${esc(p.vendorName)}</td><td>${esc(p.mode) || '-'}</td><td>${formatCurrency(p.amount)}</td></tr>`).join('') || '<tr><td colspan="5" style="text-align:center">No payments</td></tr>'}</tbody></table>`;
                     lastReportData = filteredPayments.map(p => ({ Payment: p.number || p.id, Date: p.date, Vendor: p.vendorName, Mode: p.mode, Amount: p.amount }));
                     break;
+                }
             }
 
             document.getElementById('reportResults').style.display = 'block';

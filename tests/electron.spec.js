@@ -1,4 +1,5 @@
 // Desktop app smoke test: the window opens, data is saved and survives a restart.
+/* global document -- used inside page.evaluate(), which runs in the app */
 // On Linux run it under a display, e.g. `xvfb-run npx playwright test tests/electron.spec.js`.
 const { test, expect, _electron: electron } = require('@playwright/test');
 const fs = require('fs');
@@ -7,7 +8,11 @@ const path = require('path');
 
 const root = path.join(__dirname, '..');
 let electronAvailable = true;
-try { require('electron'); } catch { electronAvailable = false; }
+try {
+    require('electron');
+} catch {
+    electronAvailable = false;
+}
 
 test.skip(!electronAvailable, 'Electron binary not installed');
 

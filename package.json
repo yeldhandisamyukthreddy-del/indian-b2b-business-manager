@@ -26,6 +26,9 @@
   "scripts": {
     "serve": "node scripts/serve.js",
     "start": "electron .",
+    "lint": "eslint .",
+    "format": "prettier --write .",
+    "format:check": "prettier --check .",
     "test": "playwright test",
     "benchmark": "node scripts/benchmark.js",
     "icons": "node scripts/make-icons.js",
@@ -35,9 +38,14 @@
     "dist:linux": "electron-builder --linux"
   },
   "devDependencies": {
+    "@eslint/js": "9.39.4",
     "@playwright/test": "1.56.1",
     "electron": "44.5.1",
-    "electron-builder": "26.16.1"
+    "electron-builder": "26.16.1",
+    "eslint": "9.39.5",
+    "eslint-plugin-html": "8.2.1",
+    "globals": "16.5.0",
+    "prettier": "3.9.9"
   },
   "build": {
     "appId": "io.github.vyapareasy.app",

@@ -1,4 +1,5 @@
 // End-to-end tests for VyaparEasy. Each test starts with an empty database (fresh browser context).
+/* global dbOps, currentCompanyId, gstData, periodRange, printInvoice, ledgerEntries, todayStr, getDueDate, amountInWords, getNextNumber, document -- used inside page.evaluate(), which runs in the app */
 const { test, expect } = require('@playwright/test');
 const fs = require('fs');
 
@@ -215,7 +216,10 @@ test('cancelling an invoice edit does not overwrite it later', async ({ page }) 
     await expect(page.locator('.modal-overlay.active')).toHaveCount(0);
     await createInvoice(page, 'Anil', 3);
     let invoices = await db(page, 'invoices');
-    expect(invoices.map(i => [i.number, i.items[0].qty])).toEqual([['INV-0001', 1], ['INV-0002', 3]]);
+    expect(invoices.map(i => [i.number, i.items[0].qty])).toEqual([
+        ['INV-0001', 1],
+        ['INV-0002', 3]
+    ]);
 
     // A real edit updates totals, stock and balance without creating a new invoice
     await rowOf(page, '#invTable', 'INV-0001').locator('button[title="Edit"]').click();
@@ -243,7 +247,9 @@ test('dates follow Indian time just after midnight', async ({ page }) => {
 
 test('amount in words uses the Indian numbering system', async ({ page }) => {
     await page.goto('/');
-    expect(await page.evaluate(() => amountInWords(12345678.5))).toBe('Rupees One Crore Twenty Three Lakh Forty Five Thousand Six Hundred Seventy Eight and Fifty Paise Only');
+    expect(await page.evaluate(() => amountInWords(12345678.5))).toBe(
+        'Rupees One Crore Twenty Three Lakh Forty Five Thousand Six Hundred Seventy Eight and Fifty Paise Only'
+    );
     expect(await page.evaluate(() => amountInWords(100000))).toBe('Rupees One Lakh Only');
 });
 
@@ -282,11 +288,47 @@ test('data saved by the previous version keeps working', async ({ page }) => {
     // Records shaped like the old app stored them: no CGST/SGST/IGST split, timestamp-based numbers
     await page.evaluate(async () => {
         const companyId = await dbOps.add('companies', { name: 'Old Co', gstin: '36AABCU9603R1ZM', stateCode: '36', stateName: 'Telangana', address: 'Hyd' });
-        const customerId = await dbOps.add('customers', { companyId, name: 'Karnataka Buyer', stateCode: '29', gstin: '29AAACB1234F1Z5', creditLimit: 0, creditDays: 30, balance: 1080 }); // 1180 invoiced - 100 received
-        const productId = await dbOps.add('products', { companyId, name: 'Steel Rod', hsn: '7214', gstRate: 18, unit: 'KG', stockQty: 50, purchasePrice: 80, salePrice: 100 });
-        await dbOps.add('invoices', { companyId, customerId, customerName: 'Karnataka Buyer', date: todayStr(), number: 'INV-0001', status: 'pending', paidAmount: 0,
-            items: [{ productId, name: 'Steel Rod', hsn: '7214', unit: 'KG', qty: 10, rate: 100, taxable: 1000, gstRate: 18, tax: 180, total: 1180 }], taxable: 1000, tax: 180, grandTotal: 1180 });
-        await dbOps.add('receipts', { companyId, customerId, customerName: 'Karnataka Buyer', date: todayStr(), amount: 100, mode: 'Cash', number: 'RCP-482913' });
+        const customerId = await dbOps.add('customers', {
+            companyId,
+            name: 'Karnataka Buyer',
+            stateCode: '29',
+            gstin: '29AAACB1234F1Z5',
+            creditLimit: 0,
+            creditDays: 30,
+            balance: 1080
+        }); // 1180 invoiced - 100 received
+        const productId = await dbOps.add('products', {
+            companyId,
+            name: 'Steel Rod',
+            hsn: '7214',
+            gstRate: 18,
+            unit: 'KG',
+            stockQty: 50,
+            purchasePrice: 80,
+            salePrice: 100
+        });
+        await dbOps.add('invoices', {
+            companyId,
+            customerId,
+            customerName: 'Karnataka Buyer',
+            date: todayStr(),
+            number: 'INV-0001',
+            status: 'pending',
+            paidAmount: 0,
+            items: [{ productId, name: 'Steel Rod', hsn: '7214', unit: 'KG', qty: 10, rate: 100, taxable: 1000, gstRate: 18, tax: 180, total: 1180 }],
+            taxable: 1000,
+            tax: 180,
+            grandTotal: 1180
+        });
+        await dbOps.add('receipts', {
+            companyId,
+            customerId,
+            customerName: 'Karnataka Buyer',
+            date: todayStr(),
+            amount: 100,
+            mode: 'Cash',
+            number: 'RCP-482913'
+        });
         await dbOps.add('purchaseReturns', { companyId, billId: 99, vendorName: 'Gone Vendor', grandTotal: 50, number: 'DN-123456', date: todayStr() });
         localStorage.setItem('vyaparSettings', JSON.stringify({ invPrefix: 'INV-', invCounter: 2 }));
     });
@@ -408,7 +450,13 @@ test('quotation to order to challan to invoice, and every document prints', asyn
 test('long lists show 200 rows and search finds the rest', async ({ page }) => {
     await createCompany(page);
     await page.evaluate(async () => {
-        for (let i = 1; i <= 250; i++) await dbOps.add('customers', { companyId: parseInt(currentCompanyId), name: `Customer ${String(i).padStart(3, '0')}`, stateCode: '36', balance: 0 });
+        for (let i = 1; i <= 250; i++)
+            await dbOps.add('customers', {
+                companyId: parseInt(currentCompanyId),
+                name: `Customer ${String(i).padStart(3, '0')}`,
+                stateCode: '36',
+                balance: 0
+            });
     });
     await nav(page, 'customers');
     await expect(page.locator('#custTable tbody')).toContainText('Showing 200 of 250');

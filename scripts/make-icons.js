@@ -22,7 +22,9 @@ const outputs = [
     const page = await browser.newPage();
     for (const [file, size, source] of outputs) {
         await page.setViewportSize({ width: size, height: size });
-        await page.setContent(`<html><body style="margin:0;background:transparent">${source.replace('<svg ', `<svg width="${size}" height="${size}" `)}</body></html>`);
+        await page.setContent(
+            `<html><body style="margin:0;background:transparent">${source.replace('<svg ', `<svg width="${size}" height="${size}" `)}</body></html>`
+        );
         await page.screenshot({ path: path.join(root, file), omitBackground: true, clip: { x: 0, y: 0, width: size, height: size } });
         console.log('wrote', file);
     }
