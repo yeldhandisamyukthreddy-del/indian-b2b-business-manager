@@ -1927,7 +1927,12 @@
             doc.open();
             doc.write(`<!DOCTYPE html><html><head><meta charset="UTF-8"><title>${esc(title)}</title><style>body{font-family:Arial,Helvetica,sans-serif;margin:0;padding:20px;color:#111}table{width:100%;border-collapse:collapse;margin:15px 0}th,td{border:1px solid #bbb;padding:6px 8px;text-align:left;vertical-align:top}th{background:#eee}.r{text-align:right}${css}</style></head><body>${bodyHtml}</body></html>`);
             doc.close();
-            setTimeout(() => { frame.contentWindow.focus(); frame.contentWindow.print(); }, 250);
+            setTimeout(() => {
+                // A newer print may already have replaced this frame
+                if (!frame.isConnected) return;
+                frame.contentWindow.focus();
+                frame.contentWindow.print();
+            }, 250);
         }
 
         // Indian numbering words, e.g. 123456.5 -> "Rupees One Lakh Twenty Three Thousand Four Hundred Fifty Six and Fifty Paise Only"

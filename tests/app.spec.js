@@ -1,5 +1,5 @@
 // End-to-end tests for VyaparEasy. Each test starts with an empty database (fresh browser context).
-/* global dbOps, currentCompanyId, gstData, periodRange, printInvoice, ledgerEntries, todayStr, getDueDate, amountInWords, getNextNumber, document -- used inside page.evaluate(), which runs in the app */
+/* global dbOps, currentCompanyId, gstData, periodRange, printInvoice, ledgerEntries, todayStr, getDueDate, amountInWords, getNextNumber, printDocument, document -- used inside page.evaluate(), which runs in the app */
 const { test, expect } = require('@playwright/test');
 const fs = require('fs');
 
@@ -477,4 +477,14 @@ test('version shown in Settings matches package.json', async ({ page }) => {
     await createCompany(page);
     await nav(page, 'settings');
     await expect(page.locator('#appVersion')).toHaveText(`v${require('../package.json').version}`);
+});
+
+test('printing twice quickly does not throw', async ({ page }) => {
+    await page.goto('/');
+    await page.evaluate(() => {
+        printDocument('First', '<h3>First</h3>');
+        printDocument('Second', '<h3>Second</h3>'); // replaces the first frame before its delayed print runs
+    });
+    await expect(page.frameLocator('#printFrame').locator('h3')).toHaveText('Second');
+    await page.waitForTimeout(400); // let both delayed print calls fire
 });

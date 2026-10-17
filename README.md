@@ -61,7 +61,7 @@ Prefer a normal desktop app? Get the Windows, macOS or Linux installer from [Rel
   - Receipts and payments matched to invoices and bills, so each shows Paid / Partial / Overdue
 - **Stock and money:** stock that follows every document, low-stock alerts, bank balances, customer and vendor ledgers, multiple companies (one invoice series per GSTIN)
 - **Everyday tools:** reports (day book, outstanding, item-wise, party-wise, P&L), WhatsApp sharing, Ctrl+K search, English and Telugu menus
-- **Tested end to end:** 14 Playwright tests drive the real UI in Chromium and Electron, covering GST maths, IST date edge cases, backup/restore, offline mode and data from older versions
+- **Tested end to end:** 15 Playwright tests drive the real UI in Chromium and Electron, covering GST maths, IST date edge cases, backup/restore, offline mode and data from older versions
 
 ## How it compares
 
@@ -131,7 +131,7 @@ The installers are not code-signed yet, so the first launch shows a warning:
 
 - **Windows:** "Windows protected your PC" → **More info** → **Run anyway**
 - **macOS:** right-click the app → **Open**. If it says the app is damaged, run `xattr -cr /Applications/VyaparEasy.app`.
-- **Linux:** `chmod +x VyaparEasy-*.AppImage` and run it, or install the `.deb`.
+- **Linux:** install the `.deb` (recommended on Ubuntu 24.04 and newer, whose AppArmor rules stop Electron AppImages from starting), or `chmod +x VyaparEasy-*.AppImage` and run it.
 
 ## Limitations
 

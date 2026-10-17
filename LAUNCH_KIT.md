@@ -153,4 +153,4 @@ Type "kill %1" Enter
 - **"Why not a real database / backend?"** No server means free forever, private by default, and it works offline in a godown with no signal. Sync is the open problem (see the HN questions).
 - **"Is this legally valid for GST?"** Printed invoices include the Rule 46 fields, but it's not tax advice. E-invoicing (for businesses above the turnover threshold) isn't supported yet.
 - **"How is this different from Vyapar?"** Open source, free, no account, data stays on the device. Vyapar has e-invoicing, mobile apps and support. Be factual and generous about competitors.
-- **"Why one giant HTML file?"** No build step means anyone can contribute by editing one file and reloading. Lint and 14 end-to-end tests keep it honest. Splitting it is a fair future discussion.
+- **"Why one giant HTML file?"** No build step means anyone can contribute by editing one file and reloading. Lint and 15 end-to-end tests keep it honest. Splitting it is a fair future discussion.
