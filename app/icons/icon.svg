@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#9333ea"/>
+      <stop offset="1" stop-color="#0d9488"/>
+    </linearGradient>
+  </defs>
+  <rect width="512" height="512" rx="112" fill="url(#bg)"/>
+  <!-- invoice sheet with folded corner -->
+  <path d="M156 96h150l70 70v250a20 20 0 0 1-20 20H156a20 20 0 0 1-20-20V116a20 20 0 0 1 20-20z" fill="#fff"/>
+  <path d="M306 96v50a20 20 0 0 0 20 20h50z" fill="#e9d5ff"/>
+  <!-- rupee mark -->
+  <path d="M190 190h120M190 226h120M222 190c62 0 62 72 0 72h-32l92 92" fill="none" stroke="#7e22ce" stroke-width="22" stroke-linecap="round" stroke-linejoin="round"/>
+  <!-- line items -->
+  <path d="M190 392h72" stroke="#14b8a6" stroke-width="18" stroke-linecap="round"/>
+</svg>

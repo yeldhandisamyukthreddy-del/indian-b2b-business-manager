@@ -1,0 +1,88 @@
+{
+  "name": "vyapareasy",
+  "productName": "VyaparEasy",
+  "desktopName": "vyapareasy.desktop",
+  "version": "1.0.0",
+  "description": "Free, open-source, offline GST billing, inventory and accounting app for Indian businesses",
+  "main": "electron/main.js",
+  "homepage": "https://github.com/yeldhandisamyukthreddy-del/indian-b2b-business-manager",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/yeldhandisamyukthreddy-del/indian-b2b-business-manager.git"
+  },
+  "author": "VyaparEasy contributors",
+  "license": "MIT",
+  "keywords": [
+    "gst",
+    "billing",
+    "invoicing",
+    "inventory",
+    "accounting",
+    "india",
+    "offline",
+    "pwa",
+    "electron"
+  ],
+  "scripts": {
+    "serve": "node scripts/serve.js",
+    "start": "electron .",
+    "test": "playwright test",
+    "icons": "node scripts/make-icons.js",
+    "dist": "electron-builder",
+    "dist:win": "electron-builder --win",
+    "dist:mac": "electron-builder --mac",
+    "dist:linux": "electron-builder --linux"
+  },
+  "devDependencies": {
+    "@playwright/test": "1.56.1",
+    "electron": "44.5.1",
+    "electron-builder": "26.16.1"
+  },
+  "build": {
+    "appId": "io.github.vyapareasy.app",
+    "productName": "VyaparEasy",
+    "files": [
+      "electron/**",
+      "app/**",
+      "package.json"
+    ],
+    "directories": {
+      "buildResources": "build",
+      "output": "dist"
+    },
+    "publish": null,
+    "win": {
+      "target": [
+        "nsis"
+      ],
+      "artifactName": "VyaparEasy-Setup-${version}.${ext}"
+    },
+    "nsis": {
+      "oneClick": false,
+      "allowToChangeInstallationDirectory": true
+    },
+    "mac": {
+      "target": [
+        {
+          "target": "dmg",
+          "arch": [
+            "x64",
+            "arm64"
+          ]
+        }
+      ],
+      "category": "public.app-category.business",
+      "artifactName": "VyaparEasy-${version}-${arch}.${ext}"
+    },
+    "linux": {
+      "target": [
+        "AppImage",
+        "deb"
+      ],
+      "category": "Office",
+      "maintainer": "VyaparEasy contributors",
+      "artifactName": "VyaparEasy-${version}-${arch}.${ext}",
+      "syncDesktopName": true
+    }
+  }
+}
