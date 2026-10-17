@@ -2197,11 +2197,11 @@
             const customers = await dbOps.getByCompany('customers');
             return `
         <div class="page-header"><h1 class="page-title">${t('customers')}</h1><button class="btn btn-primary" onclick="showCustomerForm()">${t('addNew')}</button></div>
-        <div class="card">
+        <div class="card">${listSearchBox('Search customers...')}
         <div class="table-search-bar"><input id="custSearch" placeholder="🔍 Search customers..." oninput="document.querySelectorAll('#custTable tbody tr').forEach(r=>r.style.display=r.textContent.toLowerCase().includes(this.value.toLowerCase())?'':'none')"></div>
         <table id="custTable"><thead><tr><th class="sortable">${t('name')}</th><th class="sortable">${t('phone')}</th><th>GSTIN</th><th>${t('state')}</th><th class="sortable">${t('creditLimit')}</th><th class="sortable">Balance</th><th>${t('actions')}</th></tr></thead>
-        <tbody>${customers.map(c => `<tr><td>${esc(c.name)}</td><td>${esc(c.phone) || '-'}</td><td>${esc(c.gstin) || '-'}</td><td>${esc(stateName(c.stateCode)) || '-'}</td><td>${formatCurrency(c.creditLimit)}</td><td>${formatCurrency(c.balance)}</td>
-            <td><button class="action-btn edit" onclick="editCustomer(${c.id})">✏️</button><button class="action-btn" onclick="showLedger('customer',${c.id})" title="Ledger">📋</button><button class="action-btn delete" onclick="deleteCustomer(${c.id})">🗑️</button></td></tr>`).join('') || `<tr><td colspan="7" style="text-align:center">${t('noData')}</td></tr>`}</tbody></table></div>`;
+        <tbody>${listRows(customers.slice().sort(byName)).map(c => `<tr><td>${esc(c.name)}</td><td>${esc(c.phone) || '-'}</td><td>${esc(c.gstin) || '-'}</td><td>${esc(stateName(c.stateCode)) || '-'}</td><td>${formatCurrency(c.creditLimit)}</td><td>${formatCurrency(c.balance)}</td>
+            <td><button class="action-btn edit" onclick="editCustomer(${c.id})">✏️</button><button class="action-btn" onclick="showLedger('customer',${c.id})" title="Ledger">📋</button><button class="action-btn delete" onclick="deleteCustomer(${c.id})">🗑️</button></td></tr>`).join('') || `<tr><td colspan="7" style="text-align:center">${t('noData')}</td></tr>`}${listFooter(7)}</tbody></table></div>`;
         }
         async function showCustomerForm(c = null) {
             const company = await getCurrentCompany();
@@ -2260,11 +2260,11 @@
             const vendors = await dbOps.getByCompany('vendors');
             return `
         <div class="page-header"><h1 class="page-title">${t('vendors')}</h1><button class="btn btn-primary" onclick="showVendorForm()">${t('addNew')}</button></div>
-        <div class="card">
+        <div class="card">${listSearchBox('Search vendors...')}
         <div class="table-search-bar"><input placeholder="🔍 Search vendors..." oninput="document.querySelectorAll('#vendTable tbody tr').forEach(r=>r.style.display=r.textContent.toLowerCase().includes(this.value.toLowerCase())?'':'none')"></div>
         <table id="vendTable"><thead><tr><th class="sortable">${t('name')}</th><th class="sortable">${t('phone')}</th><th>GSTIN</th><th>${t('state')}</th><th class="sortable">Balance</th><th>${t('actions')}</th></tr></thead>
-        <tbody>${vendors.map(v => `<tr><td>${esc(v.name)}</td><td>${esc(v.phone) || '-'}</td><td>${esc(v.gstin) || '-'}</td><td>${esc(stateName(v.stateCode)) || '-'}</td><td>${formatCurrency(v.balance)}</td>
-            <td><button class="action-btn edit" onclick="editVendor(${v.id})">✏️</button><button class="action-btn" onclick="showLedger('vendor',${v.id})" title="Ledger">📋</button><button class="action-btn delete" onclick="deleteVendor(${v.id})">🗑️</button></td></tr>`).join('') || `<tr><td colspan="6" style="text-align:center">${t('noData')}</td></tr>`}</tbody></table></div>`;
+        <tbody>${listRows(vendors.slice().sort(byName)).map(v => `<tr><td>${esc(v.name)}</td><td>${esc(v.phone) || '-'}</td><td>${esc(v.gstin) || '-'}</td><td>${esc(stateName(v.stateCode)) || '-'}</td><td>${formatCurrency(v.balance)}</td>
+            <td><button class="action-btn edit" onclick="editVendor(${v.id})">✏️</button><button class="action-btn" onclick="showLedger('vendor',${v.id})" title="Ledger">📋</button><button class="action-btn delete" onclick="deleteVendor(${v.id})">🗑️</button></td></tr>`).join('') || `<tr><td colspan="6" style="text-align:center">${t('noData')}</td></tr>`}${listFooter(6)}</tbody></table></div>`;
         }
         async function showVendorForm(v = null) {
             const company = await getCurrentCompany();
@@ -2317,11 +2317,11 @@
             const products = await dbOps.getByCompany('products');
             return `
         <div class="page-header"><h1 class="page-title">${t('products')}</h1><button class="btn btn-primary" onclick="showProductForm()">${t('addNew')}</button></div>
-        <div class="card">
+        <div class="card">${listSearchBox('Search products...')}
         <div class="table-search-bar"><input placeholder="🔍 Search products..." oninput="document.querySelectorAll('#prodTable tbody tr').forEach(r=>r.style.display=r.textContent.toLowerCase().includes(this.value.toLowerCase())?'':'none')"></div>
         <table id="prodTable"><thead><tr><th class="sortable">${t('name')}</th><th>HSN/SAC</th><th class="sortable">GST%</th><th>${t('unit')}</th><th class="sortable">${t('salePrice')}</th><th class="sortable">${t('stockQty')}</th><th>${t('actions')}</th></tr></thead>
-        <tbody>${products.map(p => `<tr><td>${esc(p.name)}</td><td>${esc(p.hsn) || '-'}</td><td>${p.gstRate || 0}%</td><td>${esc(p.unit) || '-'}</td><td>${formatCurrency(p.salePrice)}</td><td class="${isLowStock(p) ? 'low-stock-alert' : ''}">${p.stockQty || 0}</td>
-            <td><button class="action-btn edit" onclick="editProduct(${p.id})">✏️</button><button class="action-btn delete" onclick="deleteProduct(${p.id})">🗑️</button></td></tr>`).join('') || `<tr><td colspan="7" style="text-align:center">${t('noData')}</td></tr>`}</tbody></table></div>`;
+        <tbody>${listRows(products.slice().sort(byName)).map(p => `<tr><td>${esc(p.name)}</td><td>${esc(p.hsn) || '-'}</td><td>${p.gstRate || 0}%</td><td>${esc(p.unit) || '-'}</td><td>${formatCurrency(p.salePrice)}</td><td class="${isLowStock(p) ? 'low-stock-alert' : ''}">${p.stockQty || 0}</td>
+            <td><button class="action-btn edit" onclick="editProduct(${p.id})">✏️</button><button class="action-btn delete" onclick="deleteProduct(${p.id})">🗑️</button></td></tr>`).join('') || `<tr><td colspan="7" style="text-align:center">${t('noData')}</td></tr>`}${listFooter(7)}</tbody></table></div>`;
         }
         const UNITS = [['PCS', 'Pieces'], ['NOS', 'Numbers'], ['KGS', 'Kilograms'], ['GMS', 'Grams'], ['QTL', 'Quintal'], ['TON', 'Tonnes'], ['MTR', 'Meters'], ['SQM', 'Square Meters'], ['LTR', 'Liters'], ['BOX', 'Box'], ['BAG', 'Bags'], ['SET', 'Sets'], ['PAC', 'Packs'], ['DOZ', 'Dozen'], ['HRS', 'Hours (service)'], ['OTH', 'Others']];
         function showProductForm(p = null) {
@@ -2369,6 +2369,36 @@
             else { if (!confirm('Delete this product?')) return; }
             await dbOps.delete('products', id); showToast('Deleted'); renderPage('products');
         }
+
+        // ===== LONG LISTS =====
+        // Drawing thousands of table rows freezes the page, so lists show the newest LIST_LIMIT rows.
+        // The search box above a list searches every record and redraws the list with the matches.
+        const LIST_LIMIT = 200;
+        const listState = { page: null, query: '', all: false, total: 0, shown: 0 };
+        const searchableText = r => Object.values(r).filter(v => typeof v === 'string' || typeof v === 'number').join(' ').toLowerCase();
+        function listRows(rows) {
+            if (listState.page !== currentPage) Object.assign(listState, { page: currentPage, query: '', all: false });
+            const q = listState.query.trim().toLowerCase();
+            const matched = q ? rows.filter(r => searchableText(r).includes(q)) : rows;
+            const shown = listState.all ? matched : matched.slice(0, LIST_LIMIT);
+            listState.total = matched.length; listState.shown = shown.length;
+            return shown;
+        }
+        const listSearchBox = placeholder => `<div class="table-search-bar"><input id="listSearch" placeholder="🔍 ${placeholder}" value="${esc(listState.page === currentPage ? listState.query : '')}" oninput="searchList(this.value)"></div>`;
+        let listSearchTimer;
+        function searchList(q) {
+            listState.query = q;
+            clearTimeout(listSearchTimer);
+            listSearchTimer = setTimeout(async () => {
+                await renderPage(currentPage);
+                const el = document.getElementById('listSearch');
+                if (el) { el.focus(); el.setSelectionRange(el.value.length, el.value.length); }
+            }, 250);
+        }
+        const byName = (a, b) => (a.name || '').localeCompare(b.name || '', 'en-IN', { sensitivity: 'base' });
+        const listFooter = cols => listState.total > listState.shown
+            ? `<tr><td colspan="${cols}" style="text-align:center;color:var(--text-gray)">Showing ${listState.shown} of ${listState.total.toLocaleString('en-IN')} <button class="btn" onclick="listState.all = true; renderPage(currentPage)">Show all</button></td></tr>`
+            : '';
 
         // ===== LINE ITEM EDITOR =====
         // Shared by invoices, quotations, purchase orders and purchase bills
@@ -2450,16 +2480,16 @@
             const customers = await dbOps.getByCompany('customers');
             return `
         <div class="page-header"><h1 class="page-title">${t('invoices')}</h1><button class="btn btn-primary" onclick="showInvoiceForm()">${t('addNew')}</button></div>
-        <div class="card">
+        <div class="card">${listSearchBox('Search invoices...')}
         <div class="table-search-bar"><input placeholder="🔍 Search invoices..." oninput="document.querySelectorAll('#invTable tbody tr').forEach(r=>r.style.display=r.textContent.toLowerCase().includes(this.value.toLowerCase())?'':'none')"></div>
         <table id="invTable"><thead><tr><th class="sortable">Invoice #</th><th class="sortable">Date</th><th class="sortable">Customer</th><th class="sortable">Amount</th><th>Balance Due</th><th>Status</th><th>${t('actions')}</th></tr></thead>
-        <tbody>${invoices.slice().reverse().map(i => {
+        <tbody>${listRows(invoices.slice().reverse()).map(i => {
             const cust = customers.find(c => c.id === i.customerId);
             const overdue = i.status !== 'paid' && isOverdue(getDueDate(i.date, cust?.creditDays));
             return `<tr><td>${esc(i.number || i.id)}</td><td>${formatDate(i.date)}</td><td>${esc(i.customerName) || '-'}</td><td>${formatCurrency(i.grandTotal)}</td><td>${formatCurrency(Math.max(docDue(i), 0))}</td>
             <td>${statusBadge(i, overdue)}</td>
             <td><button class="action-btn edit" onclick="editInvoice(${i.id})" title="Edit">✏️</button><button class="action-btn view" onclick="printInvoice(${i.id})" title="Print / PDF">🖨️</button>${i.status !== 'paid' ? `<button class="action-btn" onclick="receivePayment(${i.id})" title="Record payment">💰</button>` : ''}<button class="action-btn" onclick="shareInvoiceWhatsApp(${i.id})" title="WhatsApp">📱</button><button class="action-btn delete" onclick="deleteInvoice(${i.id})" title="Delete">🗑️</button></td></tr>`;
-        }).join('') || `<tr><td colspan="7" style="text-align:center">${t('noData')}</td></tr>`}</tbody></table></div>`;
+        }).join('') || `<tr><td colspan="7" style="text-align:center">${t('noData')}</td></tr>`}${listFooter(7)}</tbody></table></div>`;
         }
         async function showInvoiceForm(inv = null) {
             if (!currentCompanyId) { showToast(t('selectCompanyFirst'), 'error'); return; }
@@ -2617,10 +2647,10 @@
             const quotes = await dbOps.getByCompany('quotations');
             return `
         <div class="page-header"><h1 class="page-title">${t('quotations')}</h1><button class="btn btn-primary" onclick="showQuoteForm()">${t('addNew')}</button></div>
-        <div class="card"><table><thead><tr><th>Quote #</th><th>Date</th><th>Customer</th><th>Amount</th><th>Valid Till</th><th>Status</th><th>${t('actions')}</th></tr></thead>
-        <tbody>${quotes.slice().reverse().map(q => `<tr><td>${esc(q.number || q.id)}</td><td>${formatDate(q.date)}</td><td>${esc(q.customerName) || '-'}</td><td>${formatCurrency(q.grandTotal)}</td><td>${formatDate(q.validTill)}</td>
+        <div class="card">${listSearchBox('Search quotations...')}<table><thead><tr><th>Quote #</th><th>Date</th><th>Customer</th><th>Amount</th><th>Valid Till</th><th>Status</th><th>${t('actions')}</th></tr></thead>
+        <tbody>${listRows(quotes.slice().reverse()).map(q => `<tr><td>${esc(q.number || q.id)}</td><td>${formatDate(q.date)}</td><td>${esc(q.customerName) || '-'}</td><td>${formatCurrency(q.grandTotal)}</td><td>${formatDate(q.validTill)}</td>
             <td><span class="badge ${q.status === 'converted' ? 'badge-success' : 'badge-warning'}">${esc(q.status || 'pending')}</span></td>
-            <td><button class="action-btn view" onclick="printQuote(${q.id})" title="Print / PDF">🖨️</button>${q.status !== 'converted' ? `<button class="action-btn edit" onclick="convertToOrder(${q.id})" title="Convert to Sales Order">📋</button>` : ''}<button class="action-btn" onclick="shareQuoteWhatsApp(${q.id})" title="WhatsApp">📱</button><button class="action-btn delete" onclick="deleteQuote(${q.id})" title="Delete">🗑️</button></td></tr>`).join('') || `<tr><td colspan="7" style="text-align:center">${t('noData')}</td></tr>`}</tbody></table></div>`;
+            <td><button class="action-btn view" onclick="printQuote(${q.id})" title="Print / PDF">🖨️</button>${q.status !== 'converted' ? `<button class="action-btn edit" onclick="convertToOrder(${q.id})" title="Convert to Sales Order">📋</button>` : ''}<button class="action-btn" onclick="shareQuoteWhatsApp(${q.id})" title="WhatsApp">📱</button><button class="action-btn delete" onclick="deleteQuote(${q.id})" title="Delete">🗑️</button></td></tr>`).join('') || `<tr><td colspan="7" style="text-align:center">${t('noData')}</td></tr>`}${listFooter(7)}</tbody></table></div>`;
         }
         async function showQuoteForm() {
             if (!currentCompanyId) { showToast(t('selectCompanyFirst'), 'error'); return; }
@@ -2688,10 +2718,10 @@
             return `
         <div class="page-header"><h1 class="page-title">${t('salesOrders')}</h1></div>
         <p style="color:var(--text-gray);margin-bottom:15px">Sales orders are created from Quotations (📋 button).</p>
-        <div class="card"><table><thead><tr><th>Order #</th><th>Date</th><th>Customer</th><th>Amount</th><th>Status</th><th>${t('actions')}</th></tr></thead>
-        <tbody>${orders.slice().reverse().map(o => `<tr><td>${esc(o.number || o.id)}</td><td>${formatDate(o.date)}</td><td>${esc(o.customerName) || '-'}</td><td>${formatCurrency(o.grandTotal)}</td>
+        <div class="card">${listSearchBox('Search orders...')}<table><thead><tr><th>Order #</th><th>Date</th><th>Customer</th><th>Amount</th><th>Status</th><th>${t('actions')}</th></tr></thead>
+        <tbody>${listRows(orders.slice().reverse()).map(o => `<tr><td>${esc(o.number || o.id)}</td><td>${formatDate(o.date)}</td><td>${esc(o.customerName) || '-'}</td><td>${formatCurrency(o.grandTotal)}</td>
             <td><span class="badge ${['delivered', 'invoiced'].includes(o.status) ? 'badge-success' : 'badge-warning'}">${esc(o.status || 'pending')}</span></td>
-            <td><button class="action-btn view" onclick="printSalesOrder(${o.id})" title="Print">🖨️</button><button class="action-btn edit" onclick="createChallanFromOrder(${o.id})" title="Create Delivery Challan">🚚</button><button class="action-btn view" onclick="createInvoiceFromOrder(${o.id})" title="Create Invoice">📄</button><button class="action-btn delete" onclick="deleteSalesOrder(${o.id})" title="Delete">🗑️</button></td></tr>`).join('') || `<tr><td colspan="6" style="text-align:center">${t('noData')}</td></tr>`}</tbody></table></div>`;
+            <td><button class="action-btn view" onclick="printSalesOrder(${o.id})" title="Print">🖨️</button><button class="action-btn edit" onclick="createChallanFromOrder(${o.id})" title="Create Delivery Challan">🚚</button><button class="action-btn view" onclick="createInvoiceFromOrder(${o.id})" title="Create Invoice">📄</button><button class="action-btn delete" onclick="deleteSalesOrder(${o.id})" title="Delete">🗑️</button></td></tr>`).join('') || `<tr><td colspan="6" style="text-align:center">${t('noData')}</td></tr>`}${listFooter(6)}</tbody></table></div>`;
         }
         async function printSalesOrder(id) { const o = await dbOps.get('salesOrders', id); if (o) printSimpleDoc(o, 'SALES ORDER', 'Customer:', o.customerName, o.customerId, 'customers'); }
         async function deleteSalesOrder(id) { if (confirm('Delete?')) { await dbOps.delete('salesOrders', id); showToast('Deleted'); renderPage('sales-orders'); } }
@@ -2730,10 +2760,10 @@
             return `
         <div class="page-header"><h1 class="page-title">${t('challans')}</h1></div>
         <p style="color:var(--text-gray);margin-bottom:15px">Delivery challans are created from Sales Orders (🚚 button).</p>
-        <div class="card"><table><thead><tr><th>Challan #</th><th>Date</th><th>Customer</th><th>Vehicle</th><th>Status</th><th>${t('actions')}</th></tr></thead>
-        <tbody>${challans.slice().reverse().map(c => `<tr><td>${esc(c.number || c.id)}</td><td>${formatDate(c.date)}</td><td>${esc(c.customerName) || '-'}</td><td>${esc(c.vehicleNumber) || '-'}</td>
+        <div class="card">${listSearchBox('Search challans...')}<table><thead><tr><th>Challan #</th><th>Date</th><th>Customer</th><th>Vehicle</th><th>Status</th><th>${t('actions')}</th></tr></thead>
+        <tbody>${listRows(challans.slice().reverse()).map(c => `<tr><td>${esc(c.number || c.id)}</td><td>${formatDate(c.date)}</td><td>${esc(c.customerName) || '-'}</td><td>${esc(c.vehicleNumber) || '-'}</td>
             <td><span class="badge ${c.status === 'delivered' ? 'badge-success' : 'badge-warning'}">${esc(c.status || 'pending')}</span></td>
-            <td><button class="action-btn view" onclick="printChallan(${c.id})" title="Print">🖨️</button><button class="action-btn" onclick="setChallanVehicle(${c.id})" title="Set vehicle">🚛</button>${c.status !== 'delivered' ? `<button class="action-btn edit" onclick="markDelivered(${c.id})" title="Mark delivered">✅</button>` : ''}<button class="action-btn delete" onclick="deleteChallan(${c.id})" title="Delete">🗑️</button></td></tr>`).join('') || `<tr><td colspan="6" style="text-align:center">${t('noData')}</td></tr>`}</tbody></table></div>`;
+            <td><button class="action-btn view" onclick="printChallan(${c.id})" title="Print">🖨️</button><button class="action-btn" onclick="setChallanVehicle(${c.id})" title="Set vehicle">🚛</button>${c.status !== 'delivered' ? `<button class="action-btn edit" onclick="markDelivered(${c.id})" title="Mark delivered">✅</button>` : ''}<button class="action-btn delete" onclick="deleteChallan(${c.id})" title="Delete">🗑️</button></td></tr>`).join('') || `<tr><td colspan="6" style="text-align:center">${t('noData')}</td></tr>`}${listFooter(6)}</tbody></table></div>`;
         }
         async function deleteChallan(id) { if (confirm('Delete?')) { await dbOps.delete('challans', id); showToast('Deleted'); renderPage('challans'); } }
         async function markDelivered(id) {
@@ -2776,10 +2806,10 @@
             const orders = await dbOps.getByCompany('purchaseOrders');
             return `
         <div class="page-header"><h1 class="page-title">${t('purchaseOrders')}</h1><button class="btn btn-primary" onclick="showPOForm()">${t('addNew')}</button></div>
-        <div class="card"><table><thead><tr><th>PO #</th><th>Date</th><th>Vendor</th><th>Amount</th><th>Status</th><th>${t('actions')}</th></tr></thead>
-        <tbody>${orders.slice().reverse().map(o => `<tr><td>${esc(o.number || o.id)}</td><td>${formatDate(o.date)}</td><td>${esc(o.vendorName) || '-'}</td><td>${formatCurrency(o.grandTotal)}</td>
+        <div class="card">${listSearchBox('Search purchase orders...')}<table><thead><tr><th>PO #</th><th>Date</th><th>Vendor</th><th>Amount</th><th>Status</th><th>${t('actions')}</th></tr></thead>
+        <tbody>${listRows(orders.slice().reverse()).map(o => `<tr><td>${esc(o.number || o.id)}</td><td>${formatDate(o.date)}</td><td>${esc(o.vendorName) || '-'}</td><td>${formatCurrency(o.grandTotal)}</td>
             <td><span class="badge ${o.status === 'received' ? 'badge-success' : 'badge-warning'}">${esc(o.status || 'pending')}</span></td>
-            <td><button class="action-btn view" onclick="printPO(${o.id})" title="Print">🖨️</button>${o.status !== 'received' ? `<button class="action-btn edit" onclick="convertToBill(${o.id})" title="Record purchase bill">📄</button>` : ''}<button class="action-btn delete" onclick="deletePO(${o.id})" title="Delete">🗑️</button></td></tr>`).join('') || `<tr><td colspan="6" style="text-align:center">${t('noData')}</td></tr>`}</tbody></table></div>`;
+            <td><button class="action-btn view" onclick="printPO(${o.id})" title="Print">🖨️</button>${o.status !== 'received' ? `<button class="action-btn edit" onclick="convertToBill(${o.id})" title="Record purchase bill">📄</button>` : ''}<button class="action-btn delete" onclick="deletePO(${o.id})" title="Delete">🗑️</button></td></tr>`).join('') || `<tr><td colspan="6" style="text-align:center">${t('noData')}</td></tr>`}${listFooter(6)}</tbody></table></div>`;
         }
         async function showPOForm() {
             if (!currentCompanyId) { showToast(t('selectCompanyFirst'), 'error'); return; }
@@ -2821,10 +2851,10 @@
             const bills = await dbOps.getByCompany('purchaseBills');
             return `
         <div class="page-header"><h1 class="page-title">${t('purchaseBills')}</h1><button class="btn btn-primary" onclick="showBillForm()">${t('addNew')}</button></div>
-        <div class="card"><table><thead><tr><th>Bill #</th><th>Vendor Invoice #</th><th>Date</th><th>Vendor</th><th>Amount</th><th>Balance Due</th><th>Status</th><th>${t('actions')}</th></tr></thead>
-        <tbody>${bills.slice().reverse().map(b => `<tr><td>${esc(b.number || b.id)}</td><td>${esc(b.vendorInvoiceNo) || '-'}</td><td>${formatDate(b.date)}</td><td>${esc(b.vendorName) || '-'}</td><td>${formatCurrency(b.grandTotal)}</td><td>${formatCurrency(Math.max(docDue(b), 0))}</td>
+        <div class="card">${listSearchBox('Search bills...')}<table><thead><tr><th>Bill #</th><th>Vendor Invoice #</th><th>Date</th><th>Vendor</th><th>Amount</th><th>Balance Due</th><th>Status</th><th>${t('actions')}</th></tr></thead>
+        <tbody>${listRows(bills.slice().reverse()).map(b => `<tr><td>${esc(b.number || b.id)}</td><td>${esc(b.vendorInvoiceNo) || '-'}</td><td>${formatDate(b.date)}</td><td>${esc(b.vendorName) || '-'}</td><td>${formatCurrency(b.grandTotal)}</td><td>${formatCurrency(Math.max(docDue(b), 0))}</td>
             <td>${statusBadge(b, false)}</td>
-            <td>${b.status !== 'paid' ? `<button class="action-btn edit" onclick="payBill(${b.id})" title="Record payment">💰</button>` : ''}<button class="action-btn delete" onclick="deleteBill(${b.id})" title="Delete">🗑️</button></td></tr>`).join('') || `<tr><td colspan="8" style="text-align:center">${t('noData')}</td></tr>`}</tbody></table></div>`;
+            <td>${b.status !== 'paid' ? `<button class="action-btn edit" onclick="payBill(${b.id})" title="Record payment">💰</button>` : ''}<button class="action-btn delete" onclick="deleteBill(${b.id})" title="Delete">🗑️</button></td></tr>`).join('') || `<tr><td colspan="8" style="text-align:center">${t('noData')}</td></tr>`}${listFooter(8)}</tbody></table></div>`;
         }
         // po: optional purchase order to pre-fill from
         async function showBillForm(po = null) {
@@ -3002,9 +3032,9 @@
             const rows = await dbOps.getByCompany(m.store);
             return `
         <div class="page-header"><h1 class="page-title">${t(m.page)}</h1><button class="btn btn-primary" onclick="${kind === 'receipt' ? 'showReceiptForm()' : 'showPaymentForm()'}">${t('addNew')}</button></div>
-        <div class="card"><table><thead><tr><th>${m.title} #</th><th>Date</th><th>${m.party}</th><th>Amount</th><th>Mode</th><th>Against</th><th>${t('actions')}</th></tr></thead>
-        <tbody>${rows.slice().reverse().map(r => `<tr><td>${esc(r.number || r.id)}</td><td>${formatDate(r.date)}</td><td>${esc(r[m.partyNameKey]) || '-'}</td><td>${formatCurrency(r.amount)}</td><td>${esc(r.mode) || '-'}</td><td>${esc((r.allocations || []).map(a => a.number).join(', ')) || '-'}</td>
-            <td><button class="action-btn delete" onclick="deleteMoney('${kind}', ${r.id})">🗑️</button></td></tr>`).join('') || `<tr><td colspan="7" style="text-align:center">${t('noData')}</td></tr>`}</tbody></table></div>`;
+        <div class="card">${listSearchBox('Search...')}<table><thead><tr><th>${m.title} #</th><th>Date</th><th>${m.party}</th><th>Amount</th><th>Mode</th><th>Against</th><th>${t('actions')}</th></tr></thead>
+        <tbody>${listRows(rows.slice().reverse()).map(r => `<tr><td>${esc(r.number || r.id)}</td><td>${formatDate(r.date)}</td><td>${esc(r[m.partyNameKey]) || '-'}</td><td>${formatCurrency(r.amount)}</td><td>${esc(r.mode) || '-'}</td><td>${esc((r.allocations || []).map(a => a.number).join(', ')) || '-'}</td>
+            <td><button class="action-btn delete" onclick="deleteMoney('${kind}', ${r.id})">🗑️</button></td></tr>`).join('') || `<tr><td colspan="7" style="text-align:center">${t('noData')}</td></tr>`}${listFooter(7)}</tbody></table></div>`;
         }
         const renderReceipts = () => renderMoneyList('receipt');
         const renderPayments = () => renderMoneyList('payment');
@@ -3282,9 +3312,9 @@
             const rows = await dbOps.getByCompany(r.store);
             return `
         <div class="page-header"><h1 class="page-title">${t(r.i18n)}</h1><button class="btn btn-primary" onclick="showReturnForm('${kind}')">${t('addNew')}</button></div>
-        <div class="card"><table><thead><tr><th>${r.noteLabel}</th><th>Date</th><th>${r.partyLabel}</th><th>Against ${r.srcLabel}</th><th>Amount</th><th>${t('actions')}</th></tr></thead>
-        <tbody>${rows.slice().reverse().map(x => `<tr><td>${esc(x.number || x.id)}</td><td>${formatDate(x.date)}</td><td>${esc(x[r.partyNameKey]) || '-'}</td><td>${esc(x[r.srcNumKey]) || '-'}</td><td>${formatCurrency(x.grandTotal)}</td>
-            <td>${(x.items || []).length ? `<button class="action-btn view" onclick="printReturn('${kind}', ${x.id})" title="Print">🖨️</button>` : ''}<button class="action-btn delete" onclick="deleteReturn('${kind}', ${x.id})">🗑️</button></td></tr>`).join('') || `<tr><td colspan="6" style="text-align:center">${t('noData')}</td></tr>`}</tbody></table></div>`;
+        <div class="card">${listSearchBox('Search...')}<table><thead><tr><th>${r.noteLabel}</th><th>Date</th><th>${r.partyLabel}</th><th>Against ${r.srcLabel}</th><th>Amount</th><th>${t('actions')}</th></tr></thead>
+        <tbody>${listRows(rows.slice().reverse()).map(x => `<tr><td>${esc(x.number || x.id)}</td><td>${formatDate(x.date)}</td><td>${esc(x[r.partyNameKey]) || '-'}</td><td>${esc(x[r.srcNumKey]) || '-'}</td><td>${formatCurrency(x.grandTotal)}</td>
+            <td>${(x.items || []).length ? `<button class="action-btn view" onclick="printReturn('${kind}', ${x.id})" title="Print">🖨️</button>` : ''}<button class="action-btn delete" onclick="deleteReturn('${kind}', ${x.id})">🗑️</button></td></tr>`).join('') || `<tr><td colspan="6" style="text-align:center">${t('noData')}</td></tr>`}${listFooter(6)}</tbody></table></div>`;
         }
         const renderSalesReturns = () => renderReturns('sales');
         const renderPurchaseReturns = () => renderReturns('purchase');
@@ -3508,9 +3538,9 @@
             <div class="stat-card primary"><div class="stat-label">This Month</div><div class="stat-value">${formatCurrency(monthlyFuel)}</div></div>
             <div class="stat-card warning"><div class="stat-label">Total Fuel Expenses</div><div class="stat-value">${formatCurrency(totalFuel)}</div></div>
         </div>
-        <div class="card"><table><thead><tr><th>Date</th><th>Vehicle</th><th>Liters</th><th>Rate/L</th><th>Amount</th><th>Odometer</th><th>${t('actions')}</th></tr></thead>
-        <tbody>${fuel.slice().reverse().map(f => `<tr><td>${formatDate(f.date)}</td><td>${esc(f.vehicleNumber) || '-'}</td><td>${f.liters || '-'}</td><td>${formatCurrency(f.rate)}</td><td>${formatCurrency(f.amount)}</td><td>${f.odometer || '-'} km</td>
-            <td><button class="action-btn delete" onclick="deleteFuel(${f.id})">🗑️</button></td></tr>`).join('') || `<tr><td colspan="7" style="text-align:center">${t('noData')}</td></tr>`}</tbody></table></div>`;
+        <div class="card">${listSearchBox('Search fuel entries...')}<table><thead><tr><th>Date</th><th>Vehicle</th><th>Liters</th><th>Rate/L</th><th>Amount</th><th>Odometer</th><th>${t('actions')}</th></tr></thead>
+        <tbody>${listRows(fuel.slice().reverse()).map(f => `<tr><td>${formatDate(f.date)}</td><td>${esc(f.vehicleNumber) || '-'}</td><td>${f.liters || '-'}</td><td>${formatCurrency(f.rate)}</td><td>${formatCurrency(f.amount)}</td><td>${f.odometer || '-'} km</td>
+            <td><button class="action-btn delete" onclick="deleteFuel(${f.id})">🗑️</button></td></tr>`).join('') || `<tr><td colspan="7" style="text-align:center">${t('noData')}</td></tr>`}${listFooter(7)}</tbody></table></div>`;
         }
         async function showFuelForm() {
             const vehicles = await dbOps.getByCompany('vehicles');

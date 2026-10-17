@@ -27,6 +27,7 @@
     "serve": "node scripts/serve.js",
     "start": "electron .",
     "test": "playwright test",
+    "benchmark": "node scripts/benchmark.js",
     "icons": "node scripts/make-icons.js",
     "dist": "electron-builder",
     "dist:win": "electron-builder --win",

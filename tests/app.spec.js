@@ -404,3 +404,18 @@ test('quotation to order to challan to invoice, and every document prints', asyn
     await expect(printed).toContainText(`D'Souza "Joe"`);
     await expect(printed).toContainText('Net Pay');
 });
+
+test('long lists show 200 rows and search finds the rest', async ({ page }) => {
+    await createCompany(page);
+    await page.evaluate(async () => {
+        for (let i = 1; i <= 250; i++) await dbOps.add('customers', { companyId: parseInt(currentCompanyId), name: `Customer ${String(i).padStart(3, '0')}`, stateCode: '36', balance: 0 });
+    });
+    await nav(page, 'customers');
+    await expect(page.locator('#custTable tbody')).toContainText('Showing 200 of 250');
+    await page.locator('#listSearch').fill('Customer 249');
+    await expect(page.locator('#custTable tbody tr')).toHaveCount(1);
+    await expect(page.locator('#listSearch')).toBeFocused();
+    await page.locator('#listSearch').fill('');
+    await page.getByRole('button', { name: 'Show all' }).click();
+    await expect(page.locator('#custTable tbody tr')).toHaveCount(250);
+});
