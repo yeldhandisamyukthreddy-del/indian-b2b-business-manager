@@ -4,7 +4,7 @@
 
 # VyaparEasy
 
-**The open-source, offline-first alternative to Tally and Zoho Books for GST billing. The whole app is a 56 KB HTML file that keeps your data on your own device.**
+**The open-source, offline-first alternative to Tally and Zoho Books for GST billing. The whole app is 320 KB of plain HTML and JavaScript that keeps your data on your own device.**
 
 [![CI](https://github.com/yeldhandisamyukthreddy-del/indian-b2b-business-manager/actions/workflows/ci.yml/badge.svg)](https://github.com/yeldhandisamyukthreddy-del/indian-b2b-business-manager/actions/workflows/ci.yml)
 [![Release](https://img.shields.io/github/v/release/yeldhandisamyukthreddy-del/indian-b2b-business-manager?display_name=tag&sort=semver)](https://github.com/yeldhandisamyukthreddy-del/indian-b2b-business-manager/releases/latest)
@@ -47,12 +47,12 @@ Prefer a normal desktop app? Get the Windows, macOS or Linux installer from [Rel
 
 ## Why VyaparEasy
 
-- **Tiny and dependency-free:** 271 KB for the entire web app over the network (gzip), 56 KB for `index.html`. **Zero runtime dependencies**, no framework, no build step.
+- **Tiny and dependency-free:** 320 KB for the entire web app over the network (gzip), 56 KB for `index.html`. **Zero runtime dependencies**, no framework, no build step.
 - **Fast on real-sized books:** about 130 ms cold start to the dashboard, and about 120 ms to build the GST report over **5,000 invoices** ([measured](#benchmarks)).
 - **Offline and private:** data lives in your browser's IndexedDB or the desktop app's local storage. No account, no server and no telemetry; nothing leaves the device.
 - **GST done properly:**
   - CGST/SGST vs IGST decided by your state vs the place of supply, with all 36 states/UTs and their codes
-  - Printed invoices carry the Rule 46 details (GSTINs, state codes, HSN, tax columns, amount in words)
+  - Printed invoices carry the Rule 46 details (GSTINs, state codes, place of supply, HSN, tax columns, amount in words)
   - GSTIN format and state-code checks
 - **Returns prep:** GSTR-1 view (B2B / B2CL / B2CS, credit notes, HSN summary) with CSV export in the offline-tool layout, and a GSTR-3B summary by tax head
 - **The whole trading cycle:**
@@ -60,8 +60,9 @@ Prefer a normal desktop app? Get the Windows, macOS or Linux installer from [Rel
   - Purchases: purchase order → purchase bill, plus debit notes
   - Receipts and payments matched to invoices and bills, so each shows Paid / Partial / Overdue
 - **Stock and money:** stock that follows every document, low-stock alerts, bank balances, customer and vendor ledgers, multiple companies (one invoice series per GSTIN)
+- **Invoice templates:** A4, compact, thermal receipt (58/80 mm), POS counter and spreadsheet layouts. Choose sections, item columns, labels (English or Telugu), logo and colour in Settings with a live preview; the desktop app saves real PDFs ([how it works](docs/invoice-templates.md))
 - **Everyday tools:** reports (day book, outstanding, item-wise, party-wise, P&L), WhatsApp sharing, Ctrl+K search, English and Telugu menus
-- **Tested end to end:** 15 Playwright tests drive the real UI in Chromium and Electron, covering GST maths, IST date edge cases, backup/restore, offline mode and data from older versions
+- **Tested end to end:** 22 Playwright tests drive the real UI in Chromium and Electron, covering GST maths, IST date edge cases, backup/restore, offline mode, invoice printing and PDFs, and data from older versions; 120+ unit, snapshot and property tests cover the money and invoice-template code
 
 ## How it compares
 
@@ -72,7 +73,7 @@ Prefer a normal desktop app? Get the Windows, macOS or Linux installer from [Rel
 | Runs as                | Web app (any OS) + desktop app            | Mobile + desktop apps         | Desktop app                     | Cloud web + mobile                         |
 | Works without internet | **Yes**                                   | Yes                           | Yes                             | No                                         |
 | Where your data lives  | **Only on your device**                   | Device, optional cloud backup | Your PC / server                | Vendor cloud                               |
-| Footprint              | **271 KB web**, ~100 MB desktop installer | App install                   | App install                     | Browser                                    |
+| Footprint              | **320 KB web**, ~100 MB desktop installer | App install                   | App install                     | Browser                                    |
 | Runtime dependencies   | **None** (any modern browser)             | Vendor app                    | Vendor app                      | Internet + vendor account                  |
 | Account required       | **No**                                    | Yes                           | Licence                         | Yes                                        |
 | E-invoice / e-way bill | ✗ ([roadmap](#roadmap))                   | ✓                             | ✓                               | ✓ (paid plans)                             |
@@ -99,7 +100,7 @@ Prefer a normal desktop app? Get the Windows, macOS or Linux installer from [Rel
    served as static files          network-first, offline cache     app://vyapareasy/ fixed origin
 ```
 
-- **One file, no build:** the whole UI is template strings rendered into the page. Contributors edit `app/index.html` and reload.
+- **No build:** the UI is template strings rendered into the page from `app/index.html`. Money maths and printed invoices live in small scripts under `app/js/` and Mustache templates under `app/templates/` ([invoice templates](docs/invoice-templates.md)). Contributors edit and reload.
 - **Storage:** IndexedDB holds plain objects per company. Balances and stock are updated by the same functions that save documents, and every delete reverses its save.
 - **Same code everywhere:** the browser, the installable PWA and the Electron desktop app all run the identical file. Electron serves it from a fixed `app://` origin so data survives updates.
 - **Backups** are a single JSON file. Restores are atomic (one IndexedDB transaction).
@@ -110,7 +111,7 @@ Prefer a normal desktop app? Get the Windows, macOS or Linux installer from [Rel
 
 | Metric                                                     | Result |
 | ---------------------------------------------------------- | -----: |
-| Whole web app over the network (gzip)                      | 271 KB |
+| Whole web app over the network (gzip)                      | 320 KB |
 | `index.html` (gzip)                                        |  56 KB |
 | Runtime dependencies                                       |      0 |
 | Cold start to rendered dashboard (median of 5)             | 133 ms |
@@ -137,6 +138,7 @@ The installers are not code-signed yet, so the first launch shows a warning:
 
 - Not double-entry accounting: no chart of accounts, journals, trial balance or balance sheet. Profit & loss is simplified.
 - No direct GST portal integration yet: no e-invoice/IRN, no e-way bill, and no upload-ready GSTR JSON. The summaries and CSVs help you prepare returns.
+- No UPI QR code on invoices yet.
 - Not supported: reverse charge, composition scheme, cess, exports under LUT, TDS/TCS (placeholder page), stock per warehouse. Payslips use a fixed simplified structure.
 - One user per device; no login or sync.
 

@@ -19,11 +19,12 @@ There is no build step. `npm start` opens the same app as a desktop (Electron) w
 | Command                | What it does                                                                                |
 | ---------------------- | ------------------------------------------------------------------------------------------- |
 | `npm run lint`         | ESLint, including the JavaScript inside `app/index.html`                                    |
+| `npm run test:unit`    | Unit, snapshot and property tests (node:test) for `app/js/`, with an 80% coverage floor     |
 | `npm run format:check` | Prettier check (`npm run format` fixes it)                                                  |
 | `npm test`             | End-to-end tests in Chromium and Electron (Linux without a display: `xvfb-run -a npm test`) |
 | `npm run benchmark`    | Optional: speed and size numbers quoted in the README                                       |
 
-CI runs the first three on every pull request.
+CI runs the first four on every pull request. After an intended change to an invoice template, refresh its snapshots with `UPDATE_SNAPSHOTS=1 npm run test:unit` and review the diff.
 
 ## Branches and commits
 
@@ -44,14 +45,17 @@ CI runs the first three on every pull request.
 
 ## Project layout
 
-| Path                                    | What it is                                                                                |
-| --------------------------------------- | ----------------------------------------------------------------------------------------- |
-| `app/index.html`                        | The entire app: HTML, CSS and JavaScript in one file, with no framework and no build step |
-| `app/sw.js`, `app/manifest.webmanifest` | Offline support and install metadata for the web app                                      |
-| `app/fonts/`, `app/icons/`              | Bundled font and icons (`npm run icons` regenerates PNGs from `icon.svg`)                 |
-| `electron/main.js`                      | Desktop wrapper; serves `app/` from the `app://vyapareasy/` origin                        |
-| `tests/`                                | Playwright end-to-end tests (browser and Electron)                                        |
-| `scripts/`                              | Dev server, benchmark, icon generator, demo recorder                                      |
+| Path                                     | What it is                                                                                          |
+| ---------------------------------------- | --------------------------------------------------------------------------------------------------- |
+| `app/index.html`                         | The entire app: HTML, CSS and JavaScript in one file, with no framework and no build step           |
+| `app/js/money.js`, `app/js/invoice/`     | Money in paise and the invoice-template system (also loaded by the Node unit tests)                 |
+| `app/templates/`                         | Invoice layouts and partials (Mustache); see [docs/invoice-templates.md](docs/invoice-templates.md) |
+| `app/sw.js`, `app/manifest.webmanifest`  | Offline support and install metadata for the web app                                                |
+| `app/fonts/`, `app/icons/`               | Bundled font and icons (`npm run icons` regenerates PNGs from `icon.svg`)                           |
+| `electron/main.js`                       | Desktop wrapper; serves `app/` from the `app://vyapareasy/` origin                                  |
+| `electron/pdf.js`, `electron/preload.js` | Invoice PDFs in the desktop app (hidden window, JavaScript off)                                     |
+| `tests/`                                 | Playwright end-to-end tests (browser and Electron); `tests/unit/` has the node:test tests           |
+| `scripts/`                               | Dev server, benchmark, icon generator, demo recorder                                                |
 
 Data is stored in IndexedDB (`VyaparEasyDB`). Each store holds plain objects with a `companyId`. Read and write them through `dbOps`.
 
@@ -61,7 +65,8 @@ These rules exist because breaking them caused real bugs:
 
 - **Escape user text** with `esc()` whenever it goes into HTML (`${esc(c.name)}`). A name like `Ravi's "Best" Traders` must not break a form.
 - **Dates** are local `'YYYY-MM-DD'` strings. Use `todayStr()`, `localDateStr()`, `parseLocalDate()` and `periodRange()`. **Never** use `toISOString()` for a date: it switches to UTC, which is the previous day before 05:30 IST.
-- **Money:** round with `round2()`. Compute GST only through `computeGst(items, interstate)`, and read the split of a saved document with `gstSplit()` (older records don't have CGST/SGST/IGST stored).
+- **Money:** round with `round2()`. Compute GST only through `computeGst(items, interstate)` (it runs on whole paise in `app/js/money.js`), and read the split of a saved document with `gstSplit()` (older records don't have CGST/SGST/IGST stored).
+- **Printed invoices** come from `app/templates/` through the view model in `app/js/invoice/`. Change a layout in its template, not in code; new files must also go into `FILES` in `app/sw.js` (a test checks).
 - **Balances and stock** change only through `adjustPartyBalance()`, `adjustBankBalance()` and `adjustStock()`, and every delete reverses what the save did.
 - **Numbers, printing, long lists:** use `getNextNumber(type)`, `printDocument(title, html)`, and `listRows()` / `listFooter()`.
 - **Old data must keep working.** If you change how something is stored, handle records saved by older versions (see `migrateLegacyData()` and the "previous version" test).
