@@ -16,7 +16,8 @@ test('the service worker caches every module and template file', () => {
 });
 
 test('index.html loads every invoice module', () => {
-    for (const f of ['js/money.js', ...list('js/invoice')]) assert.ok(html.includes(`<script src="${f}"></script>`), `${f} is not loaded by app/index.html`);
+    for (const f of ['js/money.js', ...list('js/invoice')])
+        assert.match(html, new RegExp(`<script src="${f}"( defer)?></script>`), `${f} is not loaded by app/index.html`);
 });
 
 test('every registered template and partial exists on disk, and nothing unregistered is shipped', () => {

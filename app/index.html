@@ -1830,21 +1830,21 @@
         </div>
     </div>
 
-    <!-- Money and invoice-template modules (also loaded by the Node unit tests) -->
+    <!-- Money core (used while the app starts) and the invoice-template modules (deferred: they run after the page is parsed, in order) -->
     <script src="js/money.js"></script>
-    <script src="js/invoice/sanitize.js"></script>
-    <script src="js/invoice/format.js"></script>
-    <script src="js/invoice/labels.js"></script>
-    <script src="js/invoice/registry.js"></script>
-    <script src="js/invoice/settings.js"></script>
-    <script src="js/invoice/totals.js"></script>
-    <script src="js/invoice/mustache.js"></script>
-    <script src="js/invoice/regions.js"></script>
-    <script src="js/invoice/schema.js"></script>
-    <script src="js/invoice/view-model-table.js"></script>
-    <script src="js/invoice/view-model.js"></script>
-    <script src="js/invoice/renderer.js"></script>
-    <script src="js/invoice/adapter.js"></script>
+    <script src="js/invoice/sanitize.js" defer></script>
+    <script src="js/invoice/format.js" defer></script>
+    <script src="js/invoice/labels.js" defer></script>
+    <script src="js/invoice/registry.js" defer></script>
+    <script src="js/invoice/settings.js" defer></script>
+    <script src="js/invoice/totals.js" defer></script>
+    <script src="js/invoice/mustache.js" defer></script>
+    <script src="js/invoice/regions.js" defer></script>
+    <script src="js/invoice/schema.js" defer></script>
+    <script src="js/invoice/view-model-table.js" defer></script>
+    <script src="js/invoice/view-model.js" defer></script>
+    <script src="js/invoice/renderer.js" defer></script>
+    <script src="js/invoice/adapter.js" defer></script>
     <script>
         /* global Vyapar, InvoiceTemplates, TemplateSettingsPage -- from the js/ scripts loaded around this one */
         // ===== CONFIG =====
@@ -4579,8 +4579,8 @@
             window.addEventListener('load', () => navigator.serviceWorker.register('sw.js').catch(err => console.warn('Service worker not registered', err)));
         }
     </script>
-    <script src="js/invoice/ui.js"></script>
-    <script src="js/invoice/settings-page.js"></script>
+    <script src="js/invoice/ui.js" defer></script>
+    <script src="js/invoice/settings-page.js" defer></script>
 
 </body>
 
