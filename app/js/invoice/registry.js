@@ -85,7 +85,8 @@
                     isPaymentStubRequired: false,
                     isSignatureRequired: false,
                     isTimeRequired: true,
-                    isDueDateRequired: false
+                    isDueDateRequired: false,
+                    isPaymentTermsRequired: false
                 },
                 columns: ['index', 'name', 'hsnOrSac', 'qty', 'rate', 'discount', 'amount', 'tax', 'total'],
                 hiddenColumns: ['index', 'hsnOrSac', 'discount', 'amount', 'tax']

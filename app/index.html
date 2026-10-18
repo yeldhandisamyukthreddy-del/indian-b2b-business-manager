@@ -797,6 +797,24 @@
         /* Forms with item tables and statements need more room */
         .modal:has(#lineItemsTable), .modal:has(#returnItemsList table), .modal:has(.ledger-running-balance) { max-width: 1000px; }
         .modal-body { overflow-x: auto; }
+        /* Invoice preview and template editor (app/js/invoice/) */
+        .modal:has(.invoice-preview-frame) { max-width: 1000px; }
+        .invoice-preview-bar { display: flex; gap: 10px; align-items: center; flex-wrap: wrap; margin-bottom: 10px; }
+        .invoice-preview-bar select { flex: 1; min-width: 200px; }
+        .invoice-preview-frame { width: 100%; height: 70vh; border: 1px solid var(--border); border-radius: 8px; background: #e8ecf2; }
+        .invoice-more summary { cursor: pointer; color: var(--text-gray); margin: 6px 0 12px; }
+        .tpl-editor { display: grid; grid-template-columns: minmax(300px, 400px) 1fr; gap: 20px; align-items: start; }
+        .tpl-controls h4 { margin: 18px 0 8px; }
+        .tpl-controls h4 small, .tpl-hint { color: var(--text-gray); font-weight: 400; font-size: 13px; }
+        .tpl-group { border: 1px solid var(--border); border-radius: 8px; padding: 6px 10px 8px; margin-bottom: 8px; }
+        .tpl-group legend { padding: 0 4px; color: var(--text-gray); font-size: 13px; }
+        .tpl-check { display: inline-flex; align-items: center; gap: 6px; margin: 3px 14px 3px 0; cursor: pointer; }
+        .tpl-column { display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--border-light); padding: 2px 0; }
+        .tpl-logo { display: flex; align-items: center; gap: 12px; margin-bottom: 8px; }
+        .tpl-logo img { max-height: 48px; max-width: 160px; background: #fff; border-radius: 4px; padding: 2px; }
+        .tpl-preview-card { position: sticky; top: 10px; }
+        .tpl-preview-card .invoice-preview-frame { height: calc(100vh - 160px); min-height: 480px; }
+        @media (max-width: 900px) { .tpl-editor { grid-template-columns: 1fr; } .tpl-preview-card { position: static; } }
 
         /* The closing modal stays visible while it fades out; make sure it can't be clicked */
         .modal-overlay:not(.active) { pointer-events: none; }
@@ -1812,7 +1830,23 @@
         </div>
     </div>
 
+    <!-- Money and invoice-template modules (also loaded by the Node unit tests) -->
+    <script src="js/money.js"></script>
+    <script src="js/invoice/sanitize.js"></script>
+    <script src="js/invoice/format.js"></script>
+    <script src="js/invoice/labels.js"></script>
+    <script src="js/invoice/registry.js"></script>
+    <script src="js/invoice/settings.js"></script>
+    <script src="js/invoice/totals.js"></script>
+    <script src="js/invoice/mustache.js"></script>
+    <script src="js/invoice/regions.js"></script>
+    <script src="js/invoice/schema.js"></script>
+    <script src="js/invoice/view-model-table.js"></script>
+    <script src="js/invoice/view-model.js"></script>
+    <script src="js/invoice/renderer.js"></script>
+    <script src="js/invoice/adapter.js"></script>
     <script>
+        /* global Vyapar, InvoiceTemplates, TemplateSettingsPage -- from the js/ scripts loaded around this one */
         // ===== CONFIG =====
         const APP = { dbName: 'VyaparEasyDB', dbVersion: 2, version: '1.0.0' }; // keep version in sync with package.json (a test checks)
         let db = null, currentLang = localStorage.getItem('lang') || 'en';
@@ -1917,6 +1951,9 @@
 
         // Print through a hidden iframe: works in browsers (no popup blocker), the installed web app and the desktop app
         function printDocument(title, bodyHtml, css = '') {
+            printHtmlDocument(`<!DOCTYPE html><html><head><meta charset="UTF-8"><title>${esc(title)}</title><style>body{font-family:Arial,Helvetica,sans-serif;margin:0;padding:20px;color:#111}table{width:100%;border-collapse:collapse;margin:15px 0}th,td{border:1px solid #bbb;padding:6px 8px;text-align:left;vertical-align:top}th{background:#eee}.r{text-align:right}${css}</style></head><body>${bodyHtml}</body></html>`);
+        }
+        function printHtmlDocument(html) {
             const old = document.getElementById('printFrame');
             if (old) old.remove();
             const frame = document.createElement('iframe');
@@ -1925,7 +1962,7 @@
             document.body.appendChild(frame);
             const doc = frame.contentDocument;
             doc.open();
-            doc.write(`<!DOCTYPE html><html><head><meta charset="UTF-8"><title>${esc(title)}</title><style>body{font-family:Arial,Helvetica,sans-serif;margin:0;padding:20px;color:#111}table{width:100%;border-collapse:collapse;margin:15px 0}th,td{border:1px solid #bbb;padding:6px 8px;text-align:left;vertical-align:top}th{background:#eee}.r{text-align:right}${css}</style></head><body>${bodyHtml}</body></html>`);
+            doc.write(html);
             doc.close();
             setTimeout(() => {
                 // A newer print may already have replaced this frame
@@ -1936,27 +1973,7 @@
         }
 
         // Indian numbering words, e.g. 123456.5 -> "Rupees One Lakh Twenty Three Thousand Four Hundred Fifty Six and Fifty Paise Only"
-        function amountInWords(amount) {
-            const ones = ['', 'One', 'Two', 'Three', 'Four', 'Five', 'Six', 'Seven', 'Eight', 'Nine', 'Ten', 'Eleven', 'Twelve', 'Thirteen', 'Fourteen', 'Fifteen', 'Sixteen', 'Seventeen', 'Eighteen', 'Nineteen'];
-            const tens = ['', '', 'Twenty', 'Thirty', 'Forty', 'Fifty', 'Sixty', 'Seventy', 'Eighty', 'Ninety'];
-            const two = n => n < 20 ? ones[n] : tens[Math.floor(n / 10)] + (n % 10 ? ' ' + ones[n % 10] : '');
-            const three = n => (n >= 100 ? ones[Math.floor(n / 100)] + ' Hundred' + (n % 100 ? ' ' : '') : '') + (n % 100 ? two(n % 100) : '');
-            const words = n => {
-                if (n === 0) return 'Zero';
-                const parts = [];
-                const crore = Math.floor(n / 10000000); n %= 10000000;
-                const lakh = Math.floor(n / 100000); n %= 100000;
-                const thousand = Math.floor(n / 1000); n %= 1000;
-                if (crore) parts.push(words(crore) + ' Crore');
-                if (lakh) parts.push(two(lakh) + ' Lakh');
-                if (thousand) parts.push(two(thousand) + ' Thousand');
-                if (n) parts.push(three(n));
-                return parts.join(' ');
-            };
-            const total = Math.round(Math.abs(amount || 0) * 100);
-            const rupees = Math.floor(total / 100), paise = total % 100;
-            return 'Rupees ' + words(rupees) + (paise ? ' and ' + two(paise) + ' Paise' : '') + ' Only';
-        }
+        const { amountInWords } = Vyapar.money;
 
         // ===== GST =====
         // GST slabs. 12% and 28% were merged into 5%/18%/40% from 22 Sep 2025 but stay selectable for older documents.
@@ -1964,22 +1981,9 @@
         const gstRateOpts = sel => GST_RATES.map(r => `<option value="${r}" ${parseFloat(sel) === r ? 'selected' : ''}>${r}%</option>`).join('');
         // Inter-state when the supplier's state differs from the place of supply. Unknown states are treated as intra-state.
         const isInterstate = (fromState, toState) => !!(fromState && toState && fromState !== toState);
-        // Fill taxable/cgst/sgst/igst/tax/total on each line and return document totals
-        function computeGst(items, interstate) {
-            const t = { taxable: 0, cgst: 0, sgst: 0, igst: 0, tax: 0, total: 0 };
-            items.forEach(it => {
-                it.taxable = round2((it.qty || 0) * (it.rate || 0));
-                const tax = round2(it.taxable * (it.gstRate || 0) / 100);
-                if (interstate) { it.igst = tax; it.cgst = 0; it.sgst = 0; }
-                else { it.cgst = round2(tax / 2); it.sgst = round2(tax - it.cgst); it.igst = 0; }
-                it.tax = tax;
-                it.amount = it.taxable;
-                it.total = round2(it.taxable + tax);
-                t.taxable += it.taxable; t.cgst += it.cgst; t.sgst += it.sgst; t.igst += it.igst; t.tax += tax; t.total += it.total;
-            });
-            Object.keys(t).forEach(k => t[k] = round2(t[k]));
-            return t;
-        }
+        // Fill taxable/cgst/sgst/igst/tax/total on each line and return document totals.
+        // Calculated in whole paise (app/js/money.js), half away from zero per line.
+        const { computeGst } = Vyapar.money;
         // CGST/SGST/IGST of a saved document. Older records only stored total tax, so split it using the party's state.
         function gstSplit(doc, company, party) {
             if (doc.cgst !== undefined || doc.igst !== undefined) return { cgst: doc.cgst || 0, sgst: doc.sgst || 0, igst: doc.igst || 0 };
@@ -2125,6 +2129,7 @@
                 case 'payroll': content.innerHTML = await renderEmployees(); break;
                 case 'tds': content.innerHTML = `<div class="page-header"><h1 class="page-title">${t('tds')}</h1></div><div class="card"><p>TDS/TCS tracking coming in next update. You can track deductions manually in receipts/payments for now.</p></div>`; break;
                 case 'settings': content.innerHTML = renderSettings(); break;
+                case 'invoice-templates': content.innerHTML = await TemplateSettingsPage.render(); TemplateSettingsPage.refresh(); break;
                 default: content.innerHTML = `<div class="empty-state"><h3>${t(page) || page}</h3><p>Coming soon...</p></div>`;
             }
         }
@@ -2191,6 +2196,7 @@
                 });
                 for (const r of records) await dbOps.delete(store, r.id);
             }
+            await InvoiceTemplates.repo.deleteForOrg(id);
             await dbOps.delete('companies', id);
             if (parseInt(currentCompanyId) === id) await selectCompany(null);
             showToast('Company deleted'); navigateTo('companies');
@@ -2489,7 +2495,7 @@
             const overdue = i.status !== 'paid' && isOverdue(getDueDate(i.date, cust?.creditDays));
             return `<tr><td>${esc(i.number || i.id)}</td><td>${formatDate(i.date)}</td><td>${esc(i.customerName) || '-'}</td><td>${formatCurrency(i.grandTotal)}</td><td>${formatCurrency(Math.max(docDue(i), 0))}</td>
             <td>${statusBadge(i, overdue)}</td>
-            <td><button class="action-btn edit" onclick="editInvoice(${i.id})" title="Edit">✏️</button><button class="action-btn view" onclick="printInvoice(${i.id})" title="Print / PDF">🖨️</button>${i.status !== 'paid' ? `<button class="action-btn" onclick="receivePayment(${i.id})" title="Record payment">💰</button>` : ''}<button class="action-btn" onclick="shareInvoiceWhatsApp(${i.id})" title="WhatsApp">📱</button><button class="action-btn delete" onclick="deleteInvoice(${i.id})" title="Delete">🗑️</button></td></tr>`;
+            <td><button class="action-btn edit" onclick="editInvoice(${i.id})" title="Edit">✏️</button><button class="action-btn view" onclick="InvoiceTemplates.preview(${i.id})" title="Print / PDF">🖨️</button>${i.status !== 'paid' ? `<button class="action-btn" onclick="receivePayment(${i.id})" title="Record payment">💰</button>` : ''}<button class="action-btn" onclick="shareInvoiceWhatsApp(${i.id})" title="WhatsApp">📱</button><button class="action-btn delete" onclick="deleteInvoice(${i.id})" title="Delete">🗑️</button></td></tr>`;
         }).join('') || `<tr><td colspan="7" style="text-align:center">${t('noData')}</td></tr>`}${listFooter(7)}</tbody></table></div>`;
         }
         async function showInvoiceForm(inv = null) {
@@ -2508,7 +2514,17 @@
         </div>
         ${customers.length ? '' : `<p style="color:var(--warning)">No customers yet. Add one under Masters → Customers first.</p>`}
         ${lineEditorHtml(products, 'salePrice')}
-        <div class="form-group"><label class="form-label">Notes (optional)</label><input class="form-control" name="notes" value="${esc(inv?.notes)}" placeholder="e.g. Vehicle no, e-way bill no, PO reference"></div>
+        <div class="form-group"><label class="form-label">Notes (optional)</label><input class="form-control" name="notes" value="${esc(inv?.notes)}" placeholder="e.g. Vehicle no, delivery details"></div>
+        <details class="invoice-more" ${inv?.referenceNumber || inv?.ewayBillNumber || inv?.shipToAddress ? 'open' : ''}><summary>More details (reference, e-way bill, ship to)</summary>
+            <div class="form-row">
+                <div class="form-group"><label class="form-label">Reference / PO number</label><input class="form-control" name="referenceNumber" maxlength="40" value="${esc(inv?.referenceNumber)}"></div>
+                <div class="form-group"><label class="form-label">E-way bill number</label><input class="form-control" name="ewayBillNumber" maxlength="20" value="${esc(inv?.ewayBillNumber)}"></div>
+            </div>
+            <div class="form-row">
+                <div class="form-group"><label class="form-label">Ship to name (if different)</label><input class="form-control" name="shipToName" maxlength="100" value="${esc(inv?.shipToName)}"></div>
+                <div class="form-group"><label class="form-label">Ship to address</label><textarea class="form-control" name="shipToAddress" rows="2">${esc(inv?.shipToAddress)}</textarea></div>
+            </div>
+        </details>
     </form>`;
             showModal(inv ? `Edit Invoice ${esc(inv.number)}` : 'New Invoice', html, `<button class="btn" onclick="closeModal()">${t('cancel')}</button><button class="btn btn-primary" onclick="saveInvoice()">Save Invoice</button>`);
             startLineEditor(inv?.items, company?.stateCode, customer?.stateCode ?? inv?.placeOfSupply);
@@ -2532,6 +2548,7 @@
             }
             if (short.length && !confirm(`Not enough stock:\n${short.join('\n')}\n\nSave anyway? Stock will go negative.`)) return;
             applyLineTotals(data);
+            ['notes', 'referenceNumber', 'ewayBillNumber', 'shipToName', 'shipToAddress'].forEach(k => (data[k] = (data[k] || '').trim()));
             data.companyId = parseInt(currentCompanyId);
             data.customerId = customer.id;
             data.customerName = customer.name;
@@ -2599,47 +2616,9 @@
         const partyBlock = (label, name, address, gstin, stateCode) => `<div><strong>${label}</strong><br><strong>${esc(name)}</strong><br>${esc(address).replace(/\n/g, '<br>')}${address ? '<br>' : ''}
             ${gstin ? `GSTIN: ${esc(gstin)}<br>` : ''}${stateCode ? `State: ${esc(stateName(stateCode))} (Code: ${esc(stateCode)})` : ''}</div>`;
 
+        // Printed tax invoice, from the company's default template (Settings → Invoice templates, app/js/invoice/)
         async function printInvoice(id) {
-            const inv = await dbOps.get('invoices', id);
-            if (!inv) return;
-            const company = await dbOps.get('companies', inv.companyId);
-            const customer = await dbOps.get('customers', inv.customerId);
-            const banks = await dbOps.getByCompany('bankAccounts');
-            const s = getSettings();
-            const terms = s.terms ?? DEFAULT_TERMS;
-            const split = gstSplit(inv, company, customer);
-            const igst = split.igst > 0;
-            const pos = inv.placeOfSupply ?? customer?.stateCode ?? '';
-            const due = getDueDate(inv.date, customer?.creditDays);
-            const rows = (inv.items || []).map((it, i) => {
-                const taxable = it.taxable ?? it.amount ?? 0;
-                const tax = it.tax ?? taxable * (it.gstRate || 0) / 100;
-                const half = round2(tax / 2);
-                return `<tr><td>${i + 1}</td><td>${esc(it.name)}</td><td>${esc(it.hsn) || '-'}</td><td class="r">${it.qty} ${esc(it.unit)}</td><td class="r">${formatCurrency(it.rate)}</td><td class="r">${formatCurrency(taxable)}</td>
-                ${igst ? `<td class="r">${it.gstRate}%</td><td class="r">${formatCurrency(it.igst ?? tax)}</td>` : `<td class="r">${(it.gstRate || 0) / 2}%</td><td class="r">${formatCurrency(it.cgst ?? half)}</td><td class="r">${(it.gstRate || 0) / 2}%</td><td class="r">${formatCurrency(it.sgst ?? round2(tax - half))}</td>`}
-                <td class="r">${formatCurrency(it.total ?? taxable + tax)}</td></tr>`;
-            }).join('');
-            const bank = banks[0];
-            const body = `${printHeader(company, 'TAX INVOICE', `<div><strong>Invoice No:</strong> ${esc(inv.number)}</div><div><strong>Date:</strong> ${formatDate(inv.date)}</div>${due ? `<div><strong>Due Date:</strong> ${formatDate(due)}</div>` : ''}<div><strong>Place of Supply:</strong> ${esc(stateName(pos)) || '-'} ${pos ? `(${esc(pos)})` : ''}</div><div><strong>Reverse Charge:</strong> No</div>`)}
-            ${partyBlock('Bill To:', inv.customerName, inv.customerAddress ?? customer?.address, inv.customerGstin ?? customer?.gstin, inv.customerState ?? customer?.stateCode)}
-            <table><thead><tr><th>#</th><th>Description</th><th>HSN/SAC</th><th class="r">Qty</th><th class="r">Rate</th><th class="r">Taxable Value</th>
-                ${igst ? '<th class="r">IGST %</th><th class="r">IGST</th>' : '<th class="r">CGST %</th><th class="r">CGST</th><th class="r">SGST %</th><th class="r">SGST</th>'}<th class="r">Total</th></tr></thead>
-            <tbody>${rows}</tbody></table>
-            <div style="display:flex;justify-content:space-between;gap:20px">
-                <div style="flex:1"><strong>Amount in words:</strong><br>${amountInWords(inv.grandTotal)}
-                    ${inv.notes ? `<p><strong>Notes:</strong> ${esc(inv.notes)}</p>` : ''}
-                    ${bank ? `<p><strong>Bank Details:</strong><br>${esc(bank.bankName)}<br>A/c No: ${esc(bank.accountNo)}${bank.ifsc ? `<br>IFSC: ${esc(bank.ifsc)}` : ''}</p>` : ''}
-                </div>
-                <table style="width:300px;margin:0"><tbody>
-                    <tr><td>Taxable Value</td><td class="r">${formatCurrency(inv.taxable)}</td></tr>
-                    ${igst ? `<tr><td>IGST</td><td class="r">${formatCurrency(split.igst)}</td></tr>` : `<tr><td>CGST</td><td class="r">${formatCurrency(split.cgst)}</td></tr><tr><td>SGST</td><td class="r">${formatCurrency(split.sgst)}</td></tr>`}
-                    ${inv.roundOff ? `<tr><td>Round Off</td><td class="r">${formatCurrency(inv.roundOff)}</td></tr>` : ''}
-                    <tr><th>Grand Total</th><th class="r">${formatCurrency(inv.grandTotal)}</th></tr>
-                </tbody></table>
-            </div>
-            ${terms ? `<p style="margin-top:15px"><strong>Terms & Conditions:</strong><br>${esc(terms).replace(/\n/g, '<br>')}</p>` : ''}
-            <div style="text-align:right;margin-top:40px">For <strong>${esc(company?.name)}</strong><br><br><br>Authorised Signatory</div>`;
-            printDocument(`Invoice ${inv.number}`, body);
+            await InvoiceTemplates.print(id);
         }
 
         // ===== QUOTATIONS =====
@@ -4038,11 +4017,15 @@
         </div>
         <div class="card"><h3 style="margin-bottom:20px">🏢 Business Settings</h3>
             <div class="form-row">
-                <div class="form-group"><label class="form-label">Business Logo URL</label><input class="form-control" id="settLogoUrl" value="${esc(settings.logoUrl)}" placeholder="https://... (printed on invoices)"></div>
+                <div class="form-group"><label class="form-label">Business Logo URL</label><input class="form-control" id="settLogoUrl" value="${esc(settings.logoUrl)}" placeholder="https://... (quotations and orders)"><small style="color:var(--text-gray)">Tax invoices use the logo uploaded under Invoice templates.</small></div>
                 <div class="form-group"><label class="form-label">Default GST Rate (%)</label><select class="form-control" id="settDefaultGst">${gstRateOpts(settings.defaultGst ?? 18)}</select></div>
             </div>
             <div class="form-group"><label><input type="checkbox" id="settRoundOff" ${settings.roundOff === false ? '' : 'checked'}> Round off invoice totals to the nearest rupee</label></div>
             <div class="form-group"><label class="form-label">Invoice Terms & Conditions</label><textarea class="form-control" id="settTerms" rows="3">${esc(settings.terms ?? DEFAULT_TERMS)}</textarea></div>
+        </div>
+        <div class="card"><h3 style="margin-bottom:10px">🧾 Invoice Templates</h3>
+            <p style="color:var(--text-gray);margin-bottom:12px">Choose the invoice layout (A4, compact, thermal receipt, POS or spreadsheet), what it shows, your logo and labels.</p>
+            <button class="btn btn-primary" onclick="navigateTo('invoice-templates')">Customize invoice templates</button>
         </div>
         <div class="card"><h3 style="margin-bottom:20px">🔢 Document Numbering</h3>
             <div class="form-row">
@@ -4596,6 +4579,8 @@
             window.addEventListener('load', () => navigator.serviceWorker.register('sw.js').catch(err => console.warn('Service worker not registered', err)));
         }
     </script>
+    <script src="js/invoice/ui.js"></script>
+    <script src="js/invoice/settings-page.js"></script>
 
 </body>
 
