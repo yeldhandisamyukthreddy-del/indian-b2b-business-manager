@@ -1,0 +1,12 @@
+{{#flags.isTaxSummaryRequired}}{{#taxSummary}}
+<section class="tax-summary avoid-break">
+  <div class="section-title">{{labels.taxSummary}}</div>
+  <table class="grid">
+    <thead><tr>{{#columns}}<th class="al-{{align}}" scope="col">{{label}}</th>{{/columns}}</tr></thead>
+    <tbody>
+      {{#rows}}<tr>{{#cells}}<td class="al-{{align}}">{{value}}</td>{{/cells}}</tr>{{/rows}}
+      {{#totalRow}}<tr class="total">{{#cells}}<td class="al-{{align}}">{{value}}</td>{{/cells}}</tr>{{/totalRow}}
+    </tbody>
+  </table>
+</section>
+{{/taxSummary}}{{/flags.isTaxSummaryRequired}}

@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="{{meta.lang}}" dir="{{meta.dir}}">
+<head>
+<meta charset="utf-8">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; img-src data:; style-src 'unsafe-inline'; font-src data:">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>{{meta.documentTitle}}</title>
+<!--style_start-->
+<style>
+{{>styles_base}}
+/* One flat table: no merged cells and no nesting, so it pastes cleanly into Excel or Google Sheets */
+table.flat td, table.flat th { border: 1px solid #b8c0cc; padding: 3px 5px; font-size: 8.5pt; vertical-align: top; }
+table.flat th { background: var(--soft); text-align: start; }
+table.flat tr.title th { background: var(--accent); color: #fff; font-size: 11pt; }
+table.flat tr.gap td { border: 0; height: 8px; }
+table.flat tr.items-head th { border-block-end: 2px solid var(--accent); }
+table.flat tr.grand td { font-weight: 700; }
+table.flat td.pad { border: 0; }
+table.flat td.al-end { white-space: nowrap; }
+</style>
+<!--style_end-->
+</head>
+<body class="tpl-excel-compact">
+<main class="sheet" data-invoice-root>
+<table class="flat">
+  <tbody>
+    <tr class="title"><th>{{header.title}}</th>{{#fillerCells}}<th></th>{{/fillerCells}}</tr>
+    <tr><th>{{header.companyName}}</th><td>{{#header.companyAddress}}{{.}} {{/header.companyAddress}}</td></tr>
+    {{#header.taxIdBlocks}}<tr><th>{{sectionLabel}}</th><td>{{sectionValue}}</td></tr>{{/header.taxIdBlocks}}
+    {{#header.entityNumber}}<tr><th>{{sectionLabel}}</th><td>{{sectionValue}}</td></tr>{{/header.entityNumber}}
+    {{#flags.isEntityDateRequired}}{{#header.date}}<tr><th>{{sectionLabel}}</th><td>{{sectionValue}}</td></tr>{{/header.date}}{{/flags.isEntityDateRequired}}
+    {{#flags.isDueDateRequired}}{{#blocks.dueDateBlock}}<tr><th>{{sectionLabel}}</th><td>{{sectionValue}}</td></tr>{{/blocks.dueDateBlock}}{{/flags.isDueDateRequired}}
+    {{#flags.isReferenceNumberRequired}}{{#blocks.referenceBlock}}<tr><th>{{sectionLabel}}</th><td>{{sectionValue}}</td></tr>{{/blocks.referenceBlock}}{{/flags.isReferenceNumberRequired}}
+    {{#regionBlocks}}<tr><th>{{sectionLabel}}</th><td>{{sectionValue}}</td></tr>{{/regionBlocks}}
+    {{#customFieldBlocks}}<tr><th>{{sectionLabel}}</th><td>{{sectionValue}}</td></tr>{{/customFieldBlocks}}
+    {{#flags.isBillToRequired}}{{#parties.billingAddress}}<tr><th>{{sectionLabel}}</th><td>{{name}}</td></tr><tr><th></th><td>{{#lines}}{{.}} {{/lines}}</td></tr>{{#taxIdBlocks}}<tr><th>{{sectionLabel}}</th><td>{{sectionValue}}</td></tr>{{/taxIdBlocks}}{{/parties.billingAddress}}{{/flags.isBillToRequired}}
+    {{#flags.isShipToRequired}}{{#parties.shippingAddress}}<tr><th>{{sectionLabel}}</th><td>{{name}}</td></tr><tr><th></th><td>{{#lines}}{{.}} {{/lines}}</td></tr>{{/parties.shippingAddress}}{{/flags.isShipToRequired}}
+    <tr class="gap"><td></td></tr>
+    <tr class="items-head">{{#columns}}<th class="al-{{align}}">{{label}}</th>{{/columns}}</tr>
+    {{#lineItems}}<tr>{{#cells}}<td class="al-{{align}}">{{value}}</td>{{/cells}}</tr>{{/lineItems}}
+    <tr class="gap"><td></td></tr>
+    {{#flags.isSubTotalRequired}}{{#totals.subTotal}}<tr>{{#padCells}}<td class="pad"></td>{{/padCells}}<th>{{sectionLabel}}</th><td class="al-end">{{sectionValue}}</td></tr>{{/totals.subTotal}}{{/flags.isSubTotalRequired}}
+    {{#totals.discount}}<tr>{{#padCells}}<td class="pad"></td>{{/padCells}}<th>{{sectionLabel}}</th><td class="al-end">{{sectionValue}}</td></tr>{{/totals.discount}}
+    {{#totals.shipping}}<tr>{{#padCells}}<td class="pad"></td>{{/padCells}}<th>{{sectionLabel}}</th><td class="al-end">{{sectionValue}}</td></tr>{{/totals.shipping}}
+    {{#totals.taxRows}}<tr>{{#padCells}}<td class="pad"></td>{{/padCells}}<th>{{sectionLabel}}</th><td class="al-end">{{sectionValue}}</td></tr>{{/totals.taxRows}}
+    {{#totals.roundOff}}<tr>{{#padCells}}<td class="pad"></td>{{/padCells}}<th>{{sectionLabel}}</th><td class="al-end">{{sectionValue}}</td></tr>{{/totals.roundOff}}
+    {{#flags.isTotalRequired}}{{#totals.total}}<tr class="grand">{{#padCells}}<td class="pad"></td>{{/padCells}}<th>{{sectionLabel}}</th><td class="al-end">{{sectionValue}}</td></tr>{{/totals.total}}{{/flags.isTotalRequired}}
+    {{#totals.paid}}<tr>{{#padCells}}<td class="pad"></td>{{/padCells}}<th>{{sectionLabel}}</th><td class="al-end">{{sectionValue}}</td></tr>{{/totals.paid}}
+    {{#totals.credits}}<tr>{{#padCells}}<td class="pad"></td>{{/padCells}}<th>{{sectionLabel}}</th><td class="al-end">{{sectionValue}}</td></tr>{{/totals.credits}}
+    {{#flags.isBalanceDueRequired}}{{#totals.balanceDue}}<tr>{{#padCells}}<td class="pad"></td>{{/padCells}}<th>{{sectionLabel}}</th><td class="al-end">{{sectionValue}}</td></tr>{{/totals.balanceDue}}{{/flags.isBalanceDueRequired}}
+    {{#flags.isAmountInWordsRequired}}<tr><th>{{labels.amountInWords}}</th><td>{{totals.amountInWords}}</td></tr>{{/flags.isAmountInWordsRequired}}
+    {{#flags.isNotesExist}}<tr><th>{{notes.sectionLabel}}</th><td>{{{notes.html}}}</td></tr>{{/flags.isNotesExist}}
+  </tbody>
+</table>
+</main>
+</body>
+</html>

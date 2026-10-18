@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="{{meta.lang}}" dir="{{meta.dir}}">
+<head>
+<meta charset="utf-8">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; img-src data:; style-src 'unsafe-inline'; font-src data:">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>{{meta.documentTitle}}</title>
+<!--style_start-->
+<style>
+{{>styles_base}}
+{{>header_other_pages}}
+/* Compact: smaller type, a thin rule instead of the accent bar, details in one line under the header */
+body { font-size: 8.5pt; }
+.doc-head { border-block-start: 0; border-block-end: 1px solid var(--line); padding-block: 0 6px; }
+.org-name { font-size: 12.5pt; }
+.doc-title { font-size: 13pt; }
+.subject { margin-block: 8px; }
+.doc-meta { flex-basis: 34%; padding: 5px 8px; }
+table.items th { background: none; border-block-end: 1px solid var(--ink); padding: 4px; }
+table.items td { padding: 3px 4px; }
+table.totals tr.grand th, table.totals tr.grand td { background: none; color: var(--accent); border-block: 1px solid var(--accent); font-size: 10pt; }
+</style>
+<!--style_end-->
+</head>
+<body class="tpl-compact">
+<main class="sheet" data-invoice-root>
+{{>header}}
+{{>subject_block}}
+{{>line_item_table}}
+<section class="after-items">
+  <div class="after-left">
+    {{#flags.isAmountInWordsRequired}}<div class="words">{{totals.amountInWords}}</div>{{/flags.isAmountInWordsRequired}}
+    {{>payment_details}}
+    {{>notes_terms}}
+  </div>
+  <div class="after-right">{{>subtotal_block}}</div>
+</section>
+{{>tax_summary}}
+{{>footer}}
+{{>payment_stub}}
+</main>
+</body>
+</html>

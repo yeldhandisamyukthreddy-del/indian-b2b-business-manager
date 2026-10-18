@@ -1,0 +1,6 @@
+{{#flags.isPaymentDetailsRequired}}{{#paymentDetails}}
+<div class="pay-details">
+  <div class="section-title">{{sectionLabel}}</div>
+  {{#blocks}}<div class="kv"><span class="k">{{sectionLabel}}:</span> <span class="v">{{sectionValue}}</span></div>{{/blocks}}
+</div>
+{{/paymentDetails}}{{/flags.isPaymentDetailsRequired}}

@@ -1,0 +1,8 @@
+{{! Running header and page numbers on printed pages. CSS page-margin boxes; values are pre-escaped CSS strings. }}
+@page {
+  {{#flags.isRtl}}@top-left{{/flags.isRtl}}{{^flags.isRtl}}@top-right{{/flags.isRtl}} { content: {{{meta.runningHeaderCss}}}; font: 8pt sans-serif; color: #5d6676; }
+  {{#flags.isRtl}}@bottom-left{{/flags.isRtl}}{{^flags.isRtl}}@bottom-right{{/flags.isRtl}} { content: {{{meta.pageLabelCss}}} counter(page) {{{meta.ofLabelCss}}} counter(pages); font: 8pt sans-serif; color: #5d6676; }
+}
+@page :first {
+  {{#flags.isRtl}}@top-left{{/flags.isRtl}}{{^flags.isRtl}}@top-right{{/flags.isRtl}} { content: none; }
+}

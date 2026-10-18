@@ -1,0 +1,29 @@
+{{! Receipt-roll styles: one narrow column, dashed rules, no backgrounds (thermal printers print black only). }}
+body { font-size: 8.5pt; line-height: 1.3; }
+.sheet { width: {{meta.contentWidth}}; margin-inline: auto; padding: 2mm 0; }
+@media screen { .sheet { width: {{meta.pageWidth}}; min-height: 0; padding: 3mm 4mm; } }
+.doc-head { flex-direction: column; align-items: center; text-align: center; gap: 2px; border: 0; padding: 0; }
+.org { flex-direction: column; align-items: center; gap: 2px; }
+.logo { margin-inline: auto; filter: grayscale(1); }
+.org-name { font-size: 11pt; }
+.doc-title-box { text-align: center; }
+.doc-title { font-size: 10pt; color: var(--ink); letter-spacing: 0.04em; margin-block-start: 4px; }
+.stamp { transform: none; margin-block-start: 3px; font-size: 8pt; }
+.rule { border: 0; border-block-start: 1px dashed var(--ink); margin-block: 4px; }
+.subject { flex-direction: column; gap: 4px; margin-block: 4px; }
+.parties { flex-direction: column; gap: 3px; }
+.doc-meta { background: none; padding: 0; flex-basis: auto; }
+.party .label, .section-title { color: var(--ink); }
+table.items th { background: none; border-block-end: 1px dashed var(--ink); padding: 2px 1px; font-size: 8pt; }
+table.items td { border: 0; padding: 2px 1px; }
+table.items .al-end { padding-inline-start: 5px; }
+table.items .col-name { width: auto; }
+.after-items { flex-direction: column; gap: 4px; margin-block-start: 4px; border-block-start: 1px dashed var(--ink); padding-block-start: 4px; }
+.after-right { flex-basis: auto; }
+table.totals th, table.totals td { padding: 1px 0; color: var(--ink); }
+table.totals tr.grand th, table.totals tr.grand td { background: none; color: var(--ink); border-block: 1px dashed var(--ink); font-size: 10pt; padding: 3px 0; }
+.words { border: 0; padding: 0; }
+table.grid th, table.grid td { border: 0; border-block-end: 1px dotted var(--muted); padding: 1px; font-size: 7.5pt; background: none; }
+.notes-terms { flex-direction: column; gap: 4px; margin-block-start: 4px; }
+.doc-foot { flex-direction: column; align-items: center; text-align: center; margin-block-start: 6px; gap: 2px; }
+.thanks { font-weight: 700; }

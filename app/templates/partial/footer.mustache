@@ -1,0 +1,5 @@
+<footer class="doc-foot">
+  {{#flags.isThermal}}<div class="thanks">{{labels.thankYou}}</div>{{/flags.isThermal}}
+  <div class="generated">{{labels.computerGenerated}}</div>
+  {{#flags.isSignatureRequired}}<div class="sign"><div>{{signature.forLine}}</div><div class="sign-space"></div><div class="sign-label">{{signature.label}}</div></div>{{/flags.isSignatureRequired}}
+</footer>

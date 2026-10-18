@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+<meta charset="utf-8">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; img-src data:; style-src 'unsafe-inline'; font-src data:">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>TAX INVOICE INV-0007</title>
+<!--style_start-->
+<style>
+@page { size: 210mm 297mm; margin: 12mm; }
+:root { --accent: #1f4e79; --ink: #1c2230; --muted: #5d6676; --line: #d6dbe4; --soft: #f2f4f8; }
+* { box-sizing: border-box; }
+html { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+body { margin: 0; color: var(--ink); font: 9pt/1.38 "Segoe UI", "Noto Sans", Inter, Roboto, "Helvetica Neue", Arial, "Nirmala UI", "Noto Sans Telugu", "Noto Naskh Arabic", "DejaVu Sans", sans-serif; }
+.sheet { background: #fff; }
+@media screen {
+ body { background: #e8ecf2; padding-block: 16px; }
+ .sheet { width: 210mm; min-height: 60mm; margin-inline: auto; padding: 12mm; box-shadow: 0 2px 10px rgba(20, 30, 50, 0.18); }
+}
+h1, h2, h3, p { margin: 0; }
+.k { color: var(--muted); }
+.kv { margin-block: 1px; }
+.muted { color: var(--muted); }
+.small { font-size: 8pt; }
+.num, td, th { font-variant-numeric: tabular-nums; }
+.al-start { text-align: start; }
+.al-end { text-align: end; }
+.al-center { text-align: center; }
+.section-title { font-size: 7.5pt; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; color: var(--accent); margin-block-end: 3px; }
+.avoid-break { break-inside: avoid; }
+.rich p { margin-block: 0 4px; }
+.rich ul, .rich ol { margin-block: 2px; padding-inline-start: 18px; }
+
+/* Header */
+.doc-head { display: flex; justify-content: space-between; gap: 16px; align-items: flex-start; border-block-start: 4px solid var(--accent); padding-block-start: 10px; }
+.org { min-width: 0; display: flex; gap: 12px; align-items: flex-start; }
+.org-text { min-width: 0; }
+.logo { display: block; flex-shrink: 0; object-fit: contain; }
+.org-name { font-size: 15pt; font-weight: 700; line-height: 1.2; }
+.org-address, .org-contact { color: var(--muted); }
+.org .kv { display: inline-block; margin-inline-end: 12px; }
+.doc-title-box { text-align: end; flex-shrink: 0; }
+.doc-title { font-size: 17pt; letter-spacing: 0.08em; color: var(--accent); font-weight: 700; }
+.stamp { display: inline-block; margin-block-start: 8px; padding: 3px 10px; border: 2px solid currentColor; border-radius: 4px; font-weight: 700; letter-spacing: 0.1em; transform: rotate(-4deg); }
+.stamp-paid { color: #15803d; }
+.stamp-partial { color: #b45309; }
+.stamp-overdue { color: #b91c1c; }
+
+/* Parties and document details */
+.subject { display: flex; gap: 14px; margin-block: 10px; align-items: stretch; }
+.parties { flex: 1; display: flex; gap: 14px; min-width: 0; }
+.party { flex: 1; min-width: 0; }
+.party .label { font-size: 7.5pt; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; color: var(--accent); }
+.party-name { font-weight: 700; font-size: 10.5pt; }
+.doc-meta { flex: 0 0 38%; background: var(--soft); border-radius: 4px; padding: 8px 10px; }
+.doc-meta .kv { display: flex; justify-content: space-between; gap: 8px; }
+.doc-meta .v { font-weight: 600; text-align: end; }
+
+/* Line items: the header row repeats on every page and rows never split across pages */
+table { border-collapse: collapse; width: 100%; }
+table.items thead { display: table-header-group; }
+table.items tr { break-inside: avoid; }
+table.items th { background: var(--soft); color: var(--ink); font-size: 8pt; font-weight: 700; padding: 6px 5px; border-block-end: 2px solid var(--accent); }
+table.items td { padding: 5px; border-block-end: 1px solid var(--line); vertical-align: top; }
+table.items .col-name { width: 34%; }
+table.items .col-index { width: 4%; }
+.sub { color: var(--muted); font-size: 8pt; }
+/* Amounts and quantities stay on one line; long item names wrap instead */
+table.items td.al-end, table.items td.al-center { white-space: nowrap; }
+
+/* Totals */
+.after-items { display: flex; gap: 16px; margin-block-start: 10px; break-inside: avoid; }
+.after-left { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 8px; }
+.after-right { flex: 0 0 42%; }
+table.totals th { text-align: start; font-weight: 400; color: var(--muted); padding: 3px 6px; }
+table.totals td { text-align: end; padding: 3px 6px; white-space: nowrap; }
+table.totals tr.grand th, table.totals tr.grand td { background: var(--accent); color: #fff; font-weight: 700; font-size: 11pt; padding: 6px; }
+table.totals tr.balance th, table.totals tr.balance td { font-weight: 700; color: var(--ink); border-block-start: 1px solid var(--line); }
+.words { border-inline-start: 3px solid var(--accent); padding-inline-start: 8px; }
+
+/* Tax summary, notes, terms, bank */
+.tax-summary { margin-block-start: 12px; }
+table.grid th, table.grid td { border: 1px solid var(--line); padding: 3px 5px; font-size: 8pt; }
+table.grid th { background: var(--soft); }
+table.grid tr.total td { font-weight: 700; }
+.notes-terms { display: flex; gap: 16px; margin-block-start: 12px; break-inside: avoid; }
+.notes-terms > div { flex: 1; min-width: 0; }
+.region-note { margin-block-start: 6px; font-weight: 600; }
+
+/* Footer and payment slip */
+.doc-foot { display: flex; justify-content: space-between; align-items: flex-end; gap: 16px; margin-block-start: 18px; break-inside: avoid; }
+.generated { color: var(--muted); font-size: 7.5pt; }
+.sign { text-align: center; min-width: 45mm; }
+.sign-space { height: 10mm; }
+.sign-label { border-block-start: 1px solid var(--ink); padding-block-start: 2px; }
+.stub { margin-block-start: 16px; border-block-start: 1px dashed var(--muted); padding-block-start: 10px; break-inside: avoid; }
+.stub-title { font-weight: 700; margin-block-end: 4px; }
+.stub-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 4px 16px; }
+.fill { display: inline-block; min-width: 30mm; border-block-end: 1px solid var(--ink); }
+@page {
+ @top-right { content: "Sri Lakshmi Traders \b7 INV\2d 0007"; font: 8pt sans-serif; color: #5d6676; }
+ @bottom-right { content: "Page " counter(page) " of " counter(pages); font: 8pt sans-serif; color: #5d6676; }
+}
+@page :first {
+ @top-right { content: none; }
+}
+/* Compact: smaller type, a thin rule instead of the accent bar, details in one line under the header */
+body { font-size: 8.5pt; }
+.doc-head { border-block-start: 0; border-block-end: 1px solid var(--line); padding-block: 0 6px; }
+.org-name { font-size: 12.5pt; }
+.doc-title { font-size: 13pt; }
+.subject { margin-block: 8px; }
+.doc-meta { flex-basis: 34%; padding: 5px 8px; }
+table.items th { background: none; border-block-end: 1px solid var(--ink); padding: 4px; }
+table.items td { padding: 3px 4px; }
+table.totals tr.grand th, table.totals tr.grand td { background: none; color: var(--accent); border-block: 1px solid var(--accent); font-size: 10pt; }
+</style>
+<!--style_end-->
+</head>
+<body class="tpl-compact">
+<main class="sheet" data-invoice-root>
+<header class="doc-head">
+<div class="org">
+<div class="org-text">
+<div class="org-name">Sri Lakshmi Traders</div>
+<div class="org-address"><div>12-3, Main Road</div><div>Abids, Hyderabad 500001</div></div>
+<div class="org-contact">+91 98480 12345 · accounts@srilakshmi.example</div>
+<div class="kv"><span class="k">GSTIN:</span>
+<span class="v">36AABCU9603R1ZM</span></div><div class="kv"><span class="k">State:</span>
+<span class="v">Telangana (Code: 36)</span></div>
+</div>
+</div>
+<div class="doc-title-box">
+<h1 class="doc-title">TAX INVOICE</h1>
+</div>
+</header>
+<section class="subject">
+<div class="parties">
+<div class="party">
+<div class="label">Bill To</div>
+<div class="party-name">Anil &quot;Best&quot; Stores &amp; Sons</div>
+<div>Shop 4, Koti</div><div>Hyderabad</div>
+<div class="kv"><span class="k">State:</span>
+<span class="v">Telangana (Code: 36)</span></div>
+</div>
+</div>
+<div class="doc-meta">
+<div class="kv"><span class="k">Invoice No:</span>
+<span class="v">INV-0007</span></div>
+<div class="kv"><span class="k">Invoice Date:</span>
+<span class="v">18&#x2F;10&#x2F;2026</span></div>
+<div class="kv"><span class="k">Due Date:</span>
+<span class="v">17&#x2F;11&#x2F;2026</span></div>
+<div class="kv"><span class="k">Payment Terms:</span>
+<span class="v">Net 30 days</span></div>
+<div class="kv"><span class="k">Place of Supply:</span>
+<span class="v">Telangana (36)</span></div><div class="kv"><span class="k">Reverse Charge:</span>
+<span class="v">No</span></div>
+</div>
+</section>
+<table class="items">
+<thead>
+<tr><th class="col-index al-center" scope="col">#</th><th class="col-name al-start" scope="col">Item</th><th class="col-hsnOrSac al-start" scope="col">HSN&#x2F;SAC</th><th class="col-qty al-end" scope="col">Qty</th><th class="col-rate al-end" scope="col">Rate</th><th class="col-amount al-end" scope="col">Taxable Value</th><th class="col-taxPercent al-end" scope="col">GST %</th><th class="col-taxAmount al-end" scope="col">GST</th><th class="col-total al-end" scope="col">Total</th></tr>
+</thead>
+<tbody>
+<tr><td class="col-index al-center">1</td><td class="col-name al-start">Cement 50kg</td><td class="col-hsnOrSac al-start">2523</td><td class="col-qty al-end">10 BAG</td><td class="col-rate al-end">400.00</td><td class="col-amount al-end">4,000.00</td><td class="col-taxPercent al-end">28%</td><td class="col-taxAmount al-end">1,120.00</td><td class="col-total al-end">5,120.00</td></tr>
+<tr><td class="col-index al-center">2</td><td class="col-name al-start">TMT Bar 12mm</td><td class="col-hsnOrSac al-start">7214</td><td class="col-qty al-end">25.5 KG</td><td class="col-rate al-end">62.75</td><td class="col-amount al-end">1,600.13</td><td class="col-taxPercent al-end">18%</td><td class="col-taxAmount al-end">288.02</td><td class="col-total al-end">1,888.15</td></tr>
+</tbody>
+</table>
+<section class="after-items">
+<div class="after-left">
+<div class="words">Rupees Seven Thousand Eight Only</div>
+<div class="pay-details">
+<div class="section-title">Bank Details</div>
+<div class="kv"><span class="k">Bank:</span>
+<span class="v">State Bank of India</span></div><div class="kv"><span class="k">A&#x2F;c No:</span>
+<span class="v">30123456789</span></div><div class="kv"><span class="k">IFSC:</span>
+<span class="v">SBIN0001234</span></div>
+</div>
+<section class="notes-terms">
+<div class="notes"><div class="section-title">Notes</div><div class="rich">Delivered by <b>own vehicle</b> TS09 AB 1234</div></div>
+<div class="terms"><div class="section-title">Terms &amp; Conditions</div><div class="rich small">Goods once sold cannot be returned.<br>Payment due within credit period.<br>Subject to Hyderabad jurisdiction.</div></div>
+</section>
+</div>
+<div class="after-right"><table class="totals">
+<tbody>
+<tr><th scope="row">Sub Total</th><td>₹5,600.13</td></tr>
+<tr><th scope="row">CGST @ 9%</th><td>₹144.01</td></tr><tr><th scope="row">SGST @ 9%</th><td>₹144.01</td></tr><tr><th scope="row">CGST @ 14%</th><td>₹560.00</td></tr><tr><th scope="row">SGST @ 14%</th><td>₹560.00</td></tr>
+<tr><th scope="row">Round Off</th><td>-₹0.15</td></tr>
+<tr class="grand"><th scope="row">Grand Total</th><td>₹7,008.00</td></tr>
+<tr><th scope="row">Paid</th><td>-₹2,000.00</td></tr>
+<tr class="balance"><th scope="row">Balance Due</th><td>₹5,008.00</td></tr>
+</tbody>
+</table>
+</div>
+</section>
+<footer class="doc-foot">
+<div class="generated">This is a computer-generated invoice.</div>
+<div class="sign"><div>For Sri Lakshmi Traders</div><div class="sign-space"></div><div class="sign-label">Authorised Signatory</div></div>
+</footer>
+</main>
+</body>
+</html>

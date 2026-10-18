@@ -1,0 +1,6 @@
+{{! notes.html and terms.html are produced by the allowlist sanitizer; nothing else is printed raw. }}
+<section class="notes-terms">
+  {{#flags.isNotesExist}}<div class="notes"><div class="section-title">{{notes.sectionLabel}}</div><div class="rich">{{{notes.html}}}</div></div>{{/flags.isNotesExist}}
+  {{#flags.isTermsAndConditionsRequired}}<div class="terms"><div class="section-title">{{terms.sectionLabel}}</div><div class="rich small">{{{terms.html}}}</div></div>{{/flags.isTermsAndConditionsRequired}}
+</section>
+{{#regionNotes}}<div class="region-note">{{.}}</div>{{/regionNotes}}

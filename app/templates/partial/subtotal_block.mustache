@@ -1,0 +1,14 @@
+<table class="totals">
+  <tbody>
+    {{#flags.isSubTotalRequired}}{{#totals.subTotal}}<tr><th scope="row">{{sectionLabel}}</th><td>{{sectionValue}}</td></tr>{{/totals.subTotal}}{{/flags.isSubTotalRequired}}
+    {{#totals.discount}}<tr><th scope="row">{{sectionLabel}}</th><td>{{sectionValue}}</td></tr>{{/totals.discount}}
+    {{#totals.shipping}}<tr><th scope="row">{{sectionLabel}}</th><td>{{sectionValue}}</td></tr>{{/totals.shipping}}
+    {{#totals.taxRows}}<tr><th scope="row">{{sectionLabel}}</th><td>{{sectionValue}}</td></tr>{{/totals.taxRows}}
+    {{#totals.roundOff}}<tr><th scope="row">{{sectionLabel}}</th><td>{{sectionValue}}</td></tr>{{/totals.roundOff}}
+    {{#flags.isTotalRequired}}{{#totals.total}}<tr class="grand"><th scope="row">{{sectionLabel}}</th><td>{{sectionValue}}</td></tr>{{/totals.total}}{{/flags.isTotalRequired}}
+    {{#totals.paid}}<tr><th scope="row">{{sectionLabel}}</th><td>{{sectionValue}}</td></tr>{{/totals.paid}}
+    {{#totals.credits}}<tr><th scope="row">{{sectionLabel}}</th><td>{{sectionValue}}</td></tr>{{/totals.credits}}
+    {{#flags.isBalanceDueRequired}}{{#totals.balanceDue}}<tr class="balance"><th scope="row">{{sectionLabel}}</th><td>{{sectionValue}}</td></tr>{{/totals.balanceDue}}{{/flags.isBalanceDueRequired}}
+  </tbody>
+</table>
+{{#totals.taxIncludedNote}}<div class="muted small">{{totals.taxIncludedNote}}</div>{{/totals.taxIncludedNote}}

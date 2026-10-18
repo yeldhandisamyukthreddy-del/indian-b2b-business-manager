@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="{{meta.lang}}" dir="{{meta.dir}}">
+<head>
+<meta charset="utf-8">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; img-src data:; style-src 'unsafe-inline'; font-src data:">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>{{meta.documentTitle}}</title>
+<!--style_start-->
+<style>
+{{>styles_base}}
+{{>styles_thermal}}
+/* Counter receipt: the amount to pay is the biggest thing on the slip */
+.pay-now { text-align: center; margin-block: 4px; }
+.pay-now .amount { font-size: 15pt; font-weight: 700; }
+.count { display: flex; justify-content: space-between; }
+table.totals tr.grand { display: none; }
+</style>
+<!--style_end-->
+</head>
+<body class="tpl-pos-thermal">
+<main class="sheet" data-invoice-root>
+{{>header}}
+<hr class="rule">
+{{>subject_block}}
+<hr class="rule">
+{{>line_item_table}}
+<section class="after-items">
+  <div class="count small"><span>{{labels.items}}: {{totals.itemCount}}</span></div>
+  <div class="after-right">{{>subtotal_block}}</div>
+</section>
+{{#flags.isTotalRequired}}{{#totals.total}}<div class="pay-now"><div class="small">{{sectionLabel}}</div><div class="amount">{{sectionValue}}</div></div>{{/totals.total}}{{/flags.isTotalRequired}}
+{{>tax_summary}}
+{{>notes_terms}}
+<hr class="rule">
+{{>footer}}
+</main>
+</body>
+</html>

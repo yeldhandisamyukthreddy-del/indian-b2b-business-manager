@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="{{meta.lang}}" dir="{{meta.dir}}">
+<head>
+<meta charset="utf-8">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; img-src data:; style-src 'unsafe-inline'; font-src data:">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>{{meta.documentTitle}}</title>
+<!--style_start-->
+<style>
+{{>styles_base}}
+{{>styles_thermal}}
+</style>
+<!--style_end-->
+</head>
+<body class="tpl-thermal">
+<main class="sheet" data-invoice-root>
+{{>header}}
+<hr class="rule">
+{{>subject_block}}
+{{>line_item_table}}
+<section class="after-items">
+  <div class="after-right">{{>subtotal_block}}</div>
+  {{#flags.isAmountInWordsRequired}}<div class="words small">{{totals.amountInWords}}</div>{{/flags.isAmountInWordsRequired}}
+</section>
+{{>tax_summary}}
+{{>notes_terms}}
+<hr class="rule">
+{{>footer}}
+</main>
+</body>
+</html>

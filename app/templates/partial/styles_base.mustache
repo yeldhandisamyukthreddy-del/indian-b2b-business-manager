@@ -1,0 +1,91 @@
+{{! Shared print styles. System fonts only (no network); logical properties so dir="rtl" mirrors the layout. }}
+@page { {{^meta.isThermal}}size: {{meta.pageWidth}} {{meta.pageHeight}}; {{/meta.isThermal}}margin: {{meta.pageMargin}}; }
+:root { --accent: {{meta.accentColor}}; --ink: #1c2230; --muted: #5d6676; --line: #d6dbe4; --soft: #f2f4f8; }
+* { box-sizing: border-box; }
+html { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+body { margin: 0; color: var(--ink); font: 9pt/1.38 "Segoe UI", "Noto Sans", Inter, Roboto, "Helvetica Neue", Arial, "Nirmala UI", "Noto Sans Telugu", "Noto Naskh Arabic", "DejaVu Sans", sans-serif; }
+.sheet { background: #fff; }
+@media screen {
+  body { background: #e8ecf2; padding-block: 16px; }
+  .sheet { width: {{meta.pageWidth}}; min-height: 60mm; margin-inline: auto; padding: {{meta.pageMargin}}; box-shadow: 0 2px 10px rgba(20, 30, 50, 0.18); }
+}
+h1, h2, h3, p { margin: 0; }
+.k { color: var(--muted); }
+.kv { margin-block: 1px; }
+.muted { color: var(--muted); }
+.small { font-size: 8pt; }
+.num, td, th { font-variant-numeric: tabular-nums; }
+.al-start { text-align: start; }
+.al-end { text-align: end; }
+.al-center { text-align: center; }
+.section-title { font-size: 7.5pt; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; color: var(--accent); margin-block-end: 3px; }
+.avoid-break { break-inside: avoid; }
+.rich p { margin-block: 0 4px; }
+.rich ul, .rich ol { margin-block: 2px; padding-inline-start: 18px; }
+
+/* Header */
+.doc-head { display: flex; justify-content: space-between; gap: 16px; align-items: flex-start; border-block-start: 4px solid var(--accent); padding-block-start: 10px; }
+.org { min-width: 0; display: flex; gap: 12px; align-items: flex-start; }
+.org-text { min-width: 0; }
+.logo { display: block; flex-shrink: 0; object-fit: contain; }
+.org-name { font-size: 15pt; font-weight: 700; line-height: 1.2; }
+.org-address, .org-contact { color: var(--muted); }
+.org .kv { display: inline-block; margin-inline-end: 12px; }
+.doc-title-box { text-align: end; flex-shrink: 0; }
+.doc-title { font-size: 17pt; letter-spacing: 0.08em; color: var(--accent); font-weight: 700; }
+.stamp { display: inline-block; margin-block-start: 8px; padding: 3px 10px; border: 2px solid currentColor; border-radius: 4px; font-weight: 700; letter-spacing: 0.1em; transform: rotate(-4deg); }
+.stamp-paid { color: #15803d; }
+.stamp-partial { color: #b45309; }
+.stamp-overdue { color: #b91c1c; }
+
+/* Parties and document details */
+.subject { display: flex; gap: 14px; margin-block: 10px; align-items: stretch; }
+.parties { flex: 1; display: flex; gap: 14px; min-width: 0; }
+.party { flex: 1; min-width: 0; }
+.party .label { font-size: 7.5pt; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; color: var(--accent); }
+.party-name { font-weight: 700; font-size: 10.5pt; }
+.doc-meta { flex: 0 0 38%; background: var(--soft); border-radius: 4px; padding: 8px 10px; }
+.doc-meta .kv { display: flex; justify-content: space-between; gap: 8px; }
+.doc-meta .v { font-weight: 600; text-align: end; }
+
+/* Line items: the header row repeats on every page and rows never split across pages */
+table { border-collapse: collapse; width: 100%; }
+table.items thead { display: table-header-group; }
+table.items tr { break-inside: avoid; }
+table.items th { background: var(--soft); color: var(--ink); font-size: 8pt; font-weight: 700; padding: 6px 5px; border-block-end: 2px solid var(--accent); }
+table.items td { padding: 5px; border-block-end: 1px solid var(--line); vertical-align: top; }
+table.items .col-name { width: 34%; }
+table.items .col-index { width: 4%; }
+.sub { color: var(--muted); font-size: 8pt; }
+/* Amounts and quantities stay on one line; long item names wrap instead */
+table.items td.al-end, table.items td.al-center { white-space: nowrap; }
+
+/* Totals */
+.after-items { display: flex; gap: 16px; margin-block-start: 10px; break-inside: avoid; }
+.after-left { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 8px; }
+.after-right { flex: 0 0 42%; }
+table.totals th { text-align: start; font-weight: 400; color: var(--muted); padding: 3px 6px; }
+table.totals td { text-align: end; padding: 3px 6px; white-space: nowrap; }
+table.totals tr.grand th, table.totals tr.grand td { background: var(--accent); color: #fff; font-weight: 700; font-size: 11pt; padding: 6px; }
+table.totals tr.balance th, table.totals tr.balance td { font-weight: 700; color: var(--ink); border-block-start: 1px solid var(--line); }
+.words { border-inline-start: 3px solid var(--accent); padding-inline-start: 8px; }
+
+/* Tax summary, notes, terms, bank */
+.tax-summary { margin-block-start: 12px; }
+table.grid th, table.grid td { border: 1px solid var(--line); padding: 3px 5px; font-size: 8pt; }
+table.grid th { background: var(--soft); }
+table.grid tr.total td { font-weight: 700; }
+.notes-terms { display: flex; gap: 16px; margin-block-start: 12px; break-inside: avoid; }
+.notes-terms > div { flex: 1; min-width: 0; }
+.region-note { margin-block-start: 6px; font-weight: 600; }
+
+/* Footer and payment slip */
+.doc-foot { display: flex; justify-content: space-between; align-items: flex-end; gap: 16px; margin-block-start: 18px; break-inside: avoid; }
+.generated { color: var(--muted); font-size: 7.5pt; }
+.sign { text-align: center; min-width: 45mm; }
+.sign-space { height: 10mm; }
+.sign-label { border-block-start: 1px solid var(--ink); padding-block-start: 2px; }
+.stub { margin-block-start: 16px; border-block-start: 1px dashed var(--muted); padding-block-start: 10px; break-inside: avoid; }
+.stub-title { font-weight: 700; margin-block-end: 4px; }
+.stub-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 4px 16px; }
+.fill { display: inline-block; min-width: 30mm; border-block-end: 1px solid var(--ink); }
