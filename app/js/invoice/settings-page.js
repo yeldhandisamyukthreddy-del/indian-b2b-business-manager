@@ -164,7 +164,7 @@
             <h4>Labels <small>(${esc(LANGUAGES.find(l => l[0] === s.language)?.[1] || s.language)}; empty = default)</small></h4>${labelsHtml(s)}
             <h4>Extra registration numbers <small>(all templates)</small></h4>${extraIdsHtml(prefs.extraTaxIds)}
           </div>
-          <div class="card tpl-preview-card"><iframe id="tplLivePreview" class="invoice-preview-frame" sandbox title="Template preview"></iframe>
+          <div class="card tpl-preview-card"><div class="invoice-preview-host"><iframe id="tplLivePreview" class="invoice-preview-frame" sandbox title="Template preview"></iframe></div>
             <p class="tpl-hint">The preview uses your latest invoice, or a sample when there are none.</p></div>
         </div>`;
     }
@@ -192,6 +192,7 @@
     async function drawPreview() {
         const frame = document.getElementById('tplLivePreview');
         if (!frame) return;
+        T().fitFrame(frame);
         try {
             const latest = (await dbOps.getByCompany('invoices')).at(-1);
             const out = latest

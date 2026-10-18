@@ -64,6 +64,19 @@
         return { ...out, bytes };
     }
 
+    // Show the whole page in a narrow preview: lay the iframe out at sheet width and scale it down to fit
+    const SHEET_PX = 860; // an A4 sheet (794 px) plus the preview's margins
+    function fitFrame(frame) {
+        const host = frame && frame.parentElement;
+        if (!host || !host.clientWidth) return;
+        const k = Math.min(1, host.clientWidth / SHEET_PX);
+        Object.assign(frame.style, { width: `${SHEET_PX}px`, height: `${Math.round(host.clientHeight / k)}px`, transform: `scale(${k})` });
+        if (!frame.dataset.fitted) {
+            frame.dataset.fitted = '1';
+            new ResizeObserver(() => fitFrame(frame)).observe(host);
+        }
+    }
+
     const errorPage = message =>
         `<!DOCTYPE html><meta charset="utf-8"><body style="font:14px sans-serif;padding:24px;color:#b91c1c"><strong>This invoice cannot be shown.</strong><p>${esc(message)}</p></body>`;
 
@@ -90,6 +103,7 @@
     async function refreshPreview(invoiceId) {
         const frame = document.getElementById('tplPreviewFrame');
         if (!frame) return;
+        fitFrame(frame);
         try {
             frame.srcdoc = (await render(invoiceId, previewType(), { mode: 'preview' })).html;
         } catch (err) {
@@ -111,7 +125,7 @@
             `<div class="invoice-preview-bar"><label class="form-label" for="tplPreviewType">Template</label>
             <select class="form-control" id="tplPreviewType" onchange="InvoiceTemplates.refreshPreview(${inv.id})">${options}</select>
             <button type="button" class="btn btn-outline" onclick="navigateTo('invoice-templates')">⚙️ Customize</button></div>
-            <iframe id="tplPreviewFrame" class="invoice-preview-frame" sandbox title="Invoice preview"></iframe>`,
+            <div class="invoice-preview-host"><iframe id="tplPreviewFrame" class="invoice-preview-frame" sandbox title="Invoice preview"></iframe></div>`,
             `<button class="btn" onclick="InvoiceTemplates.downloadPdf(${inv.id}, document.getElementById('tplPreviewType').value)">${pdfLabel}</button>
             <button class="btn btn-primary" onclick="InvoiceTemplates.print(${inv.id}, document.getElementById('tplPreviewType').value)">🖨️ Print</button>`
         );
@@ -125,6 +139,7 @@
         renderDomain,
         loadDomain,
         errorPage,
+        fitFrame,
         preview: id => run(preview(id)),
         refreshPreview: id => run(refreshPreview(id)),
         print: (id, type) => run(print(id, type)),

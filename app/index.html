@@ -801,9 +801,12 @@
         .modal:has(.invoice-preview-frame) { max-width: 1000px; }
         .invoice-preview-bar { display: flex; gap: 10px; align-items: center; flex-wrap: wrap; margin-bottom: 10px; }
         .invoice-preview-bar select { flex: 1; min-width: 200px; }
-        .invoice-preview-frame { width: 100%; height: 70vh; border: 1px solid var(--border); border-radius: 8px; background: #e8ecf2; }
+        /* The iframe is laid out at sheet width and scaled to fit (InvoiceTemplates.fitFrame); absolute so it never widens the page */
+        .invoice-preview-host { position: relative; min-width: 0; height: 70vh; overflow: hidden; border: 1px solid var(--border); border-radius: 8px; background: #e8ecf2; }
+        .invoice-preview-frame { position: absolute; inset: 0 auto auto 0; width: 100%; height: 100%; border: 0; transform-origin: 0 0; }
+        .tpl-controls input[type=color] { padding: 3px; height: 42px; cursor: pointer; }
         .invoice-more summary { cursor: pointer; color: var(--text-gray); margin: 6px 0 12px; }
-        .tpl-editor { display: grid; grid-template-columns: minmax(300px, 400px) 1fr; gap: 20px; align-items: start; }
+        .tpl-editor { display: grid; grid-template-columns: minmax(300px, 400px) minmax(0, 1fr); gap: 20px; align-items: start; }
         .tpl-controls h4 { margin: 18px 0 8px; }
         .tpl-controls h4 small, .tpl-hint { color: var(--text-gray); font-weight: 400; font-size: 13px; }
         .tpl-group { border: 1px solid var(--border); border-radius: 8px; padding: 6px 10px 8px; margin-bottom: 8px; }
@@ -813,7 +816,7 @@
         .tpl-logo { display: flex; align-items: center; gap: 12px; margin-bottom: 8px; }
         .tpl-logo img { max-height: 48px; max-width: 160px; background: #fff; border-radius: 4px; padding: 2px; }
         .tpl-preview-card { position: sticky; top: 10px; }
-        .tpl-preview-card .invoice-preview-frame { height: calc(100vh - 160px); min-height: 480px; }
+        .tpl-preview-card .invoice-preview-host { height: calc(100vh - 160px); min-height: 480px; }
         @media (max-width: 900px) { .tpl-editor { grid-template-columns: 1fr; } .tpl-preview-card { position: static; } }
 
         /* The closing modal stays visible while it fades out; make sure it can't be clicked */
