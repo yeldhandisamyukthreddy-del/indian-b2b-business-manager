@@ -1,7 +1,9 @@
 // Desktop app: wraps app/index.html in a window. All data stays in the app's local storage (IndexedDB).
-const { app, BrowserWindow, shell, protocol, net } = require('electron');
+const { app, BrowserWindow, shell, protocol, net, ipcMain, dialog } = require('electron');
+const fs = require('fs');
 const path = require('path');
 const { pathToFileURL } = require('url');
+const { renderInvoicePdf, checkPdfBytes, safeFileName } = require('./pdf');
 
 const APP_DIR = path.join(__dirname, '..', 'app');
 const ORIGIN = 'app://vyapareasy/';
@@ -24,7 +26,7 @@ function createWindow() {
         backgroundColor: '#020617',
         icon: path.join(APP_DIR, 'icons', 'icon-512.png'),
         autoHideMenuBar: true,
-        webPreferences: { contextIsolation: true, nodeIntegration: false, sandbox: true }
+        webPreferences: { contextIsolation: true, nodeIntegration: false, sandbox: true, preload: path.join(__dirname, 'preload.js') }
     });
     // Links such as WhatsApp share open in the normal browser
     win.webContents.setWindowOpenHandler(({ url }) => {
@@ -38,6 +40,26 @@ function createWindow() {
     });
     win.loadURL(ORIGIN + 'index.html');
 }
+
+// Invoice PDFs (see pdf.js). Only the app's own page may ask.
+const fromApp = event => event.senderFrame && event.senderFrame.url.startsWith(ORIGIN);
+ipcMain.handle('invoice:render-pdf', async (event, request) => {
+    if (!fromApp(event)) throw new Error('Not allowed');
+    return renderInvoicePdf(request || {});
+});
+ipcMain.handle('invoice:save-pdf', async (event, request) => {
+    if (!fromApp(event)) throw new Error('Not allowed');
+    const pdf = checkPdfBytes(request && request.bytes);
+    const fileName = safeFileName(request && request.fileName);
+    const win = BrowserWindow.fromWebContents(event.sender);
+    const { canceled, filePath } = await dialog.showSaveDialog(win, {
+        defaultPath: path.join(app.getPath('documents'), fileName),
+        filters: [{ name: 'PDF', extensions: ['pdf'] }]
+    });
+    if (canceled || !filePath) return { saved: false };
+    await fs.promises.writeFile(filePath, pdf);
+    return { saved: true, fileName: path.basename(filePath) };
+});
 
 app.on('second-instance', () => {
     const [win] = BrowserWindow.getAllWindows();
