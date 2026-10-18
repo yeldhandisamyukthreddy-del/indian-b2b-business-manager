@@ -30,7 +30,9 @@
     "format": "prettier --write .",
     "format:check": "prettier --check .",
     "test": "playwright test",
+    "test:unit": "node --test --experimental-test-coverage --test-coverage-include=\"app/js/**\" --test-coverage-lines=80 --test-coverage-branches=80 --test-coverage-functions=80 \"tests/unit/**/*.test.js\"",
     "benchmark": "node scripts/benchmark.js",
+    "render-invoice": "node scripts/render-invoice.js",
     "demo": "node scripts/record-demo.js",
     "icons": "node scripts/make-icons.js",
     "dist": "electron-builder",
@@ -46,6 +48,7 @@
     "eslint": "9.39.5",
     "eslint-plugin-html": "8.2.1",
     "globals": "16.5.0",
+    "mustache": "4.2.0",
     "prettier": "3.9.9"
   },
   "build": {
