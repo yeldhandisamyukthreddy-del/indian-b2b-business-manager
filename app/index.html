@@ -2363,10 +2363,13 @@
             const taxLines = (t.components || []).map(c => `<p>${esc(c.label)}: <strong>${formatCurrency(c.amount)}</strong></p>`).join('');
             document.getElementById('lineTotals').innerHTML = `<p>Taxable: <strong>${formatCurrency(t.taxable)}</strong></p>${taxLines}${t.roundOff ? `<p>Round Off: <strong>${formatCurrency(t.roundOff)}</strong></p>` : ''}<p style="font-size:20px">Grand Total: <strong>${formatCurrency(t.grandTotal)}</strong></p>`;
         }
+        // Stored lines keep their amounts; the per-line tax breakdown (taxComponents) is display data that the
+        // strategy recomputes, so it is not saved (it would make every stored document bigger to read)
+        const storedLine = ({ taxComponents, ...line }) => structuredClone(line);
         // Copies the editor's items and totals onto a document being saved
         function applyLineTotals(data) {
             const { lines, totals: t } = lineTotals();
-            data.items = lines.map(i => structuredClone(i));
+            data.items = lines.map(storedLine);
             data.taxable = data.subtotal = t.taxable;
             data.tax = t.tax;
             Object.assign(data, t.docFields || {});
@@ -2882,7 +2885,7 @@
                 if (qty > 0) items.push({ productId: it.productId, name: it.name, hsn: it.hsn, unit: it.unit, qty, rate: it.rate, gstRate: it.gstRate || 0, ...(it.extensions ? { extensions: structuredClone(it.extensions) } : {}) });
             });
             const { lines, totals } = taxCalculator().computeLines(items, noteTaxContext(returnSource, returnCompanyState));
-            return { items: lines, totals };
+            return { items: lines.map(storedLine), totals };
         }
         function updateReturnTotal() {
             const { items, totals } = returnLines();

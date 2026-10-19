@@ -4,7 +4,7 @@
 
 # VyaparEasy
 
-**The open-source, offline-first alternative to Tally and Zoho Books for GST billing. The whole app is 320 KB of plain HTML and JavaScript that keeps your data on your own device.**
+**The open-source, offline-first alternative to Tally and Zoho Books for GST billing. The whole app is 400 KB of plain HTML and JavaScript that keeps your data on your own device.**
 
 [![CI](https://github.com/yeldhandisamyukthreddy-del/indian-b2b-business-manager/actions/workflows/ci.yml/badge.svg)](https://github.com/yeldhandisamyukthreddy-del/indian-b2b-business-manager/actions/workflows/ci.yml)
 [![Release](https://img.shields.io/github/v/release/yeldhandisamyukthreddy-del/indian-b2b-business-manager?display_name=tag&sort=semver)](https://github.com/yeldhandisamyukthreddy-del/indian-b2b-business-manager/releases/latest)
@@ -34,12 +34,13 @@ node scripts/serve.js
 
 **Your first invoice in 30 seconds:** _Create your company_ (pick your state) → _Customers → Add New_ (another state) → _Products → Add New_ (18% GST) → _Tax Invoices → Add New_ → add 10 × ₹100. You'll see **Taxable ₹1,000 · IGST ₹180 · Grand Total ₹1,180**, and the 🖨️ button prints it as a GST tax invoice.
 
-The tax engine is plain JavaScript, so you can try it in the browser console (F12) with the app open:
+The GST engine (part of the India GST module) is plain JavaScript, so you can try it in the browser console (F12) with the app open:
 
 ```js
-computeGst([{ qty: 10, rate: 100, gstRate: 18 }], isInterstate('36', '29')); // Telangana → Karnataka
+const gst = Vyapar.modules.region_india_gst.gst;
+gst.computeGst([{ qty: 10, rate: 100, gstRate: 18 }], gst.isInterstate('36', '29')); // Telangana → Karnataka
 // → { taxable: 1000, cgst: 0, sgst: 0, igst: 180, tax: 180, total: 1180 }
-computeGst([{ qty: 10, rate: 100, gstRate: 18 }], isInterstate('36', '36')); // same state
+gst.computeGst([{ qty: 10, rate: 100, gstRate: 18 }], gst.isInterstate('36', '36')); // same state
 // → { taxable: 1000, cgst: 90, sgst: 90, igst: 0, tax: 180, total: 1180 }
 ```
 
@@ -47,22 +48,24 @@ Prefer a normal desktop app? Get the Windows, macOS or Linux installer from [Rel
 
 ## Why VyaparEasy
 
-- **Tiny and dependency-free:** 320 KB for the entire web app over the network (gzip), 56 KB for `index.html`. **Zero runtime dependencies**, no framework, no build step.
-- **Fast on real-sized books:** about 130 ms cold start to the dashboard, and about 120 ms to build the GST report over **5,000 invoices** ([measured](#benchmarks)).
+- **Tiny and dependency-free:** 400 KB for the entire web app over the network (gzip), 48 KB for `index.html`. **Zero runtime dependencies**, no framework, no build step.
+- **Fast on real-sized books:** about a third of a second to start, and about a quarter of a second to build the GST report over **5,000 invoices** ([measured](#benchmarks)).
+- **Only what you need:** a small core for invoicing and getting paid, plus modules you turn on: India GST, purchasing, inventory, accounting, orders & delivery, HR and fleet. Pick an edition (Invoicing, Business, Full) or switch single modules under Settings → Features & Editions; turning one off hides it and keeps its data ([architecture](docs/architecture.md)).
 - **Offline and private:** data lives in your browser's IndexedDB or the desktop app's local storage. No account, no server and no telemetry; nothing leaves the device.
 - **GST done properly:**
   - CGST/SGST vs IGST decided by your state vs the place of supply, with all 36 states/UTs and their codes
   - Printed invoices carry the Rule 46 details (GSTINs, state codes, place of supply, HSN, tax columns, amount in words)
-  - GSTIN format and state-code checks
+  - GSTIN format, state-code and check-character checks
 - **Returns prep:** GSTR-1 view (B2B / B2CL / B2CS, credit notes, HSN summary) with CSV export in the offline-tool layout, and a GSTR-3B summary by tax head
 - **The whole trading cycle:**
   - Sales: quotation → sales order → delivery challan → invoice, plus credit notes
   - Purchases: purchase order → purchase bill, plus debit notes
   - Receipts and payments matched to invoices and bills, so each shows Paid / Partial / Overdue
-- **Stock and money:** stock that follows every document, low-stock alerts, bank balances, customer and vendor ledgers, multiple companies (one invoice series per GSTIN)
+- **Stock and money:** stock that follows every document (with a movement history, adjustments, batch and expiry), low-stock alerts, bank balances, customer and vendor ledgers, expenses, recurring invoices, customer price lists, multiple companies (one invoice series per GSTIN)
+- **Books:** double-entry journal posted automatically from every invoice, receipt, note, expense and bill, plus manual journals, a trial balance and a profit and loss from the books
 - **Invoice templates:** A4, compact, thermal receipt (58/80 mm), POS counter and spreadsheet layouts. Choose sections, item columns, labels (English or Telugu), logo and colour in Settings with a live preview; the desktop app saves real PDFs ([how it works](docs/invoice-templates.md))
 - **Everyday tools:** reports (day book, outstanding, item-wise, party-wise, P&L), WhatsApp sharing, Ctrl+K search, English and Telugu menus
-- **Tested end to end:** 22 Playwright tests drive the real UI in Chromium and Electron, covering GST maths, IST date edge cases, backup/restore, offline mode, invoice printing and PDFs, and data from older versions; 120+ unit, snapshot and property tests cover the money and invoice-template code
+- **Tested end to end:** 31 Playwright tests drive the real UI in Chromium and Electron, covering GST maths, IST date edge cases, backup/restore, offline mode, invoice printing and PDFs, editions, double-clicked payments, other companies' data and data from older versions; 200+ unit, snapshot and property tests cover the money, invoice templates, modules, events and the architecture rules
 
 ## How it compares
 
@@ -73,36 +76,38 @@ Prefer a normal desktop app? Get the Windows, macOS or Linux installer from [Rel
 | Runs as                | Web app (any OS) + desktop app            | Mobile + desktop apps         | Desktop app                     | Cloud web + mobile                         |
 | Works without internet | **Yes**                                   | Yes                           | Yes                             | No                                         |
 | Where your data lives  | **Only on your device**                   | Device, optional cloud backup | Your PC / server                | Vendor cloud                               |
-| Footprint              | **320 KB web**, ~100 MB desktop installer | App install                   | App install                     | Browser                                    |
+| Footprint              | **400 KB web**, ~100 MB desktop installer | App install                   | App install                     | Browser                                    |
 | Runtime dependencies   | **None** (any modern browser)             | Vendor app                    | Vendor app                      | Internet + vendor account                  |
 | Account required       | **No**                                    | Yes                           | Licence                         | Yes                                        |
 | E-invoice / e-way bill | ✗ ([roadmap](#roadmap))                   | ✓                             | ✓                               | ✓ (paid plans)                             |
-| Double-entry accounts  | ✗                                         | —                             | ✓                               | ✓                                          |
+| Double-entry accounts  | Basic (Accounting module)                 | —                             | ✓                               | ✓                                          |
 
-<sub>— not verified. Competitor prices are approximate list prices as of October 2026 from public pricing pages and reseller listings, excluding GST. Check the vendors' sites before deciding. VyaparEasy is the right choice if you want free, private, offline billing; choose Tally or Zoho Books if you need full double-entry accounting or e-invoicing today.</sub>
+<sub>— not verified. Competitor prices are approximate list prices as of October 2026 from public pricing pages and reseller listings, excluding GST. Check the vendors' sites before deciding. VyaparEasy is the right choice if you want free, private, offline billing; choose Tally or Zoho Books if you need full accounting (balance sheet, audit trail, stock valuation) or e-invoicing today.</sub>
 
 ## How it works
 
 ```
-             ┌──────────────── app/index.html (HTML + CSS + vanilla JS) ────────────────┐
-             │                                                                          │
-  UI pages ──┤  invoices · purchases · receipts · stock · reports · GST · settings      │
-             │        │                     │                       │                   │
-             │  lineEditor + computeGst()   │ allocateToDocs()      │ gstData()         │
-             │  (CGST/SGST vs IGST,         │ (receipts → invoices, │ (GSTR-1 / 3B,     │
-             │   round-off, totals)         │  payments → bills)    │  HSN summary)     │
-             │        └──────────────┬──────┴───────────────────────┘                   │
-             │                  dbOps (IndexedDB, 23 object stores, per company)        │
-             └──────────────────────────────┬───────────────────────────────────────────┘
-                                            │ same file, three ways to run it
-          ┌─────────────────────────────────┼─────────────────────────────────┐
-   Browser / GitHub Pages          Installed PWA (sw.js)            Electron (electron/main.js)
-   served as static files          network-first, offline cache     app://vyapareasy/ fixed origin
+ ┌──────────── core: app/index.html + app/js/core (always on) ────────────┐
+ │ contacts · products + price lists · quotations · invoices · recurring  │
+ │ receipts · credit notes · expenses · banking · reports · settings      │
+ │ recordInvoice(): validation hooks → number → balance → events          │
+ └───────────▲───────────── extension points ────────────────▲───────────┘
+             │ contributions                    domain events │
+ ┌───────────┴─────── platform: app/js/platform ──────────────┴───────────┐
+ │ module registry · editions · per-company runtime · event bus · hooks  │
+ └───────────▲────────────────────────────────────────────────────────────┘
+             │ manifests
+ ┌───────────┴─────────────────── modules: app/js/modules ────────────────┐
+ │ India GST · purchasing · inventory · accounting · orders & delivery ·  │
+ │ HR · fleet · EU VAT (preview) · export for accountant (preview)        │
+ └────────────────────────────────────────────────────────────────────────┘
+        IndexedDB (per company) · the same files run in the browser, the installed PWA and Electron
 ```
 
-- **No build:** the UI is template strings rendered into the page from `app/index.html`. Money maths and printed invoices live in small scripts under `app/js/` and Mustache templates under `app/templates/` ([invoice templates](docs/invoice-templates.md)). Contributors edit and reload.
-- **Storage:** IndexedDB holds plain objects per company. Balances and stock are updated by the same functions that save documents, and every delete reverses its save.
-- **Same code everywhere:** the browser, the installable PWA and the Electron desktop app all run the identical file. Electron serves it from a fixed `app://` origin so data survives updates.
+- **No build:** plain scripts loaded in order by `app/index.html`, and Mustache templates for printed invoices ([invoice templates](docs/invoice-templates.md)). Contributors edit and reload.
+- **Core and modules:** core never refers to a module. Modules plug in through extension points (tax strategy, validation hooks, extra fields, invoice blocks, reports, dashboard figures) and react to events (`invoice.finalized`, `payment.recorded`...), which are stored and delivered at least once. A test checks these rules on the real source. See [docs/architecture.md](docs/architecture.md) and [docs/adding-a-module.md](docs/adding-a-module.md).
+- **Storage:** IndexedDB holds plain objects per company; a module's stores stay when it is turned off. Money is computed in integer paise.
+- **Same code everywhere:** the browser, the installable PWA and the Electron desktop app all run the identical files. Electron serves them from a fixed `app://` origin so data survives updates.
 - **Backups** are a single JSON file. Restores are atomic (one IndexedDB transaction).
 
 ## Benchmarks
@@ -111,12 +116,14 @@ Prefer a normal desktop app? Get the Windows, macOS or Linux installer from [Rel
 
 | Metric                                                     | Result |
 | ---------------------------------------------------------- | -----: |
-| Whole web app over the network (gzip)                      | 320 KB |
-| `index.html` (gzip)                                        |  56 KB |
+| Whole web app over the network (gzip)                      | 400 KB |
+| `index.html` (gzip)                                        |  48 KB |
 | Runtime dependencies                                       |      0 |
-| Cold start to rendered dashboard (median of 5)             | 133 ms |
-| GST report over 5,000 invoices (median of 3)               | 119 ms |
-| Save an invoice and redraw the list, 5,000 invoices stored | 401 ms |
+| Cold start to rendered dashboard (median of 5)             | 332 ms |
+| GST report over 5,000 invoices (median of 3)               | 259 ms |
+| Save an invoice and redraw the list, 5,000 invoices stored | 754 ms |
+
+This run was slower overall than the one published before. In the same run, the version before modules took 268 ms, 221 ms and 658 ms, so the module system costs about 40–100 ms: there are more small files to load and events to deliver.
 
 Desktop installers: about 100 MB `.deb`, 125 MB AppImage (the size is the bundled Chromium runtime).
 
@@ -136,10 +143,11 @@ The installers are not code-signed yet, so the first launch shows a warning:
 
 ## Limitations
 
-- Not double-entry accounting: no chart of accounts, journals, trial balance or balance sheet. Profit & loss is simplified.
-- No direct GST portal integration yet: no e-invoice/IRN, no e-way bill, and no upload-ready GSTR JSON. The summaries and CSVs help you prepare returns.
+- Accounting is basic: a journal, trial balance and profit & loss, but no balance sheet, bank reconciliation, depreciation schedules or closing-stock valuation.
+- No direct GST portal integration yet: no e-invoice/IRN, no e-way bill generation (the number can be recorded on an invoice), and no upload-ready GSTR JSON. The summaries and CSVs help you prepare returns.
 - No UPI QR code on invoices yet.
-- Not supported: reverse charge, composition scheme, cess, exports under LUT, TDS/TCS (placeholder page), stock per warehouse. Payslips use a fixed simplified structure.
+- Not supported: reverse charge, composition scheme, cess, exports under LUT, stock per warehouse. TDS/TCS is a register of certificates, not a calculation. Payslips use a fixed simplified structure.
+- Invoices have no draft state: saving finalizes them (an edit cancels the old version and records the new one). Permissions are declared per module but there are no user accounts yet, so everyone can do everything.
 - One user per device; no login or sync.
 
 > **Disclaimer:** provided as is, without warranty ([MIT](LICENSE)). Not tax or legal advice. Verify invoices and returns with your accountant before filing.

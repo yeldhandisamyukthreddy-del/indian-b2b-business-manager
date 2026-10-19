@@ -473,3 +473,13 @@ test('rolling back purchasing unlinks exactly the payments its migration linked'
         linkedByHand
     );
 });
+
+test('a product written straight to the database starts from the stock it shows', async () => {
+    const { db, rt } = makeApp();
+    await rt.syncState(1);
+    await db.add('products', { id: 11, companyId: 1, name: 'Imported', stockQty: 50 });
+    await finalize(rt, invoice(47, [{ productId: 11, name: 'Imported', qty: 5, rate: 10, gstRate: 5 }]));
+    assert.equal(stockOf(db, 11), 45);
+    await finalize(rt, invoice(48, [{ productId: 11, name: 'Imported', qty: 5, rate: 10, gstRate: 5 }]));
+    assert.equal(stockOf(db, 11), 40);
+});

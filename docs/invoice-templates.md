@@ -12,25 +12,25 @@ invoice shows in **Settings → Invoice templates** instead of in code.
  invoice, company,   ──►  toDomain()  ──►  buildInvoiceViewModel(invoice, org,  ──►  template +     ──►  preview (iframe)
  customer, banks           (old and new       settings, locale, mode)               partials +            print (hidden iframe)
                             record shapes)      │  totals.js   (money in paise)     view model            PDF: desktop app (Electron)
- settings store  ──► settings.js               │  regions.js  (India GST, EU, ids)  (mustache.js)              Node (Playwright)
+ settings store  ──► settings.js               │  regions.js  (+ module blocks)     (mustache.js)              Node (Playwright)
  (per company,       (defaults + stored,       │  labels.js / format.js
   per template)       validated on write)      └► immutable, formatted object ──► schema.validateViewModel()
 ```
 
-| Layer              | File(s)                                                                 | Responsibility                                                               |
-| ------------------ | ----------------------------------------------------------------------- | ---------------------------------------------------------------------------- |
-| Invoice domain     | `app/index.html` (existing)                                             | Saving invoices, stock, balances; `computeGst()` on save                     |
-| Money              | `app/js/core/shared/money.js`                                           | Integer paise, the one rounding rule, GST split, formatting, amount in words |
-| Totals             | `app/js/core/documents/totals.js`                                       | Line/document discounts, inclusive tax, shipping, tax rows, round off        |
-| Adapter            | `app/js/core/documents/adapter.js`                                      | Stored records → builder input (handles records from older versions)         |
-| View-model builder | `app/js/core/documents/view-model.js`, `view-model-table.js`            | Pure function → frozen, fully formatted object                               |
-| Region modules     | `app/js/core/documents/regions.js`                                      | India GST (complete), EU VAT and extra tax ids (same interface)              |
-| Template registry  | `app/js/core/documents/registry.js`                                     | `templateType` → `{ templatePath, partials, pageSizes, supportsPdf }`        |
-| Renderer           | `app/js/core/documents/mustache.js`, `renderer.js`                      | Mustache subset; validation, cache, readable errors                          |
-| Settings           | `app/js/core/documents/settings.js`, `labels.js`                        | Defaults, merge, validation, repository                                      |
-| PDF                | `electron/pdf.js` (desktop), `scripts/invoice-pdf.js` (Node)            | HTML → PDF with Chromium, JavaScript off, network blocked                    |
-| UI                 | `app/js/core/documents/ui.js`, `settings-page.js`                       | Preview window, print, PDF, template settings page                           |
-| Templates          | `app/templates/invoices/*.mustache`, `app/templates/partial/*.mustache` | Layouts and shared partials                                                  |
+| Layer              | File(s)                                                                 | Responsibility                                                                                                         |
+| ------------------ | ----------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------- |
+| Invoice domain     | `app/index.html` (`recordInvoice()`)                                    | Saving invoices and balances; tax from the active strategy on save                                                     |
+| Money              | `app/js/core/shared/money.js`                                           | Integer paise, the one rounding rule, half splits, formatting, amount in words                                         |
+| Totals             | `app/js/core/documents/totals.js`                                       | Line/document discounts, inclusive tax, shipping, tax rows, round off                                                  |
+| Adapter            | `app/js/core/documents/adapter.js`                                      | Stored records → builder input (handles records from older versions)                                                   |
+| View-model builder | `app/js/core/documents/view-model.js`, `view-model-table.js`            | Pure function → frozen, fully formatted object                                                                         |
+| Region blocks      | `app/js/core/documents/regions.js` + modules' `document-blocks.js`      | Generic tax columns and extra tax ids in core; India GST and EU VAT blocks come from their modules ('document.blocks') |
+| Template registry  | `app/js/core/documents/registry.js`                                     | `templateType` → `{ templatePath, partials, pageSizes, supportsPdf }`                                                  |
+| Renderer           | `app/js/core/documents/mustache.js`, `renderer.js`                      | Mustache subset; validation, cache, readable errors                                                                    |
+| Settings           | `app/js/core/documents/settings.js`, `labels.js`                        | Defaults, merge, validation, repository                                                                                |
+| PDF                | `electron/pdf.js` (desktop), `scripts/invoice-pdf.js` (Node)            | HTML → PDF with Chromium, JavaScript off, network blocked                                                              |
+| UI                 | `app/js/core/documents/ui.js`, `settings-page.js`                       | Preview window, print, PDF, template settings page                                                                     |
+| Templates          | `app/templates/invoices/*.mustache`, `app/templates/partial/*.mustache` | Layouts and shared partials                                                                                            |
 
 Every module in `app/js/` works in the page (`window.Vyapar.<name>`) and in Node (`require`), so the unit tests run the
 exact code the app runs. There is still no build step and no runtime dependency.
@@ -122,7 +122,7 @@ The template appears in the preview picker and the settings page automatically.
 
 ### Add a region module
 
-A module is an object in `app/js/core/documents/regions.js` with this interface (`BASE` supplies empty defaults):
+Region blocks belong to region modules. Each is built with `regions.region({...})` from `app/js/core/documents/regions.js`, which fills in empty defaults, and is contributed through the module manifest as `'document.blocks'`. See `app/js/modules/region_india_gst/document-blocks.js`. The interface:
 
 | Method                       | Returns                                                        |
 | ---------------------------- | -------------------------------------------------------------- |
@@ -135,10 +135,11 @@ A module is an object in `app/js/core/documents/regions.js` with this interface 
 | `taxCells(line, style, ctx)` | cells matching those columns                                   |
 | `taxSummary(ctx)`            | `{ columns, rows, totalRow }` or `null`                        |
 
-A block is `{ sectionLabel, sectionValue }`. `ctx` has `invoice`, `org`, `settings`, `labels`, `totals`, `interstate`,
-`locale`, `amount(paise)` and `money(paise)`. Add the module to `MODULES` and `ORDER`, add its key to `REGION_KEYS` in
-`settings.js` (off by default), put new labels in `labels.js`, and test it like the India and EU modules in
-`tests/unit/view-model.test.js`.
+A block is `{ sectionLabel, sectionValue }`. `ctx` has `invoice` (including `invoice.extensions`, where modules keep
+their own invoice fields), `org`, `settings`, `labels`, `totals`, `interstate`, `locale`, `amount(paise)` and
+`money(paise)`. The invoice screen passes the contributed blocks in `settings.regionModules`, in hook order, followed
+by the company's extra tax ids when `regions.extraTaxId` is on. Put new labels in `labels.js` and test the blocks the
+way `tests/unit/view-model.test.js` tests India and EU VAT.
 
 ## Settings and storage
 

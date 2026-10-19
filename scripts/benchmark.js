@@ -59,6 +59,8 @@ const waitForServer = () =>
 
         const ctx = await browser.newContext({ timezoneId: 'Asia/Kolkata' });
         const page = await ctx.newPage();
+        // A warning (e.g. stock going negative) asks for confirmation; accept it so a run never stalls
+        page.on('dialog', d => d.accept());
         await page.goto(`http://localhost:${PORT}/`);
         await page.waitForSelector('.page-title');
         const result = await page.evaluate(async count => {
@@ -100,7 +102,7 @@ const waitForServer = () =>
                     const p = products[(n * 3 + k) % products.length];
                     return { productId: p.id, name: 'x', qty: 1 + (n % 5), rate: p.rate, gstRate: p.gstRate };
                 });
-                startLineEditor(items, company.stateCode, n % 3 ? '36' : '29');
+                await startLineEditor(items, company.stateCode, n % 3 ? '36' : '29');
                 docs.push(
                     applyLineTotals({
                         companyId,

@@ -45,19 +45,21 @@ CI runs the first four on every pull request. After an intended change to an inv
 
 ## Project layout
 
-| Path                                                    | What it is                                                                                          |
-| ------------------------------------------------------- | --------------------------------------------------------------------------------------------------- |
-| `app/index.html`                                        | The entire app: HTML, CSS and JavaScript in one file, with no framework and no build step           |
-| `app/js/core/shared/money.js`, `app/js/core/documents/` | Money in paise and the invoice-template system (also loaded by the Node unit tests)                 |
-| `app/templates/`                                        | Invoice layouts and partials (Mustache); see [docs/invoice-templates.md](docs/invoice-templates.md) |
-| `app/sw.js`, `app/manifest.webmanifest`                 | Offline support and install metadata for the web app                                                |
-| `app/fonts/`, `app/icons/`                              | Bundled font and icons (`npm run icons` regenerates PNGs from `icon.svg`)                           |
-| `electron/main.js`                                      | Desktop wrapper; serves `app/` from the `app://vyapareasy/` origin                                  |
-| `electron/pdf.js`, `electron/preload.js`                | Invoice PDFs in the desktop app (hidden window, JavaScript off)                                     |
-| `tests/`                                                | Playwright end-to-end tests (browser and Electron); `tests/unit/` has the node:test tests           |
-| `scripts/`                                              | Dev server, benchmark, icon generator, demo recorder                                                |
+| Path                                     | What it is                                                                                                           |
+| ---------------------------------------- | -------------------------------------------------------------------------------------------------------------------- |
+| `app/index.html`                         | The core screens, CSS and the composition root, with no framework and no build step                                  |
+| `app/js/core/`                           | Core rules (money in paise, tax, sales, reports, printed invoices) and a few core pages (`ui/`)                      |
+| `app/js/platform/`                       | Module registry, editions, runtime, event bus, hooks, sidebar, the features screen                                   |
+| `app/js/modules/<id>/`                   | Optional modules: `index.js` (manifest), pure rules, `ui.js` (pages); see [adding a module](docs/adding-a-module.md) |
+| `app/templates/`                         | Invoice layouts and partials (Mustache); see [docs/invoice-templates.md](docs/invoice-templates.md)                  |
+| `app/sw.js`, `app/manifest.webmanifest`  | Offline support and install metadata for the web app                                                                 |
+| `app/fonts/`, `app/icons/`               | Bundled font and icons (`npm run icons` regenerates PNGs from `icon.svg`)                                            |
+| `electron/main.js`                       | Desktop wrapper; serves `app/` from the `app://vyapareasy/` origin                                                   |
+| `electron/pdf.js`, `electron/preload.js` | Invoice PDFs in the desktop app (hidden window, JavaScript off)                                                      |
+| `tests/`                                 | Playwright end-to-end tests (browser and Electron); `tests/unit/` has the node:test tests                            |
+| `scripts/`                               | Dev server, benchmark, icon generator, demo recorder                                                                 |
 
-Data is stored in IndexedDB (`VyaparEasyDB`). Each store holds plain objects with a `companyId`. Read and write them through `dbOps`.
+Data is stored in IndexedDB (`VyaparEasyDB`). Each store holds plain objects with a `companyId`. Read and write them through `dbOps` in screens and through `ctx.repo(store)` in module code. How core and modules fit together, and the rules a test enforces, are in [docs/architecture.md](docs/architecture.md).
 
 ## Code conventions inside `app/index.html`
 
@@ -65,9 +67,10 @@ These rules exist because breaking them caused real bugs:
 
 - **Escape user text** with `esc()` whenever it goes into HTML (`${esc(c.name)}`). A name like `Ravi's "Best" Traders` must not break a form.
 - **Dates** are local `'YYYY-MM-DD'` strings. Use `todayStr()`, `localDateStr()`, `parseLocalDate()` and `periodRange()`. **Never** use `toISOString()` for a date: it switches to UTC, which is the previous day before 05:30 IST.
-- **Money:** round with `round2()`. Compute GST only through `computeGst(items, interstate)` (it runs on whole paise in `app/js/core/shared/money.js`), and read the split of a saved document with `gstSplit()` (older records don't have CGST/SGST/IGST stored).
+- **Money:** round with `round2()`; new arithmetic goes through `Vyapar.money` (whole paise). Document tax comes from the active strategy (`taxCalculator()`, India GST's is in `app/js/modules/region_india_gst/gst.js`); read the split of an older saved document with `gstSplit()` there (older records don't have CGST/SGST/IGST stored).
+- **Core never names a module.** If core needs something a module provides, add an extension point with a generic name (see the table in docs/architecture.md). Save invoices only through `recordInvoice()`, so hooks and events always run.
 - **Printed invoices** come from `app/templates/` through the view model in `app/js/core/documents/`. Change a layout in its template, not in code; new files must also go into `FILES` in `app/sw.js` (a test checks).
-- **Balances and stock** change only through `adjustPartyBalance()`, `adjustBankBalance()` and `adjustStock()`, and every delete reverses what the save did.
+- **Balances** change only through `adjustPartyBalance()` and `adjustBankBalance()`, and every delete reverses what the save did. **Stock** is the inventory module's: it follows the documents' events, never direct writes.
 - **Numbers, printing, long lists:** use `getNextNumber(type)`, `printDocument(title, html)`, and `listRows()` / `listFooter()`.
 - **Old data must keep working.** If you change how something is stored, handle records saved by older versions (see `migrateLegacyData()` and the "previous version" test).
 

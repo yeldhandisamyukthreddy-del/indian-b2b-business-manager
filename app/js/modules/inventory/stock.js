@@ -102,8 +102,16 @@
 
     // Writes movements that are not there yet, then recomputes the cached stock of the products they touch.
     // ctx: the module context (ctx.repo is scoped to the company).
+    // A product the ledger has never seen (written directly, e.g. imported) starts from the quantity it shows.
     async function record(ctx, movements) {
         const repo = ctx.repo(MOVEMENTS);
+        const seen = new Set((await repo.list()).map(m => m.productId));
+        const products = ctx.repo('products');
+        for (const id of new Set(movements.map(m => m.productId))) {
+            if (seen.has(id) || movements.some(m => m.id === `opening:${id}`)) continue;
+            const p = await products.get(id);
+            if (p) await repo.add(openingMovement(p, p.stockQty || 0, ''));
+        }
         for (const m of movements) if (!(await repo.get(m.id))) await repo.add(m);
         await refreshLevels(ctx, [...new Set(movements.map(m => m.productId))]);
     }
