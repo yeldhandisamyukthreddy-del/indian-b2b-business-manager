@@ -1,6 +1,6 @@
 // Offline support for the installed web app.
 // Pages: network first (so updates arrive when online), cache as fallback. Other files: cache first.
-const CACHE = 'vyapareasy-v2';
+const CACHE = 'vyapareasy-v3';
 const FILES = [
     './',
     'index.html',
@@ -12,7 +12,6 @@ const FILES = [
     'icons/apple-touch-icon.png',
     'fonts/plus-jakarta-sans-latin-wght-normal.woff2',
     'fonts/plus-jakarta-sans-latin-ext-wght-normal.woff2',
-    'js/core/shared/money.js',
     'js/core/documents/adapter.js',
     'js/core/documents/format.js',
     'js/core/documents/labels.js',
@@ -28,6 +27,19 @@ const FILES = [
     'js/core/documents/ui.js',
     'js/core/documents/view-model-table.js',
     'js/core/documents/view-model.js',
+    'js/core/navigation.js',
+    'js/core/shared/money.js',
+    'js/core/shared/repository.js',
+    'js/core/shared/result.js',
+    'js/core/shared/validate.js',
+    'js/platform/bootstrap.js',
+    'js/platform/editions.js',
+    'js/platform/events.js',
+    'js/platform/features-page.js',
+    'js/platform/hooks.js',
+    'js/platform/registry.js',
+    'js/platform/runtime.js',
+    'js/platform/ui-shell.js',
     'templates/invoices/compact.mustache',
     'templates/invoices/excel_compact.mustache',
     'templates/invoices/pos_thermal.mustache',

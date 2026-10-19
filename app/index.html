@@ -806,6 +806,11 @@
         .invoice-preview-frame { position: absolute; inset: 0 auto auto 0; width: 100%; height: 100%; border: 0; transform-origin: 0 0; }
         .tpl-controls input[type=color] { padding: 3px; height: 42px; cursor: pointer; }
         .invoice-more summary { cursor: pointer; color: var(--text-gray); margin: 6px 0 12px; }
+        .feature-editions { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 12px; margin-top: 10px; }
+        .feature-edition { border: 1px solid var(--border); border-radius: 10px; padding: 14px; }
+        .feature-edition.current { border-color: var(--primary); }
+        .feature-edition p { margin: 6px 0 10px; }
+        .feature-adds { margin: 6px 0 0 18px; color: var(--text-gray); font-size: 13px; }
         .tpl-editor { display: grid; grid-template-columns: minmax(300px, 400px) minmax(0, 1fr); gap: 20px; align-items: start; }
         .tpl-controls h4 { margin: 18px 0 8px; }
         .tpl-controls h4 small, .tpl-hint { color: var(--text-gray); font-weight: 400; font-size: 13px; }
@@ -1520,239 +1525,8 @@
                 <small>Business Management</small>
             </div>
 
-            <div class="nav-section">
-                <div class="nav-item active" data-page="dashboard">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                        <rect x="3" y="3" width="7" height="7" />
-                        <rect x="14" y="3" width="7" height="7" />
-                        <rect x="14" y="14" width="7" height="7" />
-                        <rect x="3" y="14" width="7" height="7" />
-                    </svg>
-                    <span data-i18n="dashboard">Dashboard</span>
-                </div>
-            </div>
-
-            <div class="nav-section">
-                <div class="nav-section-title" data-i18n="masters">Masters</div>
-                <div class="nav-item" data-page="companies">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                        <path d="M3 21h18M3 7v14m18-14v14M6 11h4m-4 4h4m6-4h4m-4 4h4M9 7V3h6v4" />
-                    </svg>
-                    <span data-i18n="companies">Companies</span>
-                </div>
-                <div class="nav-item" data-page="customers">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                        <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2" />
-                        <circle cx="9" cy="7" r="4" />
-                        <path d="M23 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75" />
-                    </svg>
-                    <span data-i18n="customers">Customers</span>
-                </div>
-                <div class="nav-item" data-page="vendors">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                        <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2" />
-                        <circle cx="9" cy="7" r="4" />
-                        <path d="M22 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75" />
-                    </svg>
-                    <span data-i18n="vendors">Vendors</span>
-                </div>
-                <div class="nav-item" data-page="products">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                        <path
-                            d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z" />
-                    </svg>
-                    <span data-i18n="products">Products</span>
-                </div>
-                <div class="nav-item" data-page="warehouses">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                        <path
-                            d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
-                    </svg>
-                    <span data-i18n="warehouses">Warehouses</span>
-                </div>
-            </div>
-
-            <div class="nav-section">
-                <div class="nav-section-title" data-i18n="sales">Sales</div>
-                <div class="nav-item" data-page="quotations">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                        <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" />
-                        <path d="M14 2v6h6M16 13H8m8 4H8m2-8H8" />
-                    </svg>
-                    <span data-i18n="quotations">Quotations</span>
-                </div>
-                <div class="nav-item" data-page="sales-orders">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                        <path
-                            d="M9 5H7a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2h-2M9 5a2 2 0 0 1 2-2h2a2 2 0 0 1 2 2M9 5a2 2 0 0 0 2 2h2a2 2 0 0 0 2-2" />
-                    </svg>
-                    <span data-i18n="salesOrders">Sales Orders</span>
-                </div>
-                <div class="nav-item" data-page="challans">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                        <rect x="1" y="3" width="15" height="13" />
-                        <polygon points="16 8 20 8 23 11 23 16 16 16 16 8" />
-                        <circle cx="5.5" cy="18.5" r="2.5" />
-                        <circle cx="18.5" cy="18.5" r="2.5" />
-                    </svg>
-                    <span data-i18n="challans">Delivery Challans</span>
-                </div>
-                <div class="nav-item" data-page="invoices">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                        <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" />
-                        <path d="M14 2v6h6M9 15h6M9 11h6" />
-                    </svg>
-                    <span data-i18n="invoices">Tax Invoices</span>
-                </div>
-                <div class="nav-item" data-page="sales-returns">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                        <path d="M3 10h10a8 8 0 0 1 8 8v2M3 10l6 6M3 10l6-6" />
-                    </svg>
-                    <span data-i18n="salesReturns">Sales Returns</span>
-                </div>
-            </div>
-
-            <div class="nav-section">
-                <div class="nav-section-title" data-i18n="purchase">Purchase</div>
-                <div class="nav-item" data-page="purchase-orders">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                        <circle cx="9" cy="21" r="1" />
-                        <circle cx="20" cy="21" r="1" />
-                        <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6" />
-                    </svg>
-                    <span data-i18n="purchaseOrders">Purchase Orders</span>
-                </div>
-                <div class="nav-item" data-page="purchase-bills">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                        <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" />
-                        <path d="M14 2v6h6" />
-                    </svg>
-                    <span data-i18n="purchaseBills">Purchase Bills</span>
-                </div>
-                <div class="nav-item" data-page="purchase-returns">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                        <path d="M21 10h-10a8 8 0 0 0-8 8v2M21 10l-6 6M21 10l-6-6" />
-                    </svg>
-                    <span data-i18n="purchaseReturns">Purchase Returns</span>
-                </div>
-            </div>
-
-            <div class="nav-section">
-                <div class="nav-section-title" data-i18n="inventory">Inventory</div>
-                <div class="nav-item" data-page="stock">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                        <path
-                            d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z" />
-                        <path d="M3.27 6.96L12 12.01l8.73-5.05M12 22.08V12" />
-                    </svg>
-                    <span data-i18n="stock">Stock Summary</span>
-                </div>
-            </div>
-
-            <div class="nav-section">
-                <div class="nav-section-title" data-i18n="payments">Payments</div>
-                <div class="nav-item" data-page="receipts">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                        <line x1="12" y1="1" x2="12" y2="23" />
-                        <path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6" />
-                    </svg>
-                    <span data-i18n="receipts">Receipts</span>
-                </div>
-                <div class="nav-item" data-page="payments">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                        <rect x="1" y="4" width="22" height="16" rx="2" ry="2" />
-                        <line x1="1" y1="10" x2="23" y2="10" />
-                    </svg>
-                    <span data-i18n="payments">Payments</span>
-                </div>
-                <div class="nav-item" data-page="banking">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                        <path d="M3 21h18M3 10h18M5 6l7-3 7 3M4 10v11m16-11v11M8 14v3m4-3v3m4-3v3" />
-                    </svg>
-                    <span data-i18n="banking">Banking</span>
-                </div>
-            </div>
-
-            <div class="nav-section">
-                <div class="nav-section-title" data-i18n="gstTax">GST & Tax</div>
-                <div class="nav-item" data-page="gst-reports">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                        <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" />
-                        <path d="M14 2v6h6M12 18v-6M9 15h6" />
-                    </svg>
-                    <span data-i18n="gstReports">GST Reports</span>
-                </div>
-                <div class="nav-item" data-page="tds">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                        <circle cx="12" cy="12" r="10" />
-                        <path d="M12 6v6l4 2" />
-                    </svg>
-                    <span data-i18n="tds">TDS/TCS</span>
-                </div>
-            </div>
-
-            <div class="nav-section">
-                <div class="nav-section-title" data-i18n="hr">HR</div>
-                <div class="nav-item" data-page="employees">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                        <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" />
-                        <circle cx="12" cy="7" r="4" />
-                    </svg>
-                    <span data-i18n="employees">Employees</span>
-                </div>
-                <div class="nav-item" data-page="payroll">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                        <rect x="2" y="7" width="20" height="14" rx="2" ry="2" />
-                        <path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16" />
-                    </svg>
-                    <span data-i18n="payroll">Payroll</span>
-                </div>
-            </div>
-
-            <div class="nav-section">
-                <div class="nav-section-title" data-i18n="vehicles">Vehicles</div>
-                <div class="nav-item" data-page="vehicles">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                        <rect x="1" y="3" width="15" height="13" />
-                        <polygon points="16 8 20 8 23 11 23 16 16 16 16 8" />
-                        <circle cx="5.5" cy="18.5" r="2.5" />
-                        <circle cx="18.5" cy="18.5" r="2.5" />
-                    </svg>
-                    <span data-i18n="vehicleList">Vehicle List</span>
-                </div>
-                <div class="nav-item" data-page="fuel">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                        <path d="M3 22V8a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2v14" />
-                        <path d="M17 12h2a2 2 0 0 1 2 2v4a2 2 0 0 0 2 2" />
-                        <path d="M7 10h6" />
-                    </svg>
-                    <span data-i18n="fuel">Fuel Expenses</span>
-                </div>
-            </div>
-
-            <div class="nav-section">
-                <div class="nav-section-title" data-i18n="reports">Reports</div>
-                <div class="nav-item" data-page="reports">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                        <line x1="18" y1="20" x2="18" y2="10" />
-                        <line x1="12" y1="20" x2="12" y2="4" />
-                        <line x1="6" y1="20" x2="6" y2="14" />
-                    </svg>
-                    <span data-i18n="allReports">All Reports</span>
-                </div>
-            </div>
-
-            <div class="nav-section">
-                <div class="nav-section-title" data-i18n="settings">Settings</div>
-                <div class="nav-item" data-page="settings">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                        <circle cx="12" cy="12" r="3" />
-                        <path
-                            d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z" />
-                    </svg>
-                    <span data-i18n="settings">Settings</span>
-                </div>
-            </div>
+            <!-- Built from core pages and enabled modules (platform/ui-shell.js) -->
+            <div id="navSections"></div>
         </nav>
 
         <!-- Main Content Area -->
@@ -1835,6 +1609,18 @@
 
     <!-- Money core (used while the app starts) and the invoice-template modules (deferred: they run after the page is parsed, in order) -->
     <script src="js/core/shared/money.js"></script>
+    <!-- Platform: shared helpers, module registry, editions, hooks, events, runtime, sidebar -->
+    <script src="js/core/shared/result.js" defer></script>
+    <script src="js/core/shared/validate.js" defer></script>
+    <script src="js/core/shared/repository.js" defer></script>
+    <script src="js/core/navigation.js" defer></script>
+    <script src="js/platform/registry.js" defer></script>
+    <script src="js/platform/editions.js" defer></script>
+    <script src="js/platform/hooks.js" defer></script>
+    <script src="js/platform/events.js" defer></script>
+    <script src="js/platform/runtime.js" defer></script>
+    <script src="js/platform/ui-shell.js" defer></script>
+    <script src="js/platform/bootstrap.js" defer></script>
     <script src="js/core/documents/sanitize.js" defer></script>
     <script src="js/core/documents/format.js" defer></script>
     <script src="js/core/documents/labels.js" defer></script>
@@ -1849,42 +1635,61 @@
     <script src="js/core/documents/renderer.js" defer></script>
     <script src="js/core/documents/adapter.js" defer></script>
     <script>
-        /* global Vyapar, InvoiceTemplates, TemplateSettingsPage -- from the js/ scripts loaded around this one */
+        /* global Vyapar, InvoiceTemplates, TemplateSettingsPage, FeaturesPage -- from the js/ scripts loaded around this one */
         // ===== CONFIG =====
-        const APP = { dbName: 'VyaparEasyDB', dbVersion: 2, version: '1.0.0' }; // keep version in sync with package.json (a test checks)
+        const APP = { dbName: 'VyaparEasyDB', version: '1.0.0' }; // keep version in sync with package.json (a test checks)
         let db = null, currentLang = localStorage.getItem('lang') || 'en';
         let currentCompanyId = localStorage.getItem('companyId') || null;
 
         // ===== TRANSLATIONS =====
         const i18n = {
-            en: { dashboard: 'Dashboard', masters: 'Masters', companies: 'Companies', customers: 'Customers', vendors: 'Vendors', products: 'Products', warehouses: 'Warehouses', sales: 'Sales', quotations: 'Quotations', salesOrders: 'Sales Orders', challans: 'Delivery Challans', invoices: 'Tax Invoices', salesReturns: 'Sales Returns', purchase: 'Purchase', purchaseOrders: 'Purchase Orders', purchaseBills: 'Purchase Bills', purchaseReturns: 'Purchase Returns', inventory: 'Inventory', stock: 'Stock Summary', payments: 'Payments', receipts: 'Receipts', banking: 'Banking', gstTax: 'GST & Tax', gstReports: 'GST Reports', tds: 'TDS/TCS', hr: 'HR', employees: 'Employees', payroll: 'Payroll', vehicles: 'Vehicles', vehicleList: 'Vehicle List', fuel: 'Fuel Expenses', reports: 'Reports', allReports: 'All Reports', settings: 'Settings', addNew: 'Add New', save: 'Save', cancel: 'Cancel', delete: 'Delete', edit: 'Edit', name: 'Name', phone: 'Phone', email: 'Email', address: 'Address', gstin: 'GSTIN', state: 'State', creditLimit: 'Credit Limit', creditDays: 'Credit Days', actions: 'Actions', noData: 'No data found', success: 'Success', error: 'Error', selectCompanyFirst: 'Please select a company first', hsn: 'HSN Code', gstRate: 'GST Rate (%)', unit: 'Unit', salePrice: 'Sale Price', purchasePrice: 'Purchase Price', stockQty: 'Stock Qty', category: 'Category', todaySales: "Today's Sales", pendingReceivables: 'Pending Receivables', pendingPayables: 'Pending Payables', totalCustomers: 'Total Customers', totalProducts: 'Total Products' },
-            te: { dashboard: 'డాష్‌బోర్డ్', masters: 'మాస్టర్స్', companies: 'కంపెనీలు', customers: 'కస్టమర్లు', vendors: 'వెండర్లు', products: 'ఉత్పత్తులు', warehouses: 'గిడ్డంగులు', sales: 'అమ్మకాలు', quotations: 'కోట్స్', salesOrders: 'అమ్మక ఆర్డర్లు', challans: 'డెలివరీ ఛలాన్లు', invoices: 'పన్ను ఇన్వాయిస్లు', salesReturns: 'అమ్మక రిటర్న్స్', purchase: 'కొనుగోలు', purchaseOrders: 'కొనుగోలు ఆర్డర్లు', purchaseBills: 'కొనుగోలు బిల్లులు', purchaseReturns: 'కొనుగోలు రిటర్న్స్', inventory: 'స్టాక్', stock: 'స్టాక్ సారాంశం', payments: 'చెల్లింపులు', receipts: 'రసీదులు', banking: 'బ్యాంకింగ్', gstTax: 'GST & పన్ను', gstReports: 'GST నివేదికలు', tds: 'TDS/TCS', hr: 'HR', employees: 'ఉద్యోగులు', payroll: 'జీతాలు', vehicles: 'వాహనాలు', vehicleList: 'వాహన జాబితా', fuel: 'ఇంధన ఖర్చులు', reports: 'నివేదికలు', allReports: 'అన్ని నివేదికలు', settings: 'సెట్టింగ్స్', addNew: 'కొత్తది జోడించు', save: 'సేవ్', cancel: 'రద్దు', delete: 'తొలగించు', edit: 'సవరించు', name: 'పేరు', phone: 'ఫోన్', email: 'ఇమెయిల్', address: 'చిరునామా', gstin: 'GSTIN', state: 'రాష్ట్రం', creditLimit: 'క్రెడిట్ లిమిట్', creditDays: 'క్రెడిట్ రోజులు', actions: 'చర్యలు', noData: 'డేటా కనుగొనబడలేదు', success: 'విజయం', error: 'లోపం', selectCompanyFirst: 'దయచేసి ముందుగా కంపెనీని ఎంచుకోండి', hsn: 'HSN కోడ్', gstRate: 'GST రేటు (%)', unit: 'యూనిట్', salePrice: 'అమ్మక ధర', purchasePrice: 'కొనుగోలు ధర', stockQty: 'స్టాక్ పరిమాణం', category: 'వర్గం', todaySales: 'ఈ రోజు అమ్మకాలు', pendingReceivables: 'పెండింగ్ రాబడి', pendingPayables: 'పెండింగ్ చెల్లింపు', totalCustomers: 'మొత్తం కస్టమర్లు', totalProducts: 'మొత్తం ఉత్పత్తులు' }
+            en: { dashboard: 'Dashboard', masters: 'Masters', companies: 'Companies', customers: 'Customers', vendors: 'Vendors', products: 'Products', warehouses: 'Warehouses', sales: 'Sales', quotations: 'Quotations', salesOrders: 'Sales Orders', challans: 'Delivery Challans', invoices: 'Tax Invoices', salesReturns: 'Sales Returns', purchase: 'Purchase', purchaseOrders: 'Purchase Orders', purchaseBills: 'Purchase Bills', purchaseReturns: 'Purchase Returns', inventory: 'Inventory', stock: 'Stock Summary', payments: 'Payments', receipts: 'Receipts', banking: 'Banking', gstTax: 'GST & Tax', gstReports: 'GST Reports', tds: 'TDS/TCS', hr: 'HR', employees: 'Employees', payroll: 'Payroll', vehicles: 'Vehicles', vehicleList: 'Vehicle List', fuel: 'Fuel Expenses', reports: 'Reports', allReports: 'All Reports', settings: 'Settings', priceLists: 'Price Lists', recurringInvoices: 'Recurring Invoices', expenses: 'Expenses', features: 'Features & Editions', addNew: 'Add New', save: 'Save', cancel: 'Cancel', delete: 'Delete', edit: 'Edit', name: 'Name', phone: 'Phone', email: 'Email', address: 'Address', gstin: 'GSTIN', state: 'State', creditLimit: 'Credit Limit', creditDays: 'Credit Days', actions: 'Actions', noData: 'No data found', success: 'Success', error: 'Error', selectCompanyFirst: 'Please select a company first', hsn: 'HSN Code', gstRate: 'GST Rate (%)', unit: 'Unit', salePrice: 'Sale Price', purchasePrice: 'Purchase Price', stockQty: 'Stock Qty', category: 'Category', todaySales: "Today's Sales", pendingReceivables: 'Pending Receivables', pendingPayables: 'Pending Payables', totalCustomers: 'Total Customers', totalProducts: 'Total Products' },
+            te: { dashboard: 'డాష్‌బోర్డ్', masters: 'మాస్టర్స్', companies: 'కంపెనీలు', customers: 'కస్టమర్లు', vendors: 'వెండర్లు', products: 'ఉత్పత్తులు', warehouses: 'గిడ్డంగులు', sales: 'అమ్మకాలు', quotations: 'కోట్స్', salesOrders: 'అమ్మక ఆర్డర్లు', challans: 'డెలివరీ ఛలాన్లు', invoices: 'పన్ను ఇన్వాయిస్లు', salesReturns: 'అమ్మక రిటర్న్స్', purchase: 'కొనుగోలు', purchaseOrders: 'కొనుగోలు ఆర్డర్లు', purchaseBills: 'కొనుగోలు బిల్లులు', purchaseReturns: 'కొనుగోలు రిటర్న్స్', inventory: 'స్టాక్', stock: 'స్టాక్ సారాంశం', payments: 'చెల్లింపులు', receipts: 'రసీదులు', banking: 'బ్యాంకింగ్', gstTax: 'GST & పన్ను', gstReports: 'GST నివేదికలు', tds: 'TDS/TCS', hr: 'HR', employees: 'ఉద్యోగులు', payroll: 'జీతాలు', vehicles: 'వాహనాలు', vehicleList: 'వాహన జాబితా', fuel: 'ఇంధన ఖర్చులు', reports: 'నివేదికలు', allReports: 'అన్ని నివేదికలు', settings: 'సెట్టింగ్స్', priceLists: 'ధరల జాబితాలు', recurringInvoices: 'పునరావృత ఇన్‌వాయిస్‌లు', expenses: 'ఖర్చులు', features: 'ఫీచర్లు & ఎడిషన్లు', addNew: 'కొత్తది జోడించు', save: 'సేవ్', cancel: 'రద్దు', delete: 'తొలగించు', edit: 'సవరించు', name: 'పేరు', phone: 'ఫోన్', email: 'ఇమెయిల్', address: 'చిరునామా', gstin: 'GSTIN', state: 'రాష్ట్రం', creditLimit: 'క్రెడిట్ లిమిట్', creditDays: 'క్రెడిట్ రోజులు', actions: 'చర్యలు', noData: 'డేటా కనుగొనబడలేదు', success: 'విజయం', error: 'లోపం', selectCompanyFirst: 'దయచేసి ముందుగా కంపెనీని ఎంచుకోండి', hsn: 'HSN కోడ్', gstRate: 'GST రేటు (%)', unit: 'యూనిట్', salePrice: 'అమ్మక ధర', purchasePrice: 'కొనుగోలు ధర', stockQty: 'స్టాక్ పరిమాణం', category: 'వర్గం', todaySales: 'ఈ రోజు అమ్మకాలు', pendingReceivables: 'పెండింగ్ రాబడి', pendingPayables: 'పెండింగ్ చెల్లింపు', totalCustomers: 'మొత్తం కస్టమర్లు', totalProducts: 'మొత్తం ఉత్పత్తులు' }
         };
         const t = k => i18n[currentLang][k] || k;
 
         // ===== DB INIT =====
-        const STORES = ['companies', 'customers', 'vendors', 'products', 'categories', 'warehouses', 'bankAccounts', 'quotations', 'salesOrders', 'challans', 'invoices', 'salesReturns', 'purchaseOrders', 'purchaseBills', 'purchaseReturns', 'receipts', 'payments', 'employees', 'vehicles', 'drivers', 'fuelExpenses', 'stock', 'settings'];
+        // Stores core owns. Each module declares its own stores in its manifest; the database gets them all,
+        // whether the module is on or off, so turning a module off never loses data.
+        const CORE_STORES = ['companies', 'customers', 'vendors', 'products', 'categories', 'warehouses', 'bankAccounts', 'quotations', 'salesOrders', 'challans', 'invoices', 'salesReturns', 'purchaseOrders', 'purchaseBills', 'purchaseReturns', 'receipts', 'payments', 'employees', 'vehicles', 'drivers', 'fuelExpenses', 'stock', 'settings', 'orgModules', 'eventLog', 'eventReceipts', 'expenses', 'recurringInvoices', 'priceLists'];
+        const allStores = () => [...new Set([...CORE_STORES, ...Vyapar.app.registry.stores().map(s => s.store)])];
 
-        function initDB() {
+        function openDatabase(version) {
             return new Promise((res, rej) => {
-                const req = indexedDB.open(APP.dbName, APP.dbVersion);
+                const req = version ? indexedDB.open(APP.dbName, version) : indexedDB.open(APP.dbName);
                 req.onerror = () => rej(req.error);
-                req.onsuccess = () => { db = req.result; res(db); };
+                req.onblocked = () => showToast('Close VyaparEasy in your other tabs to finish updating', 'error');
+                req.onsuccess = () => res(req.result);
                 req.onupgradeneeded = e => {
                     const d = e.target.result;
-                    STORES.forEach(s => {
-                        if (!d.objectStoreNames.contains(s)) {
-                            const store = d.createObjectStore(s, { keyPath: 'id', autoIncrement: true });
-                            if (s !== 'settings') store.createIndex('companyId', 'companyId', { unique: false });
-                        }
+                    allStores().forEach(s => {
+                        if (d.objectStoreNames.contains(s)) return;
+                        const store = d.createObjectStore(s, { keyPath: 'id', autoIncrement: true });
+                        if (s !== 'companies') store.createIndex('companyId', 'companyId', { unique: false });
                     });
                 };
             });
         }
+        // Opens the database and adds any store a core or module update introduced (one version up)
+        async function initDB() {
+            let d = await openDatabase();
+            if (allStores().some(s => !d.objectStoreNames.contains(s))) {
+                const next = d.version + 1;
+                d.close();
+                d = await openDatabase(next);
+            }
+            d.onversionchange = () => { d.close(); showToast('VyaparEasy was updated in another tab. Reload this page.', 'error'); };
+            db = d;
+            return db;
+        }
 
         // ===== DB OPS =====
+        // Rows that belong to another company than the selected one cannot be read, changed or deleted here
+        const otherCompany = (store, row) => store !== 'companies' && currentCompanyId && row && row.companyId !== undefined && row.companyId !== parseInt(currentCompanyId);
+        const tenantError = store => new Error(`This ${store} record belongs to another company`);
         const dbOps = {
             add: (store, data) => new Promise((res, rej) => {
+                if (otherCompany(store, data)) { rej(tenantError(store)); return; }
                 data.createdAt = new Date().toISOString();
                 const tx = db.transaction(store, 'readwrite');
                 const req = tx.objectStore(store).add(data);
@@ -1892,22 +1697,27 @@
                 req.onerror = () => rej(req.error);
             }),
             update: (store, data) => new Promise((res, rej) => {
+                if (otherCompany(store, data)) { rej(tenantError(store)); return; }
                 data.updatedAt = new Date().toISOString();
                 const tx = db.transaction(store, 'readwrite');
                 const req = tx.objectStore(store).put(data);
                 req.onsuccess = () => res(req.result);
                 req.onerror = () => rej(req.error);
             }),
-            delete: (store, id) => new Promise((res, rej) => {
-                const tx = db.transaction(store, 'readwrite');
-                const req = tx.objectStore(store).delete(id);
-                req.onsuccess = () => res();
-                req.onerror = () => rej(req.error);
-            }),
-            get: (store, id) => new Promise((res, rej) => {
+            delete: async (store, id) => {
+                if (otherCompany(store, await dbOps.get(store, id, true))) throw tenantError(store);
+                return new Promise((res, rej) => {
+                    const tx = db.transaction(store, 'readwrite');
+                    const req = tx.objectStore(store).delete(id);
+                    req.onsuccess = () => res();
+                    req.onerror = () => rej(req.error);
+                });
+            },
+            // any: also return another company's row (only for checks that refuse it)
+            get: (store, id, any = false) => new Promise((res, rej) => {
                 const tx = db.transaction(store, 'readonly');
                 const req = tx.objectStore(store).get(id);
-                req.onsuccess = () => res(req.result);
+                req.onsuccess = () => res(!any && otherCompany(store, req.result) ? undefined : req.result);
                 req.onerror = () => rej(req.error);
             }),
             getAll: store => new Promise((res, rej) => {
@@ -2058,7 +1868,24 @@
             document.querySelectorAll('.nav-item').forEach(i => i.classList.toggle('active', i.dataset.page === page));
             renderPage(page);
         }
-        document.querySelectorAll('.nav-item').forEach(i => i.addEventListener('click', () => navigateTo(i.dataset.page)));
+        document.getElementById('navSections').addEventListener('click', e => {
+            const item = e.target.closest('.nav-item');
+            if (item) navigateTo(item.dataset.page);
+        });
+        // Sidebar: core pages plus the pages of the company's enabled modules
+        let enabledModuleIds = [];
+        function renderNav() {
+            const registry = Vyapar.app.registry;
+            const manifests = (currentCompanyId ? enabledModuleIds : registry.order()).map(id => registry.get(id));
+            const sections = Vyapar.platform.uiShell.buildNav({ coreSections: Vyapar.core.navigation.SECTIONS, coreItems: Vyapar.core.navigation.ITEMS, manifests, t, lang: currentLang });
+            document.getElementById('navSections').innerHTML = Vyapar.platform.uiShell.renderNavHtml(sections, currentPage);
+        }
+        // After the company or its modules change: update the module state, the sidebar and the page
+        async function refreshModules() {
+            enabledModuleIds = currentCompanyId ? await platform.syncState(parseInt(currentCompanyId)) : [];
+            renderNav();
+            await renderPage(currentPage);
+        }
 
         // ===== LANGUAGE =====
         function updateLangUI() {
@@ -2069,6 +1896,7 @@
             currentLang = currentLang === 'en' ? 'te' : 'en';
             localStorage.setItem('lang', currentLang);
             updateLangUI();
+            renderNav();
             renderPage(currentPage);
         }
 
@@ -2098,7 +1926,7 @@
             if (c) localStorage.setItem('companyId', c.id); else localStorage.removeItem('companyId');
             document.getElementById('currentCompanyName').textContent = c?.name || 'Select Company';
             closeModal();
-            renderPage(currentPage);
+            await refreshModules();
         }
         const getCurrentCompany = () => currentCompanyId ? dbOps.get('companies', parseInt(currentCompanyId)) : Promise.resolve(null);
 
@@ -2132,9 +1960,24 @@
                 case 'payroll': content.innerHTML = await renderEmployees(); break;
                 case 'tds': content.innerHTML = `<div class="page-header"><h1 class="page-title">${t('tds')}</h1></div><div class="card"><p>TDS/TCS tracking coming in next update. You can track deductions manually in receipts/payments for now.</p></div>`; break;
                 case 'settings': content.innerHTML = renderSettings(); break;
+                case 'features': content.innerHTML = await FeaturesPage.render(); break;
                 case 'invoice-templates': content.innerHTML = await TemplateSettingsPage.render(); TemplateSettingsPage.refresh(); break;
-                default: content.innerHTML = `<div class="empty-state"><h3>${t(page) || page}</h3><p>Coming soon...</p></div>`;
+                default: content.innerHTML = await renderModulePage(page);
             }
+        }
+
+        // A page that belongs to a module: not found while the module is off (like a 404), refused without permission (403)
+        async function renderModulePage(page) {
+            const render = Vyapar.app.pages[page];
+            if (!currentCompanyId) return render ? `<div class="empty-state"><h3>${t('selectCompanyFirst')}</h3></div>` : notFoundPage(page);
+            const access = await platform.guard(parseInt(currentCompanyId), page);
+            if (access.status === 404 || !render) return notFoundPage(page, access.moduleId);
+            if (access.status === 403) return `<div class="empty-state"><h3>Not allowed</h3><p>You do not have permission to open this page.</p></div>`;
+            return render();
+        }
+        function notFoundPage(page, moduleId) {
+            const name = moduleId ? Vyapar.app.registry.displayName(moduleId) : '';
+            return `<div class="empty-state" data-not-found="${esc(page)}"><h3>Page not found</h3>${name ? `<p>This page is part of ${esc(name)}, which is turned off for this company. Turn it on under Settings → Features &amp; Editions; your data is kept.</p>` : ''}</div>`;
         }
 
         // ===== COMPANIES =====
@@ -2191,13 +2034,15 @@
         async function deleteCompany(id) {
             const c = await dbOps.get('companies', id);
             if (!c || !confirm(`Delete "${c.name}" and ALL its customers, vendors, products, invoices, bills and other records?\n\nThis cannot be undone. Take a backup first if unsure.`)) return;
-            for (const store of STORES) {
+            // Every store, core and module, whether the module is on or not
+            for (const store of allStores()) {
                 if (store === 'companies' || store === 'settings') continue;
-                const records = await new Promise((res, rej) => {
-                    const req = db.transaction(store, 'readonly').objectStore(store).index('companyId').getAll(id);
-                    req.onsuccess = () => res(req.result); req.onerror = () => rej(req.error);
+                await new Promise((res, rej) => {
+                    const tx = db.transaction(store, 'readwrite');
+                    const req = tx.objectStore(store).index('companyId').openCursor(IDBKeyRange.only(id));
+                    req.onsuccess = () => { const c = req.result; if (c) { c.delete(); c.continue(); } };
+                    tx.oncomplete = res; tx.onerror = () => rej(tx.error);
                 });
-                for (const r of records) await dbOps.delete(store, r.id);
             }
             await InvoiceTemplates.repo.deleteForOrg(id);
             await dbOps.delete('companies', id);
@@ -4109,7 +3954,7 @@
         // ===== BACKUP & RESTORE =====
         async function backupData() {
             const backup = { _app: 'VyaparEasy', _version: 2, _exportedAt: new Date().toISOString(), _settings: getSettings() };
-            for (const store of STORES) backup[store] = await dbOps.getAll(store);
+            for (const store of allStores()) backup[store] = await dbOps.getAll(store);
             downloadFile(`vyapareasy-backup-${todayStr()}.json`, JSON.stringify(backup, null, 2), 'application/json');
             localStorage.setItem('lastBackupDate', new Date().toISOString());
             showToast('Backup downloaded!');
@@ -4125,7 +3970,7 @@
             if (!data || typeof data !== 'object' || !Array.isArray(data.companies)) { showToast('This file is not a VyaparEasy backup', 'error'); return; }
             if (!confirm(`Restore backup with ${data.companies.length} company(s)?\n\nThis will REPLACE all data currently in this app. Continue?`)) return;
             try {
-                const stores = STORES.filter(st => Array.isArray(data[st]));
+                const stores = allStores().filter(st => Array.isArray(data[st]));
                 // One transaction: either everything is restored or nothing changes
                 await new Promise((res, rej) => {
                     const tx = db.transaction(stores, 'readwrite');
@@ -4547,7 +4392,20 @@
         }
 
         // ===== INIT =====
+        // The module runtime for the selected company (platform/runtime.js)
+        let platform = null;
+        const platformAdapter = { getAll: s => dbOps.getAll(s), get: (s, id) => dbOps.get(s, id), add: (s, row) => dbOps.add(s, row), put: (s, row) => dbOps.update(s, row), delete: (s, id) => dbOps.delete(s, id) };
+        function startPlatform() {
+            // Fail fast: a missing module dependency or a cycle stops the app with the modules named
+            Vyapar.app.registry.check();
+            platform = Vyapar.platform.runtime.createRuntime({ adapter: platformAdapter, registry: Vyapar.app.registry });
+            Vyapar.app.runtime = platform;
+        }
         async function initApp() {
+            try { startPlatform(); } catch (e) {
+                document.getElementById('pageContent').innerHTML = `<div class="empty-state"><h3>VyaparEasy could not start</h3><p>${esc(e.message)}</p></div>`;
+                throw e;
+            }
             await initDB();
             // Ask the browser not to evict our data when the disk is low (granted automatically for installed apps)
             navigator.storage?.persist?.().catch(() => {});
@@ -4574,7 +4432,9 @@
                 }
             }
             checkBackupReminder();
-            renderPage('dashboard');
+            await refreshModules();
+            // Events whose handlers did not finish last time (crash, error) are delivered again
+            if (currentCompanyId) (await platform.redeliver(parseInt(currentCompanyId))).forEach(err => showToast(err.message, 'error'));
         }
         document.addEventListener('DOMContentLoaded', initApp);
         // Offline support when served over http(s) (the desktop app loads from disk and doesn't need it)
@@ -4584,6 +4444,8 @@
     </script>
     <script src="js/core/documents/ui.js" defer></script>
     <script src="js/core/documents/settings-page.js" defer></script>
+    <script src="js/platform/features-page.js" defer></script>
+    <!-- Optional modules: each registers its manifest; the company's edition decides which are on -->
 
 </body>
 

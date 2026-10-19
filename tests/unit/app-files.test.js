@@ -7,17 +7,21 @@ const registry = require('../../app/js/core/documents/registry.js');
 
 const APP = path.join(__dirname, '..', '..', 'app');
 const list = dir => fs.readdirSync(path.join(APP, dir)).map(f => `${dir}/${f}`);
+// Every script under app/js, at any depth (core, platform, modules)
+const walk = dir =>
+    fs
+        .readdirSync(path.join(APP, dir), { withFileTypes: true })
+        .flatMap(e => (e.isDirectory() ? walk(`${dir}/${e.name}`) : e.name.endsWith('.js') ? [`${dir}/${e.name}`] : []));
 const sw = fs.readFileSync(path.join(APP, 'sw.js'), 'utf8');
 const html = fs.readFileSync(path.join(APP, 'index.html'), 'utf8');
 
-test('the service worker caches every module and template file', () => {
-    for (const f of ['js/core/shared/money.js', ...list('js/core/documents'), ...list('templates/invoices'), ...list('templates/partial')])
+test('the service worker caches every script and template', () => {
+    for (const f of [...walk('js'), ...list('templates/invoices'), ...list('templates/partial')])
         assert.ok(sw.includes(`'${f}'`), `${f} is missing from app/sw.js`);
 });
 
-test('index.html loads every invoice module', () => {
-    for (const f of ['js/core/shared/money.js', ...list('js/core/documents')])
-        assert.match(html, new RegExp(`<script src="${f}"( defer)?></script>`), `${f} is not loaded by app/index.html`);
+test('index.html loads every script under app/js', () => {
+    for (const f of walk('js')) assert.match(html, new RegExp(`<script src="${f}"( defer)?></script>`), `${f} is not loaded by app/index.html`);
 });
 
 test('every registered template and partial exists on disk, and nothing unregistered is shipped', () => {
