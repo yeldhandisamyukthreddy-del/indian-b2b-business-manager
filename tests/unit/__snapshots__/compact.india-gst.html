@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+<meta charset="utf-8">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; img-src data:; style-src 'unsafe-inline'; font-src data:">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>TAX INVOICE TS&#x2F;2026-27&#x2F;0153</title>
+<!--style_start-->
+<style>
+@page { size: 210mm 297mm; margin: 12mm; }
+:root { --accent: #1f4e79; --ink: #1c2230; --muted: #5d6676; --line: #d6dbe4; --soft: #f2f4f8; }
+* { box-sizing: border-box; }
+html { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+body { margin: 0; color: var(--ink); font: 9pt/1.38 "Segoe UI", "Noto Sans", Inter, Roboto, "Helvetica Neue", Arial, "Nirmala UI", "Noto Sans Telugu", "Noto Naskh Arabic", "DejaVu Sans", sans-serif; }
+.sheet { background: #fff; }
+@media screen {
+ body { background: #e8ecf2; padding-block: 16px; }
+ .sheet { width: 210mm; min-height: 60mm; margin-inline: auto; padding: 12mm; box-shadow: 0 2px 10px rgba(20, 30, 50, 0.18); }
+}
+h1, h2, h3, p { margin: 0; }
+.k { color: var(--muted); }
+.kv { margin-block: 1px; }
+.muted { color: var(--muted); }
+.small { font-size: 8pt; }
+.num, td, th { font-variant-numeric: tabular-nums; }
+.al-start { text-align: start; }
+.al-end { text-align: end; }
+.al-center { text-align: center; }
+.section-title { font-size: 7.5pt; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; color: var(--accent); margin-block-end: 3px; }
+.avoid-break { break-inside: avoid; }
+.rich p { margin-block: 0 4px; }
+.rich ul, .rich ol { margin-block: 2px; padding-inline-start: 18px; }
+
+/* Header */
+.doc-head { display: flex; justify-content: space-between; gap: 16px; align-items: flex-start; border-block-start: 4px solid var(--accent); padding-block-start: 10px; }
+.org { min-width: 0; display: flex; gap: 12px; align-items: flex-start; }
+.org-text { min-width: 0; }
+.logo { display: block; flex-shrink: 0; object-fit: contain; }
+.org-name { font-size: 15pt; font-weight: 700; line-height: 1.2; }
+.org-address, .org-contact { color: var(--muted); }
+.org .kv { display: inline-block; margin-inline-end: 12px; }
+.doc-title-box { text-align: end; flex-shrink: 0; }
+.doc-title { font-size: 17pt; letter-spacing: 0.08em; color: var(--accent); font-weight: 700; }
+.stamp { display: inline-block; margin-block-start: 8px; padding: 3px 10px; border: 2px solid currentColor; border-radius: 4px; font-weight: 700; letter-spacing: 0.1em; transform: rotate(-4deg); }
+.stamp-paid { color: #15803d; }
+.stamp-partial { color: #b45309; }
+.stamp-overdue { color: #b91c1c; }
+
+/* Parties and document details */
+.subject { display: flex; gap: 14px; margin-block: 10px; align-items: stretch; }
+.parties { flex: 1; display: flex; gap: 14px; min-width: 0; }
+.party { flex: 1; min-width: 0; }
+.party .label { font-size: 7.5pt; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; color: var(--accent); }
+.party-name { font-weight: 700; font-size: 10.5pt; }
+.doc-meta { flex: 0 0 38%; background: var(--soft); border-radius: 4px; padding: 8px 10px; }
+.doc-meta .kv { display: flex; justify-content: space-between; gap: 8px; }
+.doc-meta .v { font-weight: 600; text-align: end; }
+
+/* Line items: the header row repeats on every page and rows never split across pages */
+table { border-collapse: collapse; width: 100%; }
+table.items thead { display: table-header-group; }
+table.items tr { break-inside: avoid; }
+table.items th { background: var(--soft); color: var(--ink); font-size: 8pt; font-weight: 700; padding: 6px 5px; border-block-end: 2px solid var(--accent); }
+table.items td { padding: 5px; border-block-end: 1px solid var(--line); vertical-align: top; }
+table.items .col-name { width: 34%; }
+table.items .col-index { width: 4%; }
+.sub { color: var(--muted); font-size: 8pt; }
+/* Amounts and quantities stay on one line; long item names wrap instead */
+table.items td.al-end, table.items td.al-center { white-space: nowrap; }
+
+/* Totals */
+.after-items { display: flex; gap: 16px; margin-block-start: 10px; break-inside: avoid; }
+.after-left { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 8px; }
+.after-right { flex: 0 0 42%; }
+table.totals th { text-align: start; font-weight: 400; color: var(--muted); padding: 3px 6px; }
+table.totals td { text-align: end; padding: 3px 6px; white-space: nowrap; }
+table.totals tr.grand th, table.totals tr.grand td { background: var(--accent); color: #fff; font-weight: 700; font-size: 11pt; padding: 6px; }
+table.totals tr.balance th, table.totals tr.balance td { font-weight: 700; color: var(--ink); border-block-start: 1px solid var(--line); }
+.words { border-inline-start: 3px solid var(--accent); padding-inline-start: 8px; }
+
+/* Tax summary, notes, terms, bank */
+.tax-summary { margin-block-start: 12px; }
+table.grid th, table.grid td { border: 1px solid var(--line); padding: 3px 5px; font-size: 8pt; }
+table.grid th { background: var(--soft); }
+table.grid tr.total td { font-weight: 700; }
+.notes-terms { display: flex; gap: 16px; margin-block-start: 12px; break-inside: avoid; }
+.notes-terms > div { flex: 1; min-width: 0; }
+.region-note { margin-block-start: 6px; font-weight: 600; }
+
+/* Footer and payment slip */
+.doc-foot { display: flex; justify-content: space-between; align-items: flex-end; gap: 16px; margin-block-start: 18px; break-inside: avoid; }
+.generated { color: var(--muted); font-size: 7.5pt; }
+.sign { text-align: center; min-width: 45mm; }
+.sign-space { height: 10mm; }
+.sign-label { border-block-start: 1px solid var(--ink); padding-block-start: 2px; }
+.stub { margin-block-start: 16px; border-block-start: 1px dashed var(--muted); padding-block-start: 10px; break-inside: avoid; }
+.stub-title { font-weight: 700; margin-block-end: 4px; }
+.stub-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 4px 16px; }
+.fill { display: inline-block; min-width: 30mm; border-block-end: 1px solid var(--ink); }
+@page {
+ @top-right { content: "Sri Lakshmi Traders \b7 TS\2f 2026\2d 27\2f 0153"; font: 8pt sans-serif; color: #5d6676; }
+ @bottom-right { content: "Page " counter(page) " of " counter(pages); font: 8pt sans-serif; color: #5d6676; }
+}
+@page :first {
+ @top-right { content: none; }
+}
+/* Compact: smaller type, a thin rule instead of the accent bar, details in one line under the header */
+body { font-size: 8.5pt; }
+.doc-head { border-block-start: 0; border-block-end: 1px solid var(--line); padding-block: 0 6px; }
+.org-name { font-size: 12.5pt; }
+.doc-title { font-size: 13pt; }
+.subject { margin-block: 8px; }
+.doc-meta { flex-basis: 34%; padding: 5px 8px; }
+table.items th { background: none; border-block-end: 1px solid var(--ink); padding: 4px; }
+table.items td { padding: 3px 4px; }
+table.totals tr.grand th, table.totals tr.grand td { background: none; color: var(--accent); border-block: 1px solid var(--accent); font-size: 10pt; }
+</style>
+<!--style_end-->
+</head>
+<body class="tpl-compact">
+<main class="sheet" data-invoice-root>
+<header class="doc-head">
+<div class="org">
+<img class="logo" src="data:image&#x2F;png;base64,iVBORw0KGgoAAAANSUhEUgAAAPAAAABQCAYAAAAnSfh8AAAPlUlEQVR4nOydC3RU1bnHvz0zeUkIaBJegSQktwgVC0prlXuVuFTujZA0PG97b+m93nor2rtuH0tpAraOWkgAXV1a29rqoiptbU1AnPDwURWRpbU1FEoqlEogT8BoeJMHk7P7&#x2F;4YZHJkzeYzD5JzJ91trZ5+z93f2OZN1&#x2F;me&#x2F;zrePiwRBsC0uEgTBtoiABcHGiIAFwcZEJODs2UtvUg59q9b6GuyOQRiplBpCNgLXfhrREYQWpekdr8Oxqdmz4nUSBBuh+mxZ4HaNS+24XTno+4rUGIpDNOkW&#x2F;Lm&#x2F;4WTyGtrq9pIgWJw+CNjtGFfctVBp4wHUsp+hwcE+iPneBk9FFbGuBcGiOHozyC7qmq&#x2F;IWDOIxMtMIK2eGldcVkSCYGF6rIFzisvmovqpVH0QejyC325AyF9pqF7xHAmCBQkr4LFf+t6VDq3eQX83hQYxaEq3d3sd05s3r9hJgmAxwtSsbodDO3472MXL8P&#x2F;A6dRr+X9CgmAxTG&#x2F;KcbM7voGq+bMk+FCKJvP&#x2F;hATBYoQ0oTML3KmXDO2sQ04mCUHoD06T8U8feladJEGwCCE1cPLQjvkiXjPUiBTtmEeCYCFCBIzpogISTEF&#x2F;+FoSBAsRKmBNuSSYgv7GRBIEC2H2LnQuCeYoPYoEwUKYjELLTdoD8r8RLEVoDaxUEglhUMNIECyE+AMLgo2x9NtFY1PP0NDEsyQIgjmWrYEfvL6WSiYc8m0&#x2F;uSuXHnk33p2h3I5xhd7x5Ogeo13GMd2lj2rXJW0t1e4zJAhhsKSA77x6&#x2F;3nxMrdPOUidXgc9vjOf4onRty7LSXAZyzA9NYOoYzz62Am+DI2GkW+rk3KKyk5g&#x2F;qpOa72TtH69YePKZ8zKyi4qewTlTAlO04paGzzlCy60HTnn7hHJ3oSoelh1J3cUNlX+qJ2EmGI5AecPP0V3TKkLSV98VR29cnAk7T+WSnGAyikqfUyr7jsUKac&#x2F;KYwlpeHvVKXUVMRfQXjG3AziVfwgCEJTs5mt00hKImXMoCjS2TrMSULMsVQf2KE0lRfUktPkqjiN89jG7uQUl96L0f67PhavIESGpQS86Ip6mpQe3leA89jGzoydXVqgNd1vlod0ryb9PuI&#x2F;sh8yCUIvWKYJPSa1nf5v2v5e7diGm9Itp+zpqux0qDvowvaypg5D6+&#x2F;olM6ng&#x2F;uRWYVLxqoEx2QnqVtgw44UUXmRpKMr4bjL1flAWANF38QFpn&#x2F;yEukQ&#x2F;jwR7pDWTOoiIeZYRsDLZ9RSssvo1Y5t2Pa2TV8gW6L1KHYw&#x2F;kQSUVnjxorHLzRt3rKqCRGHFzFKfU&#x2F;27PZZFAXatrhPtBHdFy4fTfx&#x2F;h4rTL7julobqirDHCAODJZrQcyY00+dHHeuzPduWfKaZbIlSw0OSiPrgY+w2MAJdTYIQxIALOCOlk+6+Zp9p3gdnEn3BjHu+uI&#x2F;SkzvJfugDIUlK38trkJEg9JMBb0KXXreX0pLM11C&#x2F;f&#x2F;u5VX1+MjN0PTk+pmz6Xrr7tSlkJ9Bc3hs6YaRynVr9Jbu4lJvLuzCBW8Nfi6jvPvUqbfmxHZ9SQowYUAHfMK6V&#x2F;nX8B6Z5Lx0YQdsazy0M8nLdCJqZF2rHx3pQRsDODni1eiaB9HfNnEYwrTQW0VhszOJ2dbZKPUPFZZs1qXWNnsTnuBlNghDEgDWhU1xeeuD690zzTna5aMVbH&#x2F;vOL397oi&#x2F;NDC6Dy7ILLdXle1ENf78vthjrugQ6nu8g&#x2F;WxOUceOrKIlsiKI8AkGTMC+PmyK+czDqj9MoLaOjyso3l79zgRTWy7j7mv+TnaifmPF6m7ShZjrberzQUpNcSrHdowQX0WC4GdABDxt5FFaMNF8FPndw8Npw9+zQtKf35flyzNj4aQmujLzONmJJk&#x2F;Fiw1JyfmGpjkQciWmaXrt6&#x2F;KbW1qTrFEtnCfmN4LLcW4e14wOr4OWvTE57LGcxzZmlM&#x2F;Y7SvbVlS6uxqryzc0eCoW1ntPDzPImAExL8VA15u+z7qYoJS6IqfIm0OCQAMg4Luu3k9ZQztM8x6rye&#x2F;xDSvOYxszcoa1051X1ZFtwWhzo2flNoi5vMFTfsNZryMPtfJWU1vdPYkEgWIsYPY0+p8rD5rm7floKK39a+8VC9uwrRlf&#x2F;9wB3znigUObl9eTYdxlnquGkyBQDAXck6dRNxqLZVsnk6F7&#x2F;1wx27Btt0kD0w4eS9lFZT9C+HZugTuZIsVh7CFBoBjOA&#x2F;fkabRmd26&#x2F;&#x2F;HzZ9pc4hh39LyTgsfR0bS5ZEz0a&#x2F;dhv67QOd3Zx6bN4Iv26IaXubaqs7A62GlVYlkkO&#x2F;VjI0Wg&#x2F;NzS31fbpVKSTsoqX3tiblYPUyUbP8ndJsB0xEXBPnkb1x1Popzv6v9LGT3BMYd5h0&#x2F;60PTyW1DC0NxajubA4uyP&#x2F;NBWV&#x2F;hmjzD4Ra6XZ3QFzvir0PVIeha75RZ8WCsODIsNF+rXe7LQ2ahB9ngTbEZMmdE+eRmVvXEleo&#x2F;+XwceEG7EOeCzZBQhtCMK&#x2F;+FbUQICQb0Cy2Uvgx7q8agkJgp+LLuCePI2e2zOWdrdGvtRyzZFLqXJvlmmedT2W1BGKAJ5WMgz67uEt5a0kCH4uqoAvS+70vXFlxkftifTQHz&#x2F;9SpP8hhaXZcaSa&#x2F;f5rsFKNFSXf+ssdU80DP0g+rPbenuBg1fmQHjEqxy5jRvLf0mCEETIsG9OcVnUhnAfvnGXqRMC882Xp0bNCYGdIsw8lhh2ioimx1K9p7z3ofJ+4XaMvvXsOJcyspUyxqNPnIVOcBsGsPYbmg42nUg+SFvd9nnZW4gpF20Qi0UVTrzBnkbRgMuyr8eS2zi0mXihLw5vkiD0g4vShO6Pp1G0iCePJUHoKxdFwP3xNIoW8eaxJAh9IeoCjsTTKFrEm8eSIPRGVPvAPXkaMTy1s&#x2F;vrr9BAwR5LJeunRzTvLAhWJKp38v9OPRDW08gKsMcSOzwIQrwQVQF&#x2F;eWIjWZ1FkxtIEOKFqApY2eC7RcOSvJSWJB8REOKDqAr47ZYMsjrbGtPpRGciCUI8ENVBrNWYIjIMoulZH9FlKX1ymIkZdccuoRcPjKKf7YivbwwLg5uoCvjD9iSfd5EgCLHBch&#x2F;4jmcWLFjg1Fr&#x2F;JzZnIlyG8I5S6s3KysrX&#x2F;Pl3IsrE&#x2F;gM0AJSUlOQnJCRMxzVOMAzjtfXr178enF9QUODKyMi4B5vXI7BX1M+rqqreCraZP3&#x2F;+lxEt8O++gPxPfJB8zpw5U5xO5zfwu&#x2F;Nwnh1dXV2PejyeiDy0BIt9H3gQsB6hgjdwA+9gP2Bsrg5kQjR1uKkHZLkcPDwyId73cf6HcF3fcTgcN1xok5mZuRl5i2CzFvEJJL0yd+7cqwP5EG8Z0p9AYOG&#x2F;hfin&#x2F;oeSD9je6HK5apCehDJ+hfjapKSkXUVFRdYfPLEoUgPHCNzI7PhcjHAzaqVXzWzWrVv3klk63+DJycl52NyJ2jlkCB01Zy7El4cHQAvK2BuchxovHaKZ0NnZWYuaLuxXEOvq6o7l5OTko9atgxB3XJgP8d2M6KazZ8&#x2F;mb9iw4SC2n4XdGAh9GbbnFRYWJkGQbghzMX6fz+0R+V1I+8G0adOerKmpOQvbhch&#x2F;Ffm3cz5q9N&#x2F;hofBRYmLiLVweCf1GauAYcebMGd&#x2F;&#x2F;Gjd02MXscMOvRvDdyLNmzboUotfYr0AtxS9yVyE0QUjnP4zMTV4WG8RbC2E8iLI92J&#x2F;NeTNnzhyC46vQXD2MvCdQxofIuyPcuVlgLN5w+RBfPso54hevD+xvxzlZ2IQHDC8pmoj9801q7h4gGoUHQ2Bg5AjSEoKKdfnLbiEhIkTAMWLTpk1HEa1F+B2EtBbBPW&#x2F;evF4&#x2F;k+JfbicDNW8OBPMSBLk0kAfhcnnvt7a2ZqBW+2eEy71e73bOS0tL45ox4&#x2F;Tp0+lIn4zaeTLKWdWXc4bhAF9HcXHx+TV9ITxekSENNWny0aNHG3B9XoS8QD7O6fMuwTWP5hitgMeQ78KDZTd+&#x2F;89Q+76PZPy0yjdIiAgRcAzBjfo13NT&#x2F;BSFcilACAezAzexBCDsxDfsnKs+tWKlxzAsQwBWczs1mRNch&#x2F;1tbt24NvL+qUUMG1i&#x2F;6D9i+PmTIkC9ALDfh2Gzs1+KcN1ME4CHwexx&#x2F;EM3dJ7k8XPMiJPOAHOEcKXwNOAf3ax9G&#x2F;kyEQmz&#x2F;kHjVYMPwtTpQS49AlIpy2BaR7kTI4NYCCRER2gfmJV5MPn0pMPpTuzOhj7qOI95GbTgPgqrCDf5V7K4xs0eNejRot90&#x2F;8MW133hWAJq9h8yOgx1&#x2F;qrQEJjcFJXezeCgyDBw7C+U+gu37sM3nXYGwzN+64Br2&#x2F;9FUfxSb98KuAzY&#x2F;wPaziAMvoD+M9Fp+kPEO+sYJeXl5e9BaWMx5JPQbk0EsdRh&#x2F;5Ns75hymKMJiRk3GTdNs6icQ&#x2F;QE0TRUGqUY8&#x2F;&#x2F;zzIUuRQDRNLDbUnE9RlMDlcl&#x2F;81sA+atlHcY7qwL5&#x2F;kOy2oPy5iBra2tr+4k&#x2F;ih8r2QD73u8ePH78fZeSSEBGhTWgV3Zs0rtAq4v8NCw039G3BzWX&#x2F;gFM210rUT&#x2F;yDSW9DxD&#x2F;mPqg&#x2F;WaFp7XOIRplPI7oP57s8cAxP+fDAF0VIoGz&#x2F;tXPN&#x2F;t8Iy83ycV7+XQ&#x2F;hQXM&#x2F;mte+5VDwUPkTHxqww&#x2F;+Ev&#x2F;E0g38HCRERUgNrTTuVoi+SEIJWeidFCKZyePXJeQjcR6zFzT0JNzTPh65ALVlFEeDvT1dhMOhDCIZHkD+L8koQbzx16tSK1NRU7vfuwfl2w24kttORV4Bguso+yuCVGMb4d6&#x2F;CPk8LPY7Lu9P&#x2F;GzYhbTpvI&#x2F;2vCLcg772g37gE+WX+3TaEMtTaa4KudxkeOC9g8O0D2HFtPhFlPIUm9W9IiIiQFRbHFpf+m5PUFhJC8Oru65qrV&#x2F;2BPgX+ft&#x2F;nsNmO0eN9gdrp0+B&#x2F;g2oohMBNVeOCvOHIm4T+aV003njyz0mn41x&#x2F;M8uHMFMg1IkQLj&#x2F;sTN3T0BLgUekciJn7w&#x2F;HxNboBwnSJ1JziUkzkK&#x2F;kSfDBa76qvrphKgmAhTKeRDK0G5F1cK2OQcpMgWIywi5RLLRyE1L6CRQn7IofX0LfxZz1okMP&#x2F;g26HXkSCYEHCCrh548pdZKiv0SCGPyimSH216YWVu0kQLIizp8zj+7a&#x2F;l3b59X&#x2F;GnfwlTC0l0CCCa15Fem69p8JDgmBR+vShLvSH0RdWv8XmBBoc7PMaxkJfK0QQLIyzL0bH&#x2F;7b98PHRNz8+LNHbDMlPQ7NyKMUhqHVbtEFLGk4m337y5eWHSBAsTkSfyswqXnqjyzBm6XNvbPGbOyMDL9nbBa31aURHSKlm7Lylld7c6Fm5jQTBRkT5W7eCIMQSWVJHEGyMCFgQbIwIWBBszD8AAAD&#x2F;&#x2F;6jSydYAAAAGSURBVAMAm+X8VKcFJNwAAAAASUVORK5CYII&#x3D;" width="180" height="60" alt="">
+<div class="org-text">
+<div class="org-name">Sri Lakshmi Traders</div>
+<div class="org-address"><div>12-3, Main Road</div><div>Abids, Hyderabad 500001</div></div>
+<div class="org-contact">+91 98480 12345 · accounts@srilakshmi.example</div>
+<div class="kv"><span class="k">GSTIN:</span>
+<span class="v">36AABCU9603R1ZM</span></div><div class="kv"><span class="k">State:</span>
+<span class="v">Telangana (Code: 36)</span></div><div class="kv"><span class="k">PAN:</span>
+<span class="v">AABCU9603R</span></div><div class="kv"><span class="k">Udyam:</span>
+<span class="v">UDYAM-TS-02-0012345</span></div>
+</div>
+</div>
+<div class="doc-title-box">
+<h1 class="doc-title">TAX INVOICE</h1>
+</div>
+</header>
+<section class="subject">
+<div class="parties">
+<div class="party">
+<div class="label">Bill To</div>
+<div class="party-name">Bengaluru Build Mart Pvt Ltd</div>
+<div>45, 2nd Cross, Peenya Industrial Area</div><div>Bengaluru 560058</div>
+<div><span class="k">Phone:</span> 080 2345 6789</div>
+<div class="kv"><span class="k">GSTIN:</span>
+<span class="v">29AAACB1234F1Z5</span></div><div class="kv"><span class="k">State:</span>
+<span class="v">Karnataka (Code: 29)</span></div>
+</div>
+<div class="party">
+<div class="label">Ship To</div>
+<div class="party-name">Bengaluru Build Mart — Site Office</div>
+<div>Plot 9, Hosur Road</div><div>Bengaluru 560068</div>
+<div class="kv"><span class="k">State:</span>
+<span class="v">Karnataka (Code: 29)</span></div>
+</div>
+</div>
+<div class="doc-meta">
+<div class="kv"><span class="k">Invoice No:</span>
+<span class="v">TS&#x2F;2026-27&#x2F;0153</span></div>
+<div class="kv"><span class="k">Invoice Date:</span>
+<span class="v">18&#x2F;10&#x2F;2026</span></div>
+<div class="kv"><span class="k">Due Date:</span>
+<span class="v">17&#x2F;11&#x2F;2026</span></div>
+<div class="kv"><span class="k">Payment Terms:</span>
+<span class="v">Net 30 days</span></div>
+<div class="kv"><span class="k">Reference:</span>
+<span class="v">PO-BBM-7781</span></div>
+<div class="kv"><span class="k">Place of Supply:</span>
+<span class="v">Karnataka (29)</span></div><div class="kv"><span class="k">Reverse Charge:</span>
+<span class="v">No</span></div>
+<div class="kv"><span class="k">E-way Bill No:</span>
+<span class="v">3410 1234 5678</span></div>
+</div>
+</section>
+<table class="items">
+<thead>
+<tr><th class="col-index al-center" scope="col">#</th><th class="col-name al-start" scope="col">Item</th><th class="col-hsnOrSac al-start" scope="col">HSN&#x2F;SAC</th><th class="col-qty al-end" scope="col">Qty</th><th class="col-rate al-end" scope="col">Rate</th><th class="col-amount al-end" scope="col">Taxable Value</th><th class="col-taxPercent al-end" scope="col">GST %</th><th class="col-taxAmount al-end" scope="col">GST</th><th class="col-total al-end" scope="col">Total</th></tr>
+</thead>
+<tbody>
+<tr><td class="col-index al-center">1</td><td class="col-name al-start">Portland Cement 53 Grade</td><td class="col-hsnOrSac al-start">2523</td><td class="col-qty al-end">200 BAG</td><td class="col-rate al-end">365.00</td><td class="col-amount al-end">73,000.00</td><td class="col-taxPercent al-end">28%</td><td class="col-taxAmount al-end">20,440.00</td><td class="col-total al-end">93,440.00</td></tr>
+<tr><td class="col-index al-center">2</td><td class="col-name al-start">TMT Steel Bar Fe500 10mm</td><td class="col-hsnOrSac al-start">7214</td><td class="col-qty al-end">1,250.5 KG</td><td class="col-rate al-end">61.40</td><td class="col-amount al-end">76,780.70</td><td class="col-taxPercent al-end">18%</td><td class="col-taxAmount al-end">13,820.53</td><td class="col-total al-end">90,601.23</td></tr>
+<tr><td class="col-index al-center">3</td><td class="col-name al-start">PVC Pipe 4 inch 6 m</td><td class="col-hsnOrSac al-start">3917</td><td class="col-qty al-end">40 NOS</td><td class="col-rate al-end">812.25</td><td class="col-amount al-end">32,490.00</td><td class="col-taxPercent al-end">18%</td><td class="col-taxAmount al-end">5,848.20</td><td class="col-total al-end">38,338.20</td></tr>
+<tr><td class="col-index al-center">4</td><td class="col-name al-start">Transport (Hyderabad to Bengaluru)</td><td class="col-hsnOrSac al-start">9965</td><td class="col-qty al-end">1 TRIP</td><td class="col-rate al-end">18,000.00</td><td class="col-amount al-end">18,000.00</td><td class="col-taxPercent al-end">5%</td><td class="col-taxAmount al-end">900.00</td><td class="col-total al-end">18,900.00</td></tr>
+</tbody>
+</table>
+<section class="after-items">
+<div class="after-left">
+<div class="words">Rupees Two Lakh Forty One Thousand Two Hundred Seventy Nine Only</div>
+<div class="pay-details">
+<div class="section-title">Bank Details</div>
+<div class="kv"><span class="k">Bank:</span>
+<span class="v">State Bank of India</span></div><div class="kv"><span class="k">A&#x2F;c No:</span>
+<span class="v">30123456789</span></div><div class="kv"><span class="k">IFSC:</span>
+<span class="v">SBIN0001234</span></div>
+</div>
+<section class="notes-terms">
+<div class="notes"><div class="section-title">Notes</div><div class="rich">Material dispatched in 2 lots.</div></div>
+<div class="terms"><div class="section-title">Terms &amp; Conditions</div><div class="rich small">Goods once sold cannot be returned.<br>Payment due within credit period.<br>Subject to Hyderabad jurisdiction.</div></div>
+</section>
+</div>
+<div class="after-right"><table class="totals">
+<tbody>
+<tr><th scope="row">Sub Total</th><td>₹2,00,270.70</td></tr>
+<tr><th scope="row">IGST @ 5%</th><td>₹900.00</td></tr><tr><th scope="row">IGST @ 18%</th><td>₹19,668.73</td></tr><tr><th scope="row">IGST @ 28%</th><td>₹20,440.00</td></tr>
+<tr><th scope="row">Round Off</th><td>-₹0.43</td></tr>
+<tr class="grand"><th scope="row">Grand Total</th><td>₹2,41,279.00</td></tr>
+<tr><th scope="row">Paid</th><td>-₹50,000.00</td></tr>
+<tr><th scope="row">Credit Notes</th><td>-₹1,000.00</td></tr>
+<tr class="balance"><th scope="row">Balance Due</th><td>₹1,90,279.00</td></tr>
+</tbody>
+</table>
+</div>
+</section>
+<footer class="doc-foot">
+<div class="generated">This is a computer-generated invoice.</div>
+<div class="sign"><div>For Sri Lakshmi Traders</div><div class="sign-space"></div><div class="sign-label">Authorised Signatory</div></div>
+</footer>
+</main>
+</body>
+</html>

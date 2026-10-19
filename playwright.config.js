@@ -3,6 +3,7 @@ const { defineConfig } = require('@playwright/test');
 
 module.exports = defineConfig({
     testDir: 'tests',
+    testIgnore: ['unit/**', 'fixtures/**'], // unit tests run with node:test (npm run test:unit)
     timeout: 60000,
     fullyParallel: false,
     workers: 1,

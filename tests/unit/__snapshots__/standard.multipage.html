@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+<meta charset="utf-8">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; img-src data:; style-src 'unsafe-inline'; font-src data:">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>TAX INVOICE INV-0420</title>
+<!--style_start-->
+<style>
+@page { size: 210mm 297mm; margin: 12mm; }
+:root { --accent: #1f4e79; --ink: #1c2230; --muted: #5d6676; --line: #d6dbe4; --soft: #f2f4f8; }
+* { box-sizing: border-box; }
+html { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+body { margin: 0; color: var(--ink); font: 9pt/1.38 "Segoe UI", "Noto Sans", Inter, Roboto, "Helvetica Neue", Arial, "Nirmala UI", "Noto Sans Telugu", "Noto Naskh Arabic", "DejaVu Sans", sans-serif; }
+.sheet { background: #fff; }
+@media screen {
+ body { background: #e8ecf2; padding-block: 16px; }
+ .sheet { width: 210mm; min-height: 60mm; margin-inline: auto; padding: 12mm; box-shadow: 0 2px 10px rgba(20, 30, 50, 0.18); }
+}
+h1, h2, h3, p { margin: 0; }
+.k { color: var(--muted); }
+.kv { margin-block: 1px; }
+.muted { color: var(--muted); }
+.small { font-size: 8pt; }
+.num, td, th { font-variant-numeric: tabular-nums; }
+.al-start { text-align: start; }
+.al-end { text-align: end; }
+.al-center { text-align: center; }
+.section-title { font-size: 7.5pt; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; color: var(--accent); margin-block-end: 3px; }
+.avoid-break { break-inside: avoid; }
+.rich p { margin-block: 0 4px; }
+.rich ul, .rich ol { margin-block: 2px; padding-inline-start: 18px; }
+
+/* Header */
+.doc-head { display: flex; justify-content: space-between; gap: 16px; align-items: flex-start; border-block-start: 4px solid var(--accent); padding-block-start: 10px; }
+.org { min-width: 0; display: flex; gap: 12px; align-items: flex-start; }
+.org-text { min-width: 0; }
+.logo { display: block; flex-shrink: 0; object-fit: contain; }
+.org-name { font-size: 15pt; font-weight: 700; line-height: 1.2; }
+.org-address, .org-contact { color: var(--muted); }
+.org .kv { display: inline-block; margin-inline-end: 12px; }
+.doc-title-box { text-align: end; flex-shrink: 0; }
+.doc-title { font-size: 17pt; letter-spacing: 0.08em; color: var(--accent); font-weight: 700; }
+.stamp { display: inline-block; margin-block-start: 8px; padding: 3px 10px; border: 2px solid currentColor; border-radius: 4px; font-weight: 700; letter-spacing: 0.1em; transform: rotate(-4deg); }
+.stamp-paid { color: #15803d; }
+.stamp-partial { color: #b45309; }
+.stamp-overdue { color: #b91c1c; }
+
+/* Parties and document details */
+.subject { display: flex; gap: 14px; margin-block: 10px; align-items: stretch; }
+.parties { flex: 1; display: flex; gap: 14px; min-width: 0; }
+.party { flex: 1; min-width: 0; }
+.party .label { font-size: 7.5pt; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; color: var(--accent); }
+.party-name { font-weight: 700; font-size: 10.5pt; }
+.doc-meta { flex: 0 0 38%; background: var(--soft); border-radius: 4px; padding: 8px 10px; }
+.doc-meta .kv { display: flex; justify-content: space-between; gap: 8px; }
+.doc-meta .v { font-weight: 600; text-align: end; }
+
+/* Line items: the header row repeats on every page and rows never split across pages */
+table { border-collapse: collapse; width: 100%; }
+table.items thead { display: table-header-group; }
+table.items tr { break-inside: avoid; }
+table.items th { background: var(--soft); color: var(--ink); font-size: 8pt; font-weight: 700; padding: 6px 5px; border-block-end: 2px solid var(--accent); }
+table.items td { padding: 5px; border-block-end: 1px solid var(--line); vertical-align: top; }
+table.items .col-name { width: 34%; }
+table.items .col-index { width: 4%; }
+.sub { color: var(--muted); font-size: 8pt; }
+/* Amounts and quantities stay on one line; long item names wrap instead */
+table.items td.al-end, table.items td.al-center { white-space: nowrap; }
+
+/* Totals */
+.after-items { display: flex; gap: 16px; margin-block-start: 10px; break-inside: avoid; }
+.after-left { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 8px; }
+.after-right { flex: 0 0 42%; }
+table.totals th { text-align: start; font-weight: 400; color: var(--muted); padding: 3px 6px; }
+table.totals td { text-align: end; padding: 3px 6px; white-space: nowrap; }
+table.totals tr.grand th, table.totals tr.grand td { background: var(--accent); color: #fff; font-weight: 700; font-size: 11pt; padding: 6px; }
+table.totals tr.balance th, table.totals tr.balance td { font-weight: 700; color: var(--ink); border-block-start: 1px solid var(--line); }
+.words { border-inline-start: 3px solid var(--accent); padding-inline-start: 8px; }
+
+/* Tax summary, notes, terms, bank */
+.tax-summary { margin-block-start: 12px; }
+table.grid th, table.grid td { border: 1px solid var(--line); padding: 3px 5px; font-size: 8pt; }
+table.grid th { background: var(--soft); }
+table.grid tr.total td { font-weight: 700; }
+.notes-terms { display: flex; gap: 16px; margin-block-start: 12px; break-inside: avoid; }
+.notes-terms > div { flex: 1; min-width: 0; }
+.region-note { margin-block-start: 6px; font-weight: 600; }
+
+/* Footer and payment slip */
+.doc-foot { display: flex; justify-content: space-between; align-items: flex-end; gap: 16px; margin-block-start: 18px; break-inside: avoid; }
+.generated { color: var(--muted); font-size: 7.5pt; }
+.sign { text-align: center; min-width: 45mm; }
+.sign-space { height: 10mm; }
+.sign-label { border-block-start: 1px solid var(--ink); padding-block-start: 2px; }
+.stub { margin-block-start: 16px; border-block-start: 1px dashed var(--muted); padding-block-start: 10px; break-inside: avoid; }
+.stub-title { font-weight: 700; margin-block-end: 4px; }
+.stub-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 4px 16px; }
+.fill { display: inline-block; min-width: 30mm; border-block-end: 1px solid var(--ink); }
+@page {
+ @top-right { content: "Sri Lakshmi Traders \b7 INV\2d 0420"; font: 8pt sans-serif; color: #5d6676; }
+ @bottom-right { content: "Page " counter(page) " of " counter(pages); font: 8pt sans-serif; color: #5d6676; }
+}
+@page :first {
+ @top-right { content: none; }
+}
+</style>
+<!--style_end-->
+</head>
+<body class="tpl-standard">
+<main class="sheet" data-invoice-root>
+<header class="doc-head">
+<div class="org">
+<div class="org-text">
+<div class="org-name">Sri Lakshmi Traders</div>
+<div class="org-address"><div>12-3, Main Road</div><div>Abids, Hyderabad 500001</div></div>
+<div class="org-contact">+91 98480 12345 · accounts@srilakshmi.example</div>
+<div class="kv"><span class="k">GSTIN:</span>
+<span class="v">36AABCU9603R1ZM</span></div><div class="kv"><span class="k">State:</span>
+<span class="v">Telangana (Code: 36)</span></div>
+</div>
+</div>
+<div class="doc-title-box">
+<h1 class="doc-title">TAX INVOICE</h1>
+</div>
+</header>
+<section class="subject">
+<div class="parties">
+<div class="party">
+<div class="label">Bill To</div>
+<div class="party-name">Bengaluru Build Mart Pvt Ltd</div>
+<div>45, 2nd Cross, Peenya Industrial Area</div><div>Bengaluru 560058</div>
+<div><span class="k">Phone:</span> 080 2345 6789</div>
+<div class="kv"><span class="k">GSTIN:</span>
+<span class="v">29AAACB1234F1Z5</span></div><div class="kv"><span class="k">State:</span>
+<span class="v">Karnataka (Code: 29)</span></div>
+</div>
+</div>
+<div class="doc-meta">
+<div class="kv"><span class="k">Invoice No:</span>
+<span class="v">INV-0420</span></div>
+<div class="kv"><span class="k">Invoice Date:</span>
+<span class="v">18&#x2F;10&#x2F;2026</span></div>
+<div class="kv"><span class="k">Due Date:</span>
+<span class="v">17&#x2F;11&#x2F;2026</span></div>
+<div class="kv"><span class="k">Payment Terms:</span>
+<span class="v">Net 30 days</span></div>
+<div class="kv"><span class="k">Place of Supply:</span>
+<span class="v">Karnataka (29)</span></div><div class="kv"><span class="k">Reverse Charge:</span>
+<span class="v">No</span></div>
+</div>
+</section>
+<table class="items">
+<thead>
+<tr><th class="col-index al-center" scope="col">#</th><th class="col-name al-start" scope="col">Item</th><th class="col-hsnOrSac al-start" scope="col">HSN&#x2F;SAC</th><th class="col-qty al-end" scope="col">Qty</th><th class="col-rate al-end" scope="col">Rate</th><th class="col-discount al-end" scope="col">Discount</th><th class="col-amount al-end" scope="col">Taxable Value</th><th class="col-igstPercent al-end" scope="col">IGST %</th><th class="col-igstAmount al-end" scope="col">IGST</th><th class="col-total al-end" scope="col">Total</th></tr>
+</thead>
+<tbody>
+<tr><td class="col-index al-center">1</td><td class="col-name al-start">Portland Cement 53 Grade</td><td class="col-hsnOrSac al-start">2523</td><td class="col-qty al-end">1 BAG</td><td class="col-rate al-end">100.50</td><td class="col-discount al-end">5.03<div class="sub">5%</div></td><td class="col-amount al-end">95.47</td><td class="col-igstPercent al-end">28%</td><td class="col-igstAmount al-end">26.73</td><td class="col-total al-end">122.20</td></tr>
+<tr><td class="col-index al-center">2</td><td class="col-name al-start">TMT Steel Bar Fe500 10mm</td><td class="col-hsnOrSac al-start">7214</td><td class="col-qty al-end">2 KG</td><td class="col-rate al-end">137.50</td><td class="col-discount al-end"></td><td class="col-amount al-end">275.00</td><td class="col-igstPercent al-end">18%</td><td class="col-igstAmount al-end">49.50</td><td class="col-total al-end">324.50</td></tr>
+<tr><td class="col-index al-center">3</td><td class="col-name al-start">River Sand (Fine)</td><td class="col-hsnOrSac al-start">2505</td><td class="col-qty al-end">3 TON</td><td class="col-rate al-end">174.50</td><td class="col-discount al-end"></td><td class="col-amount al-end">523.50</td><td class="col-igstPercent al-end">5%</td><td class="col-igstAmount al-end">26.18</td><td class="col-total al-end">549.68</td></tr>
+<tr><td class="col-index al-center">4</td><td class="col-name al-start">PVC Pipe 4 inch 6 m</td><td class="col-hsnOrSac al-start">3917</td><td class="col-qty al-end">4 NOS</td><td class="col-rate al-end">211.50</td><td class="col-discount al-end"></td><td class="col-amount al-end">846.00</td><td class="col-igstPercent al-end">18%</td><td class="col-igstAmount al-end">152.28</td><td class="col-total al-end">998.28</td></tr>
+<tr><td class="col-index al-center">5</td><td class="col-name al-start">Ceramic Floor Tile 600×600 Glossy Ivory</td><td class="col-hsnOrSac al-start">6907</td><td class="col-qty al-end">5 BOX</td><td class="col-rate al-end">248.50</td><td class="col-discount al-end"></td><td class="col-amount al-end">1,242.50</td><td class="col-igstPercent al-end">18%</td><td class="col-igstAmount al-end">223.65</td><td class="col-total al-end">1,466.15</td></tr>
+<tr><td class="col-index al-center">6</td><td class="col-name al-start">Cement Bricks Solid 6 inch</td><td class="col-hsnOrSac al-start">6810</td><td class="col-qty al-end">6 NOS</td><td class="col-rate al-end">285.50</td><td class="col-discount al-end"></td><td class="col-amount al-end">1,713.00</td><td class="col-igstPercent al-end">12%</td><td class="col-igstAmount al-end">205.56</td><td class="col-total al-end">1,918.56</td></tr>
+<tr><td class="col-index al-center">7</td><td class="col-name al-start">Electrical Wire 2.5 sq mm FR copper, 90 m coil</td><td class="col-hsnOrSac al-start">8544</td><td class="col-qty al-end">7 COIL</td><td class="col-rate al-end">322.50</td><td class="col-discount al-end"></td><td class="col-amount al-end">2,257.50</td><td class="col-igstPercent al-end">18%</td><td class="col-igstAmount al-end">406.35</td><td class="col-total al-end">2,663.85</td></tr>
+<tr><td class="col-index al-center">8</td><td class="col-name al-start">Labour charges for unloading — includes loading, unloading and stacking at the site as per the work order dated 01&#x2F;10&#x2F;2026</td><td class="col-hsnOrSac al-start">9967</td><td class="col-qty al-end">8 JOB</td><td class="col-rate al-end">359.50</td><td class="col-discount al-end"></td><td class="col-amount al-end">2,876.00</td><td class="col-igstPercent al-end">18%</td><td class="col-igstAmount al-end">517.68</td><td class="col-total al-end">3,393.68</td></tr>
+<tr><td class="col-index al-center">9</td><td class="col-name al-start">Portland Cement 53 Grade</td><td class="col-hsnOrSac al-start">2523</td><td class="col-qty al-end">9 BAG</td><td class="col-rate al-end">396.50</td><td class="col-discount al-end"></td><td class="col-amount al-end">3,568.50</td><td class="col-igstPercent al-end">28%</td><td class="col-igstAmount al-end">999.18</td><td class="col-total al-end">4,567.68</td></tr>
+<tr><td class="col-index al-center">10</td><td class="col-name al-start">TMT Steel Bar Fe500 10mm</td><td class="col-hsnOrSac al-start">7214</td><td class="col-qty al-end">1 KG</td><td class="col-rate al-end">433.50</td><td class="col-discount al-end"></td><td class="col-amount al-end">433.50</td><td class="col-igstPercent al-end">18%</td><td class="col-igstAmount al-end">78.03</td><td class="col-total al-end">511.53</td></tr>
+<tr><td class="col-index al-center">11</td><td class="col-name al-start">River Sand (Fine)</td><td class="col-hsnOrSac al-start">2505</td><td class="col-qty al-end">2 TON</td><td class="col-rate al-end">470.50</td><td class="col-discount al-end">47.05<div class="sub">5%</div></td><td class="col-amount al-end">893.95</td><td class="col-igstPercent al-end">5%</td><td class="col-igstAmount al-end">44.70</td><td class="col-total al-end">938.65</td></tr>
+<tr><td class="col-index al-center">12</td><td class="col-name al-start">PVC Pipe 4 inch 6 m</td><td class="col-hsnOrSac al-start">3917</td><td class="col-qty al-end">3 NOS</td><td class="col-rate al-end">507.50</td><td class="col-discount al-end"></td><td class="col-amount al-end">1,522.50</td><td class="col-igstPercent al-end">18%</td><td class="col-igstAmount al-end">274.05</td><td class="col-total al-end">1,796.55</td></tr>
+<tr><td class="col-index al-center">13</td><td class="col-name al-start">Ceramic Floor Tile 600×600 Glossy Ivory</td><td class="col-hsnOrSac al-start">6907</td><td class="col-qty al-end">4 BOX</td><td class="col-rate al-end">544.50</td><td class="col-discount al-end"></td><td class="col-amount al-end">2,178.00</td><td class="col-igstPercent al-end">18%</td><td class="col-igstAmount al-end">392.04</td><td class="col-total al-end">2,570.04</td></tr>
+<tr><td class="col-index al-center">14</td><td class="col-name al-start">Cement Bricks Solid 6 inch</td><td class="col-hsnOrSac al-start">6810</td><td class="col-qty al-end">5 NOS</td><td class="col-rate al-end">581.50</td><td class="col-discount al-end"></td><td class="col-amount al-end">2,907.50</td><td class="col-igstPercent al-end">12%</td><td class="col-igstAmount al-end">348.90</td><td class="col-total al-end">3,256.40</td></tr>
+<tr><td class="col-index al-center">15</td><td class="col-name al-start">Electrical Wire 2.5 sq mm FR copper, 90 m coil</td><td class="col-hsnOrSac al-start">8544</td><td class="col-qty al-end">6 COIL</td><td class="col-rate al-end">618.50</td><td class="col-discount al-end"></td><td class="col-amount al-end">3,711.00</td><td class="col-igstPercent al-end">18%</td><td class="col-igstAmount al-end">667.98</td><td class="col-total al-end">4,378.98</td></tr>
+<tr><td class="col-index al-center">16</td><td class="col-name al-start">Labour charges for unloading</td><td class="col-hsnOrSac al-start">9967</td><td class="col-qty al-end">7 JOB</td><td class="col-rate al-end">655.50</td><td class="col-discount al-end"></td><td class="col-amount al-end">4,588.50</td><td class="col-igstPercent al-end">18%</td><td class="col-igstAmount al-end">825.93</td><td class="col-total al-end">5,414.43</td></tr>
+<tr><td class="col-index al-center">17</td><td class="col-name al-start">Portland Cement 53 Grade</td><td class="col-hsnOrSac al-start">2523</td><td class="col-qty al-end">8 BAG</td><td class="col-rate al-end">692.50</td><td class="col-discount al-end"></td><td class="col-amount al-end">5,540.00</td><td class="col-igstPercent al-end">28%</td><td class="col-igstAmount al-end">1,551.20</td><td class="col-total al-end">7,091.20</td></tr>
+<tr><td class="col-index al-center">18</td><td class="col-name al-start">TMT Steel Bar Fe500 10mm</td><td class="col-hsnOrSac al-start">7214</td><td class="col-qty al-end">9 KG</td><td class="col-rate al-end">729.50</td><td class="col-discount al-end"></td><td class="col-amount al-end">6,565.50</td><td class="col-igstPercent al-end">18%</td><td class="col-igstAmount al-end">1,181.79</td><td class="col-total al-end">7,747.29</td></tr>
+<tr><td class="col-index al-center">19</td><td class="col-name al-start">River Sand (Fine)</td><td class="col-hsnOrSac al-start">2505</td><td class="col-qty al-end">1 TON</td><td class="col-rate al-end">766.50</td><td class="col-discount al-end"></td><td class="col-amount al-end">766.50</td><td class="col-igstPercent al-end">5%</td><td class="col-igstAmount al-end">38.33</td><td class="col-total al-end">804.83</td></tr>
+<tr><td class="col-index al-center">20</td><td class="col-name al-start">PVC Pipe 4 inch 6 m</td><td class="col-hsnOrSac al-start">3917</td><td class="col-qty al-end">2 NOS</td><td class="col-rate al-end">803.50</td><td class="col-discount al-end"></td><td class="col-amount al-end">1,607.00</td><td class="col-igstPercent al-end">18%</td><td class="col-igstAmount al-end">289.26</td><td class="col-total al-end">1,896.26</td></tr>
+<tr><td class="col-index al-center">21</td><td class="col-name al-start">Ceramic Floor Tile 600×600 Glossy Ivory</td><td class="col-hsnOrSac al-start">6907</td><td class="col-qty al-end">3 BOX</td><td class="col-rate al-end">840.50</td><td class="col-discount al-end">126.08<div class="sub">5%</div></td><td class="col-amount al-end">2,395.42</td><td class="col-igstPercent al-end">18%</td><td class="col-igstAmount al-end">431.18</td><td class="col-total al-end">2,826.60</td></tr>
+<tr><td class="col-index al-center">22</td><td class="col-name al-start">Cement Bricks Solid 6 inch</td><td class="col-hsnOrSac al-start">6810</td><td class="col-qty al-end">4 NOS</td><td class="col-rate al-end">877.50</td><td class="col-discount al-end"></td><td class="col-amount al-end">3,510.00</td><td class="col-igstPercent al-end">12%</td><td class="col-igstAmount al-end">421.20</td><td class="col-total al-end">3,931.20</td></tr>
+<tr><td class="col-index al-center">23</td><td class="col-name al-start">Electrical Wire 2.5 sq mm FR copper, 90 m coil</td><td class="col-hsnOrSac al-start">8544</td><td class="col-qty al-end">5 COIL</td><td class="col-rate al-end">914.50</td><td class="col-discount al-end"></td><td class="col-amount al-end">4,572.50</td><td class="col-igstPercent al-end">18%</td><td class="col-igstAmount al-end">823.05</td><td class="col-total al-end">5,395.55</td></tr>
+<tr><td class="col-index al-center">24</td><td class="col-name al-start">Labour charges for unloading</td><td class="col-hsnOrSac al-start">9967</td><td class="col-qty al-end">6 JOB</td><td class="col-rate al-end">951.50</td><td class="col-discount al-end"></td><td class="col-amount al-end">5,709.00</td><td class="col-igstPercent al-end">18%</td><td class="col-igstAmount al-end">1,027.62</td><td class="col-total al-end">6,736.62</td></tr>
+<tr><td class="col-index al-center">25</td><td class="col-name al-start">Portland Cement 53 Grade</td><td class="col-hsnOrSac al-start">2523</td><td class="col-qty al-end">7 BAG</td><td class="col-rate al-end">988.50</td><td class="col-discount al-end"></td><td class="col-amount al-end">6,919.50</td><td class="col-igstPercent al-end">28%</td><td class="col-igstAmount al-end">1,937.46</td><td class="col-total al-end">8,856.96</td></tr>
+<tr><td class="col-index al-center">26</td><td class="col-name al-start">TMT Steel Bar Fe500 10mm</td><td class="col-hsnOrSac al-start">7214</td><td class="col-qty al-end">8 KG</td><td class="col-rate al-end">125.50</td><td class="col-discount al-end"></td><td class="col-amount al-end">1,004.00</td><td class="col-igstPercent al-end">18%</td><td class="col-igstAmount al-end">180.72</td><td class="col-total al-end">1,184.72</td></tr>
+<tr><td class="col-index al-center">27</td><td class="col-name al-start">River Sand (Fine)</td><td class="col-hsnOrSac al-start">2505</td><td class="col-qty al-end">9 TON</td><td class="col-rate al-end">162.50</td><td class="col-discount al-end"></td><td class="col-amount al-end">1,462.50</td><td class="col-igstPercent al-end">5%</td><td class="col-igstAmount al-end">73.13</td><td class="col-total al-end">1,535.63</td></tr>
+<tr><td class="col-index al-center">28</td><td class="col-name al-start">PVC Pipe 4 inch 6 m</td><td class="col-hsnOrSac al-start">3917</td><td class="col-qty al-end">1 NOS</td><td class="col-rate al-end">199.50</td><td class="col-discount al-end"></td><td class="col-amount al-end">199.50</td><td class="col-igstPercent al-end">18%</td><td class="col-igstAmount al-end">35.91</td><td class="col-total al-end">235.41</td></tr>
+<tr><td class="col-index al-center">29</td><td class="col-name al-start">Ceramic Floor Tile 600×600 Glossy Ivory</td><td class="col-hsnOrSac al-start">6907</td><td class="col-qty al-end">2 BOX</td><td class="col-rate al-end">236.50</td><td class="col-discount al-end"></td><td class="col-amount al-end">473.00</td><td class="col-igstPercent al-end">18%</td><td class="col-igstAmount al-end">85.14</td><td class="col-total al-end">558.14</td></tr>
+<tr><td class="col-index al-center">30</td><td class="col-name al-start">Cement Bricks Solid 6 inch</td><td class="col-hsnOrSac al-start">6810</td><td class="col-qty al-end">3 NOS</td><td class="col-rate al-end">273.50</td><td class="col-discount al-end"></td><td class="col-amount al-end">820.50</td><td class="col-igstPercent al-end">12%</td><td class="col-igstAmount al-end">98.46</td><td class="col-total al-end">918.96</td></tr>
+<tr><td class="col-index al-center">31</td><td class="col-name al-start">Electrical Wire 2.5 sq mm FR copper, 90 m coil</td><td class="col-hsnOrSac al-start">8544</td><td class="col-qty al-end">4 COIL</td><td class="col-rate al-end">310.50</td><td class="col-discount al-end">62.10<div class="sub">5%</div></td><td class="col-amount al-end">1,179.90</td><td class="col-igstPercent al-end">18%</td><td class="col-igstAmount al-end">212.38</td><td class="col-total al-end">1,392.28</td></tr>
+<tr><td class="col-index al-center">32</td><td class="col-name al-start">Labour charges for unloading</td><td class="col-hsnOrSac al-start">9967</td><td class="col-qty al-end">5 JOB</td><td class="col-rate al-end">347.50</td><td class="col-discount al-end"></td><td class="col-amount al-end">1,737.50</td><td class="col-igstPercent al-end">18%</td><td class="col-igstAmount al-end">312.75</td><td class="col-total al-end">2,050.25</td></tr>
+<tr><td class="col-index al-center">33</td><td class="col-name al-start">Portland Cement 53 Grade</td><td class="col-hsnOrSac al-start">2523</td><td class="col-qty al-end">6 BAG</td><td class="col-rate al-end">384.50</td><td class="col-discount al-end"></td><td class="col-amount al-end">2,307.00</td><td class="col-igstPercent al-end">28%</td><td class="col-igstAmount al-end">645.96</td><td class="col-total al-end">2,952.96</td></tr>
+<tr><td class="col-index al-center">34</td><td class="col-name al-start">TMT Steel Bar Fe500 10mm</td><td class="col-hsnOrSac al-start">7214</td><td class="col-qty al-end">7 KG</td><td class="col-rate al-end">421.50</td><td class="col-discount al-end"></td><td class="col-amount al-end">2,950.50</td><td class="col-igstPercent al-end">18%</td><td class="col-igstAmount al-end">531.09</td><td class="col-total al-end">3,481.59</td></tr>
+<tr><td class="col-index al-center">35</td><td class="col-name al-start">River Sand (Fine)</td><td class="col-hsnOrSac al-start">2505</td><td class="col-qty al-end">8 TON</td><td class="col-rate al-end">458.50</td><td class="col-discount al-end"></td><td class="col-amount al-end">3,668.00</td><td class="col-igstPercent al-end">5%</td><td class="col-igstAmount al-end">183.40</td><td class="col-total al-end">3,851.40</td></tr>
+<tr><td class="col-index al-center">36</td><td class="col-name al-start">PVC Pipe 4 inch 6 m</td><td class="col-hsnOrSac al-start">3917</td><td class="col-qty al-end">9 NOS</td><td class="col-rate al-end">495.50</td><td class="col-discount al-end"></td><td class="col-amount al-end">4,459.50</td><td class="col-igstPercent al-end">18%</td><td class="col-igstAmount al-end">802.71</td><td class="col-total al-end">5,262.21</td></tr>
+<tr><td class="col-index al-center">37</td><td class="col-name al-start">Ceramic Floor Tile 600×600 Glossy Ivory</td><td class="col-hsnOrSac al-start">6907</td><td class="col-qty al-end">1 BOX</td><td class="col-rate al-end">532.50</td><td class="col-discount al-end"></td><td class="col-amount al-end">532.50</td><td class="col-igstPercent al-end">18%</td><td class="col-igstAmount al-end">95.85</td><td class="col-total al-end">628.35</td></tr>
+<tr><td class="col-index al-center">38</td><td class="col-name al-start">Cement Bricks Solid 6 inch</td><td class="col-hsnOrSac al-start">6810</td><td class="col-qty al-end">2 NOS</td><td class="col-rate al-end">569.50</td><td class="col-discount al-end"></td><td class="col-amount al-end">1,139.00</td><td class="col-igstPercent al-end">12%</td><td class="col-igstAmount al-end">136.68</td><td class="col-total al-end">1,275.68</td></tr>
+<tr><td class="col-index al-center">39</td><td class="col-name al-start">Electrical Wire 2.5 sq mm FR copper, 90 m coil</td><td class="col-hsnOrSac al-start">8544</td><td class="col-qty al-end">3 COIL</td><td class="col-rate al-end">606.50</td><td class="col-discount al-end"></td><td class="col-amount al-end">1,819.50</td><td class="col-igstPercent al-end">18%</td><td class="col-igstAmount al-end">327.51</td><td class="col-total al-end">2,147.01</td></tr>
+<tr><td class="col-index al-center">40</td><td class="col-name al-start">Labour charges for unloading</td><td class="col-hsnOrSac al-start">9967</td><td class="col-qty al-end">4 JOB</td><td class="col-rate al-end">643.50</td><td class="col-discount al-end"></td><td class="col-amount al-end">2,574.00</td><td class="col-igstPercent al-end">18%</td><td class="col-igstAmount al-end">463.32</td><td class="col-total al-end">3,037.32</td></tr>
+<tr><td class="col-index al-center">41</td><td class="col-name al-start">Portland Cement 53 Grade</td><td class="col-hsnOrSac al-start">2523</td><td class="col-qty al-end">5 BAG</td><td class="col-rate al-end">680.50</td><td class="col-discount al-end">170.13<div class="sub">5%</div></td><td class="col-amount al-end">3,232.37</td><td class="col-igstPercent al-end">28%</td><td class="col-igstAmount al-end">905.06</td><td class="col-total al-end">4,137.43</td></tr>
+<tr><td class="col-index al-center">42</td><td class="col-name al-start">TMT Steel Bar Fe500 10mm</td><td class="col-hsnOrSac al-start">7214</td><td class="col-qty al-end">6 KG</td><td class="col-rate al-end">717.50</td><td class="col-discount al-end"></td><td class="col-amount al-end">4,305.00</td><td class="col-igstPercent al-end">18%</td><td class="col-igstAmount al-end">774.90</td><td class="col-total al-end">5,079.90</td></tr>
+<tr><td class="col-index al-center">43</td><td class="col-name al-start">River Sand (Fine)</td><td class="col-hsnOrSac al-start">2505</td><td class="col-qty al-end">7 TON</td><td class="col-rate al-end">754.50</td><td class="col-discount al-end"></td><td class="col-amount al-end">5,281.50</td><td class="col-igstPercent al-end">5%</td><td class="col-igstAmount al-end">264.08</td><td class="col-total al-end">5,545.58</td></tr>
+<tr><td class="col-index al-center">44</td><td class="col-name al-start">PVC Pipe 4 inch 6 m</td><td class="col-hsnOrSac al-start">3917</td><td class="col-qty al-end">8 NOS</td><td class="col-rate al-end">791.50</td><td class="col-discount al-end"></td><td class="col-amount al-end">6,332.00</td><td class="col-igstPercent al-end">18%</td><td class="col-igstAmount al-end">1,139.76</td><td class="col-total al-end">7,471.76</td></tr>
+<tr><td class="col-index al-center">45</td><td class="col-name al-start">Ceramic Floor Tile 600×600 Glossy Ivory</td><td class="col-hsnOrSac al-start">6907</td><td class="col-qty al-end">9 BOX</td><td class="col-rate al-end">828.50</td><td class="col-discount al-end"></td><td class="col-amount al-end">7,456.50</td><td class="col-igstPercent al-end">18%</td><td class="col-igstAmount al-end">1,342.17</td><td class="col-total al-end">8,798.67</td></tr>
+<tr><td class="col-index al-center">46</td><td class="col-name al-start">Cement Bricks Solid 6 inch</td><td class="col-hsnOrSac al-start">6810</td><td class="col-qty al-end">1 NOS</td><td class="col-rate al-end">865.50</td><td class="col-discount al-end"></td><td class="col-amount al-end">865.50</td><td class="col-igstPercent al-end">12%</td><td class="col-igstAmount al-end">103.86</td><td class="col-total al-end">969.36</td></tr>
+<tr><td class="col-index al-center">47</td><td class="col-name al-start">Electrical Wire 2.5 sq mm FR copper, 90 m coil</td><td class="col-hsnOrSac al-start">8544</td><td class="col-qty al-end">2 COIL</td><td class="col-rate al-end">902.50</td><td class="col-discount al-end"></td><td class="col-amount al-end">1,805.00</td><td class="col-igstPercent al-end">18%</td><td class="col-igstAmount al-end">324.90</td><td class="col-total al-end">2,129.90</td></tr>
+<tr><td class="col-index al-center">48</td><td class="col-name al-start">Labour charges for unloading</td><td class="col-hsnOrSac al-start">9967</td><td class="col-qty al-end">3 JOB</td><td class="col-rate al-end">939.50</td><td class="col-discount al-end"></td><td class="col-amount al-end">2,818.50</td><td class="col-igstPercent al-end">18%</td><td class="col-igstAmount al-end">507.33</td><td class="col-total al-end">3,325.83</td></tr>
+<tr><td class="col-index al-center">49</td><td class="col-name al-start">Portland Cement 53 Grade</td><td class="col-hsnOrSac al-start">2523</td><td class="col-qty al-end">4 BAG</td><td class="col-rate al-end">976.50</td><td class="col-discount al-end"></td><td class="col-amount al-end">3,906.00</td><td class="col-igstPercent al-end">28%</td><td class="col-igstAmount al-end">1,093.68</td><td class="col-total al-end">4,999.68</td></tr>
+<tr><td class="col-index al-center">50</td><td class="col-name al-start">TMT Steel Bar Fe500 10mm</td><td class="col-hsnOrSac al-start">7214</td><td class="col-qty al-end">5 KG</td><td class="col-rate al-end">113.50</td><td class="col-discount al-end"></td><td class="col-amount al-end">567.50</td><td class="col-igstPercent al-end">18%</td><td class="col-igstAmount al-end">102.15</td><td class="col-total al-end">669.65</td></tr>
+<tr><td class="col-index al-center">51</td><td class="col-name al-start">River Sand (Fine)</td><td class="col-hsnOrSac al-start">2505</td><td class="col-qty al-end">6 TON</td><td class="col-rate al-end">150.50</td><td class="col-discount al-end">45.15<div class="sub">5%</div></td><td class="col-amount al-end">857.85</td><td class="col-igstPercent al-end">5%</td><td class="col-igstAmount al-end">42.89</td><td class="col-total al-end">900.74</td></tr>
+<tr><td class="col-index al-center">52</td><td class="col-name al-start">PVC Pipe 4 inch 6 m</td><td class="col-hsnOrSac al-start">3917</td><td class="col-qty al-end">7 NOS</td><td class="col-rate al-end">187.50</td><td class="col-discount al-end"></td><td class="col-amount al-end">1,312.50</td><td class="col-igstPercent al-end">18%</td><td class="col-igstAmount al-end">236.25</td><td class="col-total al-end">1,548.75</td></tr>
+<tr><td class="col-index al-center">53</td><td class="col-name al-start">Ceramic Floor Tile 600×600 Glossy Ivory</td><td class="col-hsnOrSac al-start">6907</td><td class="col-qty al-end">8 BOX</td><td class="col-rate al-end">224.50</td><td class="col-discount al-end"></td><td class="col-amount al-end">1,796.00</td><td class="col-igstPercent al-end">18%</td><td class="col-igstAmount al-end">323.28</td><td class="col-total al-end">2,119.28</td></tr>
+<tr><td class="col-index al-center">54</td><td class="col-name al-start">Cement Bricks Solid 6 inch</td><td class="col-hsnOrSac al-start">6810</td><td class="col-qty al-end">9 NOS</td><td class="col-rate al-end">261.50</td><td class="col-discount al-end"></td><td class="col-amount al-end">2,353.50</td><td class="col-igstPercent al-end">12%</td><td class="col-igstAmount al-end">282.42</td><td class="col-total al-end">2,635.92</td></tr>
+<tr><td class="col-index al-center">55</td><td class="col-name al-start">Electrical Wire 2.5 sq mm FR copper, 90 m coil</td><td class="col-hsnOrSac al-start">8544</td><td class="col-qty al-end">1 COIL</td><td class="col-rate al-end">298.50</td><td class="col-discount al-end"></td><td class="col-amount al-end">298.50</td><td class="col-igstPercent al-end">18%</td><td class="col-igstAmount al-end">53.73</td><td class="col-total al-end">352.23</td></tr>
+<tr><td class="col-index al-center">56</td><td class="col-name al-start">Labour charges for unloading</td><td class="col-hsnOrSac al-start">9967</td><td class="col-qty al-end">2 JOB</td><td class="col-rate al-end">335.50</td><td class="col-discount al-end"></td><td class="col-amount al-end">671.00</td><td class="col-igstPercent al-end">18%</td><td class="col-igstAmount al-end">120.78</td><td class="col-total al-end">791.78</td></tr>
+<tr><td class="col-index al-center">57</td><td class="col-name al-start">Portland Cement 53 Grade</td><td class="col-hsnOrSac al-start">2523</td><td class="col-qty al-end">3 BAG</td><td class="col-rate al-end">372.50</td><td class="col-discount al-end"></td><td class="col-amount al-end">1,117.50</td><td class="col-igstPercent al-end">28%</td><td class="col-igstAmount al-end">312.90</td><td class="col-total al-end">1,430.40</td></tr>
+<tr><td class="col-index al-center">58</td><td class="col-name al-start">TMT Steel Bar Fe500 10mm</td><td class="col-hsnOrSac al-start">7214</td><td class="col-qty al-end">4 KG</td><td class="col-rate al-end">409.50</td><td class="col-discount al-end"></td><td class="col-amount al-end">1,638.00</td><td class="col-igstPercent al-end">18%</td><td class="col-igstAmount al-end">294.84</td><td class="col-total al-end">1,932.84</td></tr>
+<tr><td class="col-index al-center">59</td><td class="col-name al-start">River Sand (Fine)</td><td class="col-hsnOrSac al-start">2505</td><td class="col-qty al-end">5 TON</td><td class="col-rate al-end">446.50</td><td class="col-discount al-end"></td><td class="col-amount al-end">2,232.50</td><td class="col-igstPercent al-end">5%</td><td class="col-igstAmount al-end">111.63</td><td class="col-total al-end">2,344.13</td></tr>
+<tr><td class="col-index al-center">60</td><td class="col-name al-start">PVC Pipe 4 inch 6 m</td><td class="col-hsnOrSac al-start">3917</td><td class="col-qty al-end">6 NOS</td><td class="col-rate al-end">483.50</td><td class="col-discount al-end"></td><td class="col-amount al-end">2,901.00</td><td class="col-igstPercent al-end">18%</td><td class="col-igstAmount al-end">522.18</td><td class="col-total al-end">3,423.18</td></tr>
+</tbody>
+</table>
+<section class="after-items">
+<div class="after-left">
+<div class="words"><div class="section-title">Amount in words</div>Rupees One Lakh Seventy One Thousand Two Hundred Seventy Seven Only</div>
+<div class="pay-details">
+<div class="section-title">Bank Details</div>
+<div class="kv"><span class="k">Bank:</span>
+<span class="v">State Bank of India</span></div><div class="kv"><span class="k">A&#x2F;c No:</span>
+<span class="v">30123456789</span></div><div class="kv"><span class="k">IFSC:</span>
+<span class="v">SBIN0001234</span></div>
+</div>
+</div>
+<div class="after-right"><table class="totals">
+<tbody>
+<tr><th scope="row">Sub Total</th><td>₹1,45,292.96</td></tr>
+<tr><th scope="row">IGST @ 5%</th><td>₹784.34</td></tr><tr><th scope="row">IGST @ 12%</th><td>₹1,597.08</td></tr><tr><th scope="row">IGST @ 18%</th><td>₹16,130.04</td></tr><tr><th scope="row">IGST @ 28%</th><td>₹7,472.17</td></tr>
+<tr><th scope="row">Round Off</th><td>₹0.41</td></tr>
+<tr class="grand"><th scope="row">Grand Total</th><td>₹1,71,277.00</td></tr>
+<tr class="balance"><th scope="row">Balance Due</th><td>₹1,71,277.00</td></tr>
+</tbody>
+</table>
+</div>
+</section>
+<section class="tax-summary avoid-break">
+<div class="section-title">Tax Summary</div>
+<table class="grid">
+<thead><tr><th class="al-start" scope="col">HSN&#x2F;SAC</th><th class="al-end" scope="col">Taxable Value</th><th class="al-end" scope="col">IGST %</th><th class="al-end" scope="col">IGST</th><th class="al-end" scope="col">Total Tax</th></tr></thead>
+<tbody>
+<tr><td class="al-start">2505</td><td class="al-end">15,686.30</td><td class="al-end">5%</td><td class="al-end">784.34</td><td class="al-end">784.34</td></tr><tr><td class="al-start">2523</td><td class="al-end">26,686.34</td><td class="al-end">28%</td><td class="al-end">7,472.17</td><td class="al-end">7,472.17</td></tr><tr><td class="al-start">3917</td><td class="al-end">19,180.00</td><td class="al-end">18%</td><td class="al-end">3,452.40</td><td class="al-end">3,452.40</td></tr><tr><td class="al-start">6810</td><td class="al-end">13,309.00</td><td class="al-end">12%</td><td class="al-end">1,597.08</td><td class="al-end">1,597.08</td></tr><tr><td class="al-start">6907</td><td class="al-end">16,073.92</td><td class="al-end">18%</td><td class="al-end">2,893.31</td><td class="al-end">2,893.31</td></tr><tr><td class="al-start">7214</td><td class="al-end">17,739.00</td><td class="al-end">18%</td><td class="al-end">3,193.02</td><td class="al-end">3,193.02</td></tr><tr><td class="al-start">8544</td><td class="al-end">15,643.90</td><td class="al-end">18%</td><td class="al-end">2,815.90</td><td class="al-end">2,815.90</td></tr><tr><td class="al-start">9967</td><td class="al-end">20,974.50</td><td class="al-end">18%</td><td class="al-end">3,775.41</td><td class="al-end">3,775.41</td></tr>
+<tr class="total"><td class="al-start">Total</td><td class="al-end">1,45,292.96</td><td class="al-end"></td><td class="al-end">25,983.63</td><td class="al-end">25,983.63</td></tr>
+</tbody>
+</table>
+</section>
+<section class="notes-terms">
+<div class="terms"><div class="section-title">Terms &amp; Conditions</div><div class="rich small">Goods once sold cannot be returned.<br>Payment due within credit period.<br>Subject to Hyderabad jurisdiction.</div></div>
+</section>
+<footer class="doc-foot">
+<div class="generated">This is a computer-generated invoice.</div>
+<div class="sign"><div>For Sri Lakshmi Traders</div><div class="sign-space"></div><div class="sign-label">Authorised Signatory</div></div>
+</footer>
+</main>
+</body>
+</html>

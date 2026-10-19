@@ -1,0 +1,10 @@
+<table class="items">
+  <thead>
+    <tr>{{#columns}}<th class="col-{{key}} al-{{align}}" scope="col">{{label}}</th>{{/columns}}</tr>
+  </thead>
+  <tbody>
+    {{#lineItems}}
+    <tr>{{#cells}}<td class="col-{{key}} al-{{align}}">{{value}}{{#sub}}<div class="sub">{{.}}</div>{{/sub}}</td>{{/cells}}</tr>
+    {{/lineItems}}
+  </tbody>
+</table>

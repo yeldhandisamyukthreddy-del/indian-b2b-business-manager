@@ -1,0 +1,12 @@
+{{#flags.isPaymentStubRequired}}{{#paymentStub}}
+<section class="stub">
+  <div class="stub-title">{{title}} · {{companyName}}</div>
+  <div class="stub-grid">
+    {{#customerBlock}}<div class="kv"><span class="k">{{sectionLabel}}:</span> <span class="v">{{sectionValue}}</span></div>{{/customerBlock}}
+    {{#numberBlock}}<div class="kv"><span class="k">{{sectionLabel}}:</span> <span class="v">{{sectionValue}}</span></div>{{/numberBlock}}
+    {{#dueDateBlock}}<div class="kv"><span class="k">{{sectionLabel}}:</span> <span class="v">{{sectionValue}}</span></div>{{/dueDateBlock}}
+    {{#amountDueBlock}}<div class="kv"><span class="k">{{sectionLabel}}:</span> <span class="v">{{sectionValue}}</span></div>{{/amountDueBlock}}
+    <div class="kv"><span class="k">{{amountEnclosedLabel}}:</span> <span class="fill"></span></div>
+  </div>
+</section>
+{{/paymentStub}}{{/flags.isPaymentStubRequired}}

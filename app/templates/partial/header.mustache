@@ -1,0 +1,15 @@
+<header class="doc-head">
+  <div class="org">
+    {{#flags.isLogoExist}}{{#header.logo}}<img class="logo" src="{{dataUri}}" width="{{scaledWidth}}" height="{{scaledHeight}}" alt="">{{/header.logo}}{{/flags.isLogoExist}}
+    <div class="org-text">
+    {{#flags.isOrgNameRequired}}<div class="org-name">{{header.companyName}}</div>{{/flags.isOrgNameRequired}}
+    {{#flags.isOrgAddressRequired}}<div class="org-address">{{#header.companyAddress}}<div>{{.}}</div>{{/header.companyAddress}}</div>{{/flags.isOrgAddressRequired}}
+    {{#header.contactLine}}<div class="org-contact">{{header.contactLine}}</div>{{/header.contactLine}}
+    {{#header.taxIdBlocks}}<div class="kv"><span class="k">{{sectionLabel}}:</span> <span class="v">{{sectionValue}}</span></div>{{/header.taxIdBlocks}}
+    </div>
+  </div>
+  <div class="doc-title-box">
+    {{#flags.isTitleRequired}}<h1 class="doc-title">{{header.title}}</h1>{{/flags.isTitleRequired}}
+    {{#flags.isStatusStampRequired}}{{#header.statusStamp}}<div class="stamp stamp-{{tone}}">{{text}}</div>{{/header.statusStamp}}{{/flags.isStatusStampRequired}}
+  </div>
+</header>

@@ -17,6 +17,11 @@ module.exports = [
     },
     { files: ['app/sw.js'], languageOptions: { globals: globals.serviceworker } },
     {
+        // Invoice modules run in the page (window.Vyapar) and in Node tests (module.exports)
+        files: ['app/js/**/*.js'],
+        languageOptions: { ecmaVersion: 2024, sourceType: 'script', globals: { ...globals.browser, module: 'readonly', require: 'readonly' } }
+    },
+    {
         files: ['electron/**/*.js', 'scripts/**/*.js', 'tests/**/*.js', '*.config.js'],
         languageOptions: { ecmaVersion: 2024, sourceType: 'commonjs', globals: globals.node },
         rules: { 'no-unused-vars': ['error', { args: 'none', caughtErrors: 'none' }] }

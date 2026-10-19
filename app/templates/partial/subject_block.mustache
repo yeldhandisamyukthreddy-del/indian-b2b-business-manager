@@ -1,0 +1,31 @@
+<section class="subject">
+  <div class="parties">
+    {{#flags.isBillToRequired}}{{#parties.billingAddress}}
+    <div class="party">
+      <div class="label">{{sectionLabel}}</div>
+      <div class="party-name">{{name}}</div>
+      {{#lines}}<div>{{.}}</div>{{/lines}}
+      {{#phone}}<div><span class="k">{{labels.phone}}:</span> {{phone}}</div>{{/phone}}
+      {{#taxIdBlocks}}<div class="kv"><span class="k">{{sectionLabel}}:</span> <span class="v">{{sectionValue}}</span></div>{{/taxIdBlocks}}
+    </div>
+    {{/parties.billingAddress}}{{/flags.isBillToRequired}}
+    {{#flags.isShipToRequired}}{{#parties.shippingAddress}}
+    <div class="party">
+      <div class="label">{{sectionLabel}}</div>
+      <div class="party-name">{{name}}</div>
+      {{#lines}}<div>{{.}}</div>{{/lines}}
+      {{#taxIdBlocks}}<div class="kv"><span class="k">{{sectionLabel}}:</span> <span class="v">{{sectionValue}}</span></div>{{/taxIdBlocks}}
+    </div>
+    {{/parties.shippingAddress}}{{/flags.isShipToRequired}}
+  </div>
+  <div class="doc-meta">
+    {{#header.entityNumber}}<div class="kv"><span class="k">{{sectionLabel}}:</span> <span class="v">{{sectionValue}}</span></div>{{/header.entityNumber}}
+    {{#flags.isEntityDateRequired}}{{#header.date}}<div class="kv"><span class="k">{{sectionLabel}}:</span> <span class="v">{{sectionValue}}</span></div>{{/header.date}}{{/flags.isEntityDateRequired}}
+    {{#flags.isTimeRequired}}{{#header.time}}<div class="kv"><span class="k">{{sectionLabel}}:</span> <span class="v">{{sectionValue}}</span></div>{{/header.time}}{{/flags.isTimeRequired}}
+    {{#flags.isDueDateRequired}}{{#blocks.dueDateBlock}}<div class="kv"><span class="k">{{sectionLabel}}:</span> <span class="v">{{sectionValue}}</span></div>{{/blocks.dueDateBlock}}{{/flags.isDueDateRequired}}
+    {{#flags.isPaymentTermsRequired}}{{#blocks.paymentTermsBlock}}<div class="kv"><span class="k">{{sectionLabel}}:</span> <span class="v">{{sectionValue}}</span></div>{{/blocks.paymentTermsBlock}}{{/flags.isPaymentTermsRequired}}
+    {{#flags.isReferenceNumberRequired}}{{#blocks.referenceBlock}}<div class="kv"><span class="k">{{sectionLabel}}:</span> <span class="v">{{sectionValue}}</span></div>{{/blocks.referenceBlock}}{{/flags.isReferenceNumberRequired}}
+    {{#regionBlocks}}<div class="kv"><span class="k">{{sectionLabel}}:</span> <span class="v">{{sectionValue}}</span></div>{{/regionBlocks}}
+    {{#customFieldBlocks}}<div class="kv"><span class="k">{{sectionLabel}}:</span> <span class="v">{{sectionValue}}</span></div>{{/customFieldBlocks}}
+  </div>
+</section>
