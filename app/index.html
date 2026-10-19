@@ -2438,26 +2438,26 @@
         async function saveInvoice() {
             if (invoiceSaving) return; // a double click saves once
             if (!lineEditor.items.length) { showToast('Add items!', 'error'); return; }
-            const form = document.getElementById('invoiceForm');
-            const data = Object.fromEntries([...new FormData(form)].filter(([k]) => !form.querySelector(`[name="${k}"][data-module]`)));
-            const customer = await dbOps.get('customers', parseInt(data.customerId));
-            if (!customer) { showToast('Select a customer', 'error'); return; }
-            if (!data.date) { showToast('Select the invoice date', 'error'); return; }
-            const oldInv = data.id ? await dbOps.get('invoices', parseInt(data.id)) : null;
-            delete data.id;
-            applyLineTotals(data);
-            ['notes', 'referenceNumber', 'shipToName', 'shipToAddress'].forEach(k => (data[k] = (data[k] || '').trim()));
-            data.extensions = readExtFields(form, oldInv?.extensions);
-            Object.assign(data, partyFields(customer));
-            const source = invoiceDraftSource;
-            if (source?.quotationId) Object.assign(data, { quotationId: source.quotationId, quotationNumber: source.quotationNumber });
             invoiceSaving = true;
             try {
+                const form = document.getElementById('invoiceForm');
+                const data = Object.fromEntries([...new FormData(form)].filter(([k]) => !form.querySelector(`[name="${k}"][data-module]`)));
+                const customer = await dbOps.get('customers', parseInt(data.customerId));
+                if (!customer) { showToast('Select a customer', 'error'); return; }
+                if (!data.date) { showToast('Select the invoice date', 'error'); return; }
+                const oldInv = data.id ? await dbOps.get('invoices', parseInt(data.id)) : null;
+                delete data.id;
+                applyLineTotals(data);
+                ['notes', 'referenceNumber', 'shipToName', 'shipToAddress'].forEach(k => (data[k] = (data[k] || '').trim()));
+                data.extensions = readExtFields(form, oldInv?.extensions);
+                Object.assign(data, partyFields(customer));
+                const source = invoiceDraftSource;
+                if (source?.quotationId) Object.assign(data, { quotationId: source.quotationId, quotationNumber: source.quotationNumber });
                 const saved = await recordInvoice(data, oldInv);
                 if (!saved) return;
                 if (source?.quotationId) await markEstimateInvoiced(source.quotationId, saved);
                 closeModal(); showToast(`Invoice ${saved.number} saved!`); navigateTo('invoices');
-            } finally { invoiceSaving = false; }
+            } catch (e) { showToast(e.message, 'error'); } finally { invoiceSaving = false; }
         }
         const partyFields = c => ({ customerId: c.id, customerName: c.name, customerGstin: c.gstin || '', customerAddress: c.address || '', customerState: c.stateCode || '' });
         // The one way an invoice is saved: new, edited, from an estimate, from a module (e.g. a sales order) or a
@@ -2760,13 +2760,14 @@
             const m = moneyKind(kind);
             const data = Object.fromEntries(new FormData(document.getElementById('moneyForm')));
             const key = data.idempotencyKey;
+            // Marked before the first await, so a second click cannot slip in while this one is checking
             if (moneySaving.has(key)) return;
-            const party = await dbOps.get(m.partyStore, parseInt(data.partyId));
-            if (!party) { showToast(`Select a ${m.party.toLowerCase()}`, 'error'); return; }
-            const amount = round2(parseFloat(data.amount));
-            if (!(amount > 0)) { showToast('Enter an amount more than 0', 'error'); return; }
             moneySaving.add(key);
             try {
+                const party = await dbOps.get(m.partyStore, parseInt(data.partyId));
+                if (!party) { showToast(`Select a ${m.party.toLowerCase()}`, 'error'); return; }
+                const amount = round2(parseFloat(data.amount));
+                if (!(amount > 0)) { showToast('Enter an amount more than 0', 'error'); return; }
                 const existing = Vyapar.core.sales.findDuplicatePayment(await dbOps.getByCompany(m.store), key);
                 if (existing) { closeModal(); showToast(`${m.title} ${existing.number} was already saved`); navigateTo(m.page); return; }
                 const rec = {
