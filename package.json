@@ -33,6 +33,7 @@
     "test:unit": "node --test --experimental-test-coverage --test-coverage-include=\"app/js/**\" --test-coverage-lines=80 --test-coverage-branches=80 --test-coverage-functions=80 \"tests/unit/**/*.test.js\"",
     "benchmark": "node scripts/benchmark.js",
     "render-invoice": "node scripts/render-invoice.js",
+    "sync-offline-files": "node scripts/sync-offline-files.js",
     "demo": "node scripts/record-demo.js",
     "icons": "node scripts/make-icons.js",
     "dist": "electron-builder",
