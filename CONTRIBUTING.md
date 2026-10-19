@@ -45,17 +45,17 @@ CI runs the first four on every pull request. After an intended change to an inv
 
 ## Project layout
 
-| Path                                     | What it is                                                                                          |
-| ---------------------------------------- | --------------------------------------------------------------------------------------------------- |
-| `app/index.html`                         | The entire app: HTML, CSS and JavaScript in one file, with no framework and no build step           |
-| `app/js/core/shared/money.js`, `app/js/core/documents/`     | Money in paise and the invoice-template system (also loaded by the Node unit tests)                 |
-| `app/templates/`                         | Invoice layouts and partials (Mustache); see [docs/invoice-templates.md](docs/invoice-templates.md) |
-| `app/sw.js`, `app/manifest.webmanifest`  | Offline support and install metadata for the web app                                                |
-| `app/fonts/`, `app/icons/`               | Bundled font and icons (`npm run icons` regenerates PNGs from `icon.svg`)                           |
-| `electron/main.js`                       | Desktop wrapper; serves `app/` from the `app://vyapareasy/` origin                                  |
-| `electron/pdf.js`, `electron/preload.js` | Invoice PDFs in the desktop app (hidden window, JavaScript off)                                     |
-| `tests/`                                 | Playwright end-to-end tests (browser and Electron); `tests/unit/` has the node:test tests           |
-| `scripts/`                               | Dev server, benchmark, icon generator, demo recorder                                                |
+| Path                                                    | What it is                                                                                          |
+| ------------------------------------------------------- | --------------------------------------------------------------------------------------------------- |
+| `app/index.html`                                        | The entire app: HTML, CSS and JavaScript in one file, with no framework and no build step           |
+| `app/js/core/shared/money.js`, `app/js/core/documents/` | Money in paise and the invoice-template system (also loaded by the Node unit tests)                 |
+| `app/templates/`                                        | Invoice layouts and partials (Mustache); see [docs/invoice-templates.md](docs/invoice-templates.md) |
+| `app/sw.js`, `app/manifest.webmanifest`                 | Offline support and install metadata for the web app                                                |
+| `app/fonts/`, `app/icons/`                              | Bundled font and icons (`npm run icons` regenerates PNGs from `icon.svg`)                           |
+| `electron/main.js`                                      | Desktop wrapper; serves `app/` from the `app://vyapareasy/` origin                                  |
+| `electron/pdf.js`, `electron/preload.js`                | Invoice PDFs in the desktop app (hidden window, JavaScript off)                                     |
+| `tests/`                                                | Playwright end-to-end tests (browser and Electron); `tests/unit/` has the node:test tests           |
+| `scripts/`                                              | Dev server, benchmark, icon generator, demo recorder                                                |
 
 Data is stored in IndexedDB (`VyaparEasyDB`). Each store holds plain objects with a `companyId`. Read and write them through `dbOps`.
 

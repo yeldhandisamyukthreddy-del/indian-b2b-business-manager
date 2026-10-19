@@ -20,16 +20,16 @@ invoice shows in **Settings → Invoice templates** instead of in code.
 | Layer              | File(s)                                                                 | Responsibility                                                               |
 | ------------------ | ----------------------------------------------------------------------- | ---------------------------------------------------------------------------- |
 | Invoice domain     | `app/index.html` (existing)                                             | Saving invoices, stock, balances; `computeGst()` on save                     |
-| Money              | `app/js/core/shared/money.js`                                                       | Integer paise, the one rounding rule, GST split, formatting, amount in words |
-| Totals             | `app/js/core/documents/totals.js`                                              | Line/document discounts, inclusive tax, shipping, tax rows, round off        |
-| Adapter            | `app/js/core/documents/adapter.js`                                             | Stored records → builder input (handles records from older versions)         |
-| View-model builder | `app/js/core/documents/view-model.js`, `view-model-table.js`                   | Pure function → frozen, fully formatted object                               |
-| Region modules     | `app/js/core/documents/regions.js`                                             | India GST (complete), EU VAT and extra tax ids (same interface)              |
-| Template registry  | `app/js/core/documents/registry.js`                                            | `templateType` → `{ templatePath, partials, pageSizes, supportsPdf }`        |
-| Renderer           | `app/js/core/documents/mustache.js`, `renderer.js`                             | Mustache subset; validation, cache, readable errors                          |
-| Settings           | `app/js/core/documents/settings.js`, `labels.js`                               | Defaults, merge, validation, repository                                      |
+| Money              | `app/js/core/shared/money.js`                                           | Integer paise, the one rounding rule, GST split, formatting, amount in words |
+| Totals             | `app/js/core/documents/totals.js`                                       | Line/document discounts, inclusive tax, shipping, tax rows, round off        |
+| Adapter            | `app/js/core/documents/adapter.js`                                      | Stored records → builder input (handles records from older versions)         |
+| View-model builder | `app/js/core/documents/view-model.js`, `view-model-table.js`            | Pure function → frozen, fully formatted object                               |
+| Region modules     | `app/js/core/documents/regions.js`                                      | India GST (complete), EU VAT and extra tax ids (same interface)              |
+| Template registry  | `app/js/core/documents/registry.js`                                     | `templateType` → `{ templatePath, partials, pageSizes, supportsPdf }`        |
+| Renderer           | `app/js/core/documents/mustache.js`, `renderer.js`                      | Mustache subset; validation, cache, readable errors                          |
+| Settings           | `app/js/core/documents/settings.js`, `labels.js`                        | Defaults, merge, validation, repository                                      |
 | PDF                | `electron/pdf.js` (desktop), `scripts/invoice-pdf.js` (Node)            | HTML → PDF with Chromium, JavaScript off, network blocked                    |
-| UI                 | `app/js/core/documents/ui.js`, `settings-page.js`                              | Preview window, print, PDF, template settings page                           |
+| UI                 | `app/js/core/documents/ui.js`, `settings-page.js`                       | Preview window, print, PDF, template settings page                           |
 | Templates          | `app/templates/invoices/*.mustache`, `app/templates/partial/*.mustache` | Layouts and shared partials                                                  |
 
 Every module in `app/js/` works in the page (`window.Vyapar.<name>`) and in Node (`require`), so the unit tests run the
