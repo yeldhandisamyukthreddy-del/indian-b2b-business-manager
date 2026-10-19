@@ -3,7 +3,7 @@
 // run returns { title, summary: [{ label, value, format, tone }], tables: [{ title, columns: [{ key, label, format }], rows }], csv }.
 // Money values are integer paise. Modules add reports ('reports.entries') and rows for the day book ('reports.daybook'),
 // the outstanding report ('reports.outstanding') and the party-wise report ('reports.partywise').
-// ctx: { list(store) → the company's rows, contributions(point) → ordered hooks }
+// ctx: { list(store) → the company's rows, company() → the company, contributions(point) → ordered hooks }
 (function (root, factory) {
     const node = typeof module === 'object' && module.exports;
     const deps = node

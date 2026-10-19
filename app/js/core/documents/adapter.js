@@ -33,7 +33,7 @@
         };
     }
 
-    // Same rule as gstSplit() in the app: a saved split wins, otherwise compare the states
+    // A saved split wins (IGST means inter-state), otherwise compare the states
     function isInterstate(inv, company, pos) {
         if (typeof inv.interstate === 'boolean') return inv.interstate;
         if (inv.cgst !== undefined || inv.igst !== undefined) return (inv.igst || 0) > 0;
@@ -75,6 +75,8 @@
                 interstate: isInterstate(inv, company, pos),
                 reverseCharge: false,
                 reference: inv.referenceNumber || '',
+                // Fields modules keep on the invoice (e.g. the e-way bill number), for their document blocks
+                extensions: inv.extensions || {},
                 ewayBillNumber: inv.ewayBillNumber || '',
                 notes: inv.notes || '',
                 lines: (inv.items || []).map(toLine),

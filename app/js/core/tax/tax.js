@@ -1,6 +1,11 @@
 // Tax strategy. Core defines the TaxCalculator interface and a simple rate-based default; a region module
 // (for example India GST) supplies its own strategy through the 'tax.calculator' extension point.
-//   TaxCalculator: { id, computeLines(items, context) → { lines, totals: { taxable, tax, total } } }
+//   TaxCalculator: { id, computeLines(items, context) → { lines, totals } }
+//     context: { fromState, toState } (the seller's and the buyer's state)
+//     lines: new line objects with taxable, tax, amount, total and taxComponents [{ code, rate, amount }]
+//     totals: { taxable, tax, total, components: [{ label, amount }], docFields }
+//       components are the tax lines shown under the items; docFields are extra fields the strategy keeps
+//       on the document (India GST: cgst, sgst, igst, interstate, placeOfSupply)
 // Lines and totals are in rupees (as stored); the arithmetic runs in whole paise.
 (function (root, factory) {
     const node = typeof module === 'object' && module.exports;
@@ -36,7 +41,8 @@
                     taxComponents: it.gstRate ? [{ code: 'TAX', rate: it.gstRate, amount: fromPaise(t) }] : []
                 };
             });
-            return { lines, totals: { taxable: fromPaise(sum.taxable), tax: fromPaise(sum.tax), total: fromPaise(sum.total) } };
+            const totals = { taxable: fromPaise(sum.taxable), tax: fromPaise(sum.tax), total: fromPaise(sum.total) };
+            return { lines, totals: { ...totals, components: [{ label: 'Tax', amount: totals.tax }], docFields: {} } };
         }
     });
 

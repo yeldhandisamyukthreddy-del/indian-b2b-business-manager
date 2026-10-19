@@ -38,11 +38,11 @@
     });
     const FLAG_KEYS = Object.freeze(Object.keys(FLAG_DEFAULTS));
     const COLUMN_KEYS = Object.freeze(['index', 'name', 'hsnOrSac', 'qty', 'rate', 'discount', 'amount', 'tax', 'total']);
-    const REGION_KEYS = Object.freeze(['india', 'eu', 'extraTaxId']);
+    const REGION_KEYS = Object.freeze(['extraTaxId']);
     const PREFS_DEFAULTS = Object.freeze({
         defaultTemplateType: 'standard',
         logoAssetId: null,
-        regions: Object.freeze({ india: true, eu: false, extraTaxId: true }),
+        regions: Object.freeze({ extraTaxId: true }),
         extraTaxIds: Object.freeze([])
     });
     const DEFAULT_ACCENT = '#1f4e79';

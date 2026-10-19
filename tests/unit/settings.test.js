@@ -111,15 +111,19 @@ test('prefs validation: default template, regions and extra tax ids', () => {
     assert.deepEqual(
         validatePrefsPatch({
             defaultTemplateType: 'compact',
-            regions: { india: true, extraTaxId: true },
+            regions: { extraTaxId: true },
             extraTaxIds: [{ label: 'PAN', value: 'AABCU9603R' }]
         }),
         []
     );
-    const errs = validatePrefsPatch({ defaultTemplateType: 'fancy', regions: { mars: true, eu: 'no' }, extraTaxIds: [{ label: '', value: 'x' }, 'bad'] });
+    const errs = validatePrefsPatch({
+        defaultTemplateType: 'fancy',
+        regions: { mars: true, extraTaxId: 'no' },
+        extraTaxIds: [{ label: '', value: 'x' }, 'bad']
+    });
     assert.ok(errs.some(e => /defaultTemplateType "fancy" is not a template/.test(e)));
     assert.ok(errs.some(e => /regions.mars is not a region module/.test(e)));
-    assert.ok(errs.some(e => /regions.eu must be true or false/.test(e)));
+    assert.ok(errs.some(e => /regions.extraTaxId must be true or false/.test(e)));
     assert.ok(errs.some(e => /extraTaxIds\[0\] needs a label/.test(e)));
     assert.ok(errs.some(e => /extraTaxIds\[1\] must be/.test(e)));
     assert.ok(validatePrefsPatch({ extraTaxIds: new Array(6).fill({ label: 'a', value: 'b' }) }).some(e => /at most 5/.test(e)));
@@ -175,7 +179,7 @@ test('repository: prefs, effective settings and logo fallback', async () => {
     await repo.setPrefs(1, { defaultTemplateType: 'thermal', logoAssetId: logoId, extraTaxIds: [{ label: 'PAN', value: 'AABCU9603R' }] });
     const eff = await repo.getEffective(1, 'thermal');
     assert.equal(eff.logo.width, 300);
-    assert.equal(eff.regions.india, true);
+    assert.equal(eff.regions.extraTaxId, true);
     assert.deepEqual(eff.extraTaxIds, [{ label: 'PAN', value: 'AABCU9603R' }]);
     assert.equal((await repo.getPrefs(1)).defaultTemplateType, 'thermal');
     // A template's own logo wins; another company's asset is never used

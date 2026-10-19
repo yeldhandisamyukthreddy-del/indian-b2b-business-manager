@@ -77,25 +77,6 @@
         return out.map(p => (p ? sign * p : 0));
     }
 
-    // GST for the line editor (the app's save path). Fills taxable/cgst/sgst/igst/tax/total on each
-    // line, in rupees as before, and returns the document totals.
-    function computeGst(items, interstate) {
-        const t = { taxable: 0, cgst: 0, sgst: 0, igst: 0, tax: 0, total: 0 };
-        items.forEach(it => {
-            const taxable = lineAmount(it.qty || 0, it.rate || 0);
-            const tax = percentOf(taxable, it.gstRate || 0);
-            const split = interstate ? { cgst: 0, sgst: 0, igst: tax } : { ...splitHalf(tax), igst: 0 };
-            const line = { taxable, ...split, tax, total: taxable + tax };
-            Object.keys(line).forEach(k => {
-                t[k] += line[k];
-                it[k] = fromPaise(line[k]);
-            });
-            it.amount = it.taxable;
-        });
-        Object.keys(t).forEach(k => (t[k] = fromPaise(t[k])));
-        return t;
-    }
-
     const numberFormats = new Map();
     function numberFormat(locale, currency) {
         const key = `${locale}|${currency}`;
@@ -174,7 +155,6 @@
         splitInclusive,
         splitHalf,
         allocate,
-        computeGst,
         formatMoney,
         amountInWords,
         amountInWordsPaise

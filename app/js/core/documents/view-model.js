@@ -243,7 +243,7 @@
         checkInputs(invoice, org, settings, locale, mode);
         const ctx = makeContext(invoice, org, settings, locale);
         checkSavedTotal(ctx);
-        const region = regions.collect(regions.activeModules(settings.regions), ctx);
+        const region = regions.collect(regions.activeModules(settings.regions, settings.regionModules), ctx);
         const table = viewModelTable.buildTable(ctx, region);
         const totalsVm = viewModelTable.buildTotals(ctx, money.toPaise(invoice.paidAmount), money.toPaise(invoice.creditedAmount));
         const header = buildHeader(ctx, region, statusStamp(ctx, totalsVm.raw));

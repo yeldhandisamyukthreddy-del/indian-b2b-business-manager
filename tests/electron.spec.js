@@ -1,5 +1,5 @@
 // Desktop app smoke test: the window opens, data is saved and survives a restart.
-/* global document, window, dbOps, computeGst, InvoiceTemplates -- used inside page.evaluate(), which runs in the app */
+/* global document, window, dbOps, Vyapar, InvoiceTemplates -- used inside page.evaluate(), which runs in the app */
 // On Linux run it under a display, e.g. `xvfb-run npx playwright test tests/electron.spec.js`.
 const { test, expect, _electron: electron } = require('@playwright/test');
 const fs = require('fs');
@@ -57,7 +57,7 @@ test('desktop app makes invoice PDFs and saves them', async () => {
         const companyId = await dbOps.add('companies', { name: 'Desktop Traders', stateCode: '27', stateName: 'Maharashtra', gstin: '27AAACB1234F1Z5' });
         const customerId = await dbOps.add('customers', { companyId, name: 'Pune Buyer', stateCode: '27', creditDays: 15, balance: 0 });
         const items = [{ name: 'Rice 25kg', hsn: '1006', unit: 'BAG', qty: 4, rate: 1250, gstRate: 5 }];
-        const t = computeGst(items, false);
+        const t = Vyapar.modules.region_india_gst.gst.computeGst(items, false);
         await dbOps.add('invoices', {
             companyId,
             customerId,

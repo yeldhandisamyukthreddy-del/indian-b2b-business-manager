@@ -3,6 +3,8 @@
 const fs = require('fs');
 const path = require('path');
 const settings = require('../../app/js/core/documents/settings.js');
+// India GST's invoice blocks, as the region_india_gst module contributes them in the app
+const indiaBlocks = require('../../app/js/modules/region_india_gst/document-blocks.js');
 
 // A real 240×80 PNG (tests/fixtures/logo.png) so PDFs and screenshots show a logo
 const LOGO = Object.freeze({
@@ -45,9 +47,9 @@ const LOCAL_BUYER = Object.freeze({
     email: ''
 });
 
-// Effective settings as the repository returns them, optionally changed
+// Effective settings as the invoice screen passes them (India GST on), optionally changed
 function settingsFor(type, patch = {}, extra = {}) {
-    return { ...settings.mergeSettings(type, patch), regions: { india: true, eu: false, extraTaxId: true }, extraTaxIds: [], logo: null, ...extra };
+    return { ...settings.mergeSettings(type, patch), regions: { extraTaxId: true }, regionModules: [indiaBlocks], extraTaxIds: [], logo: null, ...extra };
 }
 
 const simple = Object.freeze({

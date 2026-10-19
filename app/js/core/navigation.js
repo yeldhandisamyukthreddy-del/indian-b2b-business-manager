@@ -1,5 +1,6 @@
-// Core navigation: the sections and pages that are always there. Modules add their own pages and sections
-// through their manifests (navItems, sections); platform/ui-shell.js merges both into the sidebar.
+// Core navigation: the sections and pages that are always there (what is needed to invoice and get paid).
+// Modules add their own pages and sections through their manifests (navItems, sections);
+// platform/ui-shell.js merges both into the sidebar.
 (function (root, factory) {
     const api = factory();
     if (typeof module === 'object' && module.exports) module.exports = api;
@@ -10,12 +11,7 @@
     const SECTIONS = Object.freeze([
         { id: 'masters', i18n: 'masters', label: 'Masters', order: 10 },
         { id: 'sales', i18n: 'sales', label: 'Sales', order: 20 },
-        { id: 'purchase', i18n: 'purchase', label: 'Purchase', order: 30 },
-        { id: 'inventory', i18n: 'inventory', label: 'Inventory', order: 40 },
-        { id: 'payments', i18n: 'payments', label: 'Payments', order: 50 },
-        { id: 'gstTax', i18n: 'gstTax', label: 'GST & Tax', order: 60 },
-        { id: 'hr', i18n: 'hr', label: 'HR', order: 70 },
-        { id: 'vehicles', i18n: 'vehicles', label: 'Vehicles', order: 80 },
+        { id: 'money', i18n: 'moneySection', label: 'Payments', order: 50 },
         { id: 'reports', i18n: 'reports', label: 'Reports', order: 90 },
         { id: 'settings', i18n: 'settings', label: 'Settings', order: 100 }
     ]);
@@ -61,36 +57,12 @@
             icon: '<path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z" />'
         },
         {
-            route: 'warehouses',
-            i18n: 'warehouses',
-            label: 'Warehouses',
-            section: 'masters',
-            order: 50,
-            icon: '<path d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />'
-        },
-        {
             route: 'quotations',
             i18n: 'quotations',
             label: 'Quotations',
             section: 'sales',
             order: 10,
             icon: '<path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" /> <path d="M14 2v6h6M16 13H8m8 4H8m2-8H8" />'
-        },
-        {
-            route: 'sales-orders',
-            i18n: 'salesOrders',
-            label: 'Sales Orders',
-            section: 'sales',
-            order: 20,
-            icon: '<path d="M9 5H7a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2h-2M9 5a2 2 0 0 1 2-2h2a2 2 0 0 1 2 2M9 5a2 2 0 0 0 2 2h2a2 2 0 0 0 2-2" />'
-        },
-        {
-            route: 'challans',
-            i18n: 'challans',
-            label: 'Delivery Challans',
-            section: 'sales',
-            order: 30,
-            icon: '<rect x="1" y="3" width="15" height="13" /> <polygon points="16 8 20 8 23 11 23 16 16 16 16 8" /> <circle cx="5.5" cy="18.5" r="2.5" /> <circle cx="18.5" cy="18.5" r="2.5" />'
         },
         {
             route: 'invoices',
@@ -109,101 +81,20 @@
             icon: '<path d="M3 10h10a8 8 0 0 1 8 8v2M3 10l6 6M3 10l6-6" />'
         },
         {
-            route: 'purchase-orders',
-            i18n: 'purchaseOrders',
-            label: 'Purchase Orders',
-            section: 'purchase',
-            order: 10,
-            icon: '<circle cx="9" cy="21" r="1" /> <circle cx="20" cy="21" r="1" /> <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6" />'
-        },
-        {
-            route: 'purchase-bills',
-            i18n: 'purchaseBills',
-            label: 'Purchase Bills',
-            section: 'purchase',
-            order: 20,
-            icon: '<path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" /> <path d="M14 2v6h6" />'
-        },
-        {
-            route: 'purchase-returns',
-            i18n: 'purchaseReturns',
-            label: 'Purchase Returns',
-            section: 'purchase',
-            order: 30,
-            icon: '<path d="M21 10h-10a8 8 0 0 0-8 8v2M21 10l-6 6M21 10l-6-6" />'
-        },
-        {
-            route: 'stock',
-            i18n: 'stock',
-            label: 'Stock Summary',
-            section: 'inventory',
-            order: 10,
-            icon: '<path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z" /> <path d="M3.27 6.96L12 12.01l8.73-5.05M12 22.08V12" />'
-        },
-        {
             route: 'receipts',
             i18n: 'receipts',
             label: 'Receipts',
-            section: 'payments',
+            section: 'money',
             order: 10,
             icon: '<line x1="12" y1="1" x2="12" y2="23" /> <path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6" />'
-        },
-        {
-            route: 'payments',
-            i18n: 'payments',
-            label: 'Payments',
-            section: 'payments',
-            order: 20,
-            icon: '<rect x="1" y="4" width="22" height="16" rx="2" ry="2" /> <line x1="1" y1="10" x2="23" y2="10" />'
         },
         {
             route: 'banking',
             i18n: 'banking',
             label: 'Banking',
-            section: 'payments',
+            section: 'money',
             order: 30,
             icon: '<path d="M3 21h18M3 10h18M5 6l7-3 7 3M4 10v11m16-11v11M8 14v3m4-3v3m4-3v3" />'
-        },
-        {
-            route: 'gst-reports',
-            i18n: 'gstReports',
-            label: 'GST Reports',
-            section: 'gstTax',
-            order: 10,
-            icon: '<path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" /> <path d="M14 2v6h6M12 18v-6M9 15h6" />'
-        },
-        { route: 'tds', i18n: 'tds', label: 'TDS/TCS', section: 'gstTax', order: 20, icon: '<circle cx="12" cy="12" r="10" /> <path d="M12 6v6l4 2" />' },
-        {
-            route: 'employees',
-            i18n: 'employees',
-            label: 'Employees',
-            section: 'hr',
-            order: 10,
-            icon: '<path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" /> <circle cx="12" cy="7" r="4" />'
-        },
-        {
-            route: 'payroll',
-            i18n: 'payroll',
-            label: 'Payroll',
-            section: 'hr',
-            order: 20,
-            icon: '<rect x="2" y="7" width="20" height="14" rx="2" ry="2" /> <path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16" />'
-        },
-        {
-            route: 'vehicles',
-            i18n: 'vehicleList',
-            label: 'Vehicle List',
-            section: 'vehicles',
-            order: 10,
-            icon: '<rect x="1" y="3" width="15" height="13" /> <polygon points="16 8 20 8 23 11 23 16 16 16 16 8" /> <circle cx="5.5" cy="18.5" r="2.5" /> <circle cx="18.5" cy="18.5" r="2.5" />'
-        },
-        {
-            route: 'fuel',
-            i18n: 'fuel',
-            label: 'Fuel Expenses',
-            section: 'vehicles',
-            order: 20,
-            icon: '<path d="M3 22V8a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2v14" /> <path d="M17 12h2a2 2 0 0 1 2 2v4a2 2 0 0 0 2 2" /> <path d="M7 10h6" />'
         },
         {
             route: 'reports',
@@ -241,7 +132,7 @@
             route: 'expenses',
             i18n: 'expenses',
             label: 'Expenses',
-            section: 'payments',
+            section: 'money',
             order: 25,
             icon: '<path d="M21 12V7H5a2 2 0 0 1 0-4h14v4" /><path d="M3 5v14a2 2 0 0 0 2 2h16v-5" /><path d="M18 12a2 2 0 0 0 0 4h4v-4z" />'
         },

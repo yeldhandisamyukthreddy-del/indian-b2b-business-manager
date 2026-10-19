@@ -151,7 +151,7 @@ test('HSN summary groups by HSN and rate and adds up to the tax total', () => {
 });
 
 test('without the India module there are no GST blocks and tax columns are generic', () => {
-    const s = fx.settingsFor('standard', {}, { regions: { india: false, eu: false, extraTaxId: false } });
+    const s = fx.settingsFor('standard', {}, { regions: { extraTaxId: false }, regionModules: [] });
     const vm = build(fx.indiaGst, s);
     assert.deepEqual(vm.header.taxIdBlocks, []);
     assert.deepEqual(vm.regionBlocks, []);
@@ -161,7 +161,11 @@ test('without the India module there are no GST blocks and tax columns are gener
 });
 
 test('EU module (stub): VAT number, EORI and the reverse-charge note', () => {
-    const s = fx.settingsFor('standard', {}, { regions: { india: false, eu: true, extraTaxId: false } });
+    const s = fx.settingsFor(
+        'standard',
+        {},
+        { regions: { extraTaxId: false }, regionModules: [require('../../app/js/modules/region_eu_vat/document-blocks.js')] }
+    );
     const org = { ...fx.ORG, vatNumber: 'DE123456789', eori: 'DE1234567890123' };
     const vm = build({ ...fx.simple, reverseCharge: true, customer: { ...fx.LOCAL_BUYER, vatNumber: 'FR12345678901' } }, s, 'en-IN', 'preview', org);
     assert.deepEqual(

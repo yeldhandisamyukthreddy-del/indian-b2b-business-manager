@@ -1,5 +1,5 @@
 // End-to-end tests for invoice templates: preview, print, settings and PDF, in the real app.
-/* global dbOps, computeGst, InvoiceTemplates, printInvoice -- used inside page.evaluate(), which runs in the app */
+/* global dbOps, Vyapar, InvoiceTemplates, printInvoice -- used inside page.evaluate(), which runs in the app */
 const { test, expect } = require('@playwright/test');
 const path = require('path');
 const { htmlToPdf, pdfPageCount } = require('../scripts/invoice-pdf.js');
@@ -70,7 +70,7 @@ async function seedInvoice(page, { customerId, productId }, lines = 1) {
                 rate: 400,
                 gstRate: 18
             }));
-            const t = computeGst(items, true);
+            const t = Vyapar.modules.region_india_gst.gst.computeGst(items, true);
             return dbOps.add('invoices', {
                 companyId: 1,
                 customerId,
@@ -115,7 +115,12 @@ test('a new invoice with reference, e-way bill and ship-to previews, switches te
     await save(page);
     await expect(page.locator('.modal-overlay.active')).toHaveCount(0);
     const [inv] = await page.evaluate(() => dbOps.getAll('invoices'));
-    expect(inv).toMatchObject({ referenceNumber: 'PO-77', ewayBillNumber: '341012345678', shipToName: 'Site Office', grandTotal: 4720 });
+    expect(inv).toMatchObject({
+        referenceNumber: 'PO-77',
+        shipToName: 'Site Office',
+        grandTotal: 4720,
+        extensions: { region_india_gst: { ewayBillNumber: '341012345678' } }
+    });
 
     await page.locator('button[title="Print / PDF"]').first().click();
     const frame = page.frameLocator('#tplPreviewFrame');

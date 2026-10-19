@@ -20,7 +20,7 @@ test('default tax strategy: one tax per line at its rate, no regional split', ()
         ],
         {}
     );
-    assert.deepEqual(out.totals, { taxable: 199.99, tax: 5, total: 204.99 });
+    assert.deepEqual(out.totals, { taxable: 199.99, tax: 5, total: 204.99, components: [{ label: 'Tax', amount: 5 }], docFields: {} });
     assert.deepEqual(out.lines[0], {
         qty: 3,
         rate: 33.33,

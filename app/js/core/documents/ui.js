@@ -1,6 +1,6 @@
 // Invoice templates inside the app: render(invoiceId, templateType, { mode }), the preview window,
 // printing and PDF. Browser only; uses the app's own helpers from app/index.html.
-/* global dbOps, getSettings, DEFAULT_TERMS, stateName, todayStr, showModal, showToast, esc, printHtmlDocument, navigateTo */
+/* global dbOps, contrib, getSettings, DEFAULT_TERMS, stateName, todayStr, showModal, showToast, esc, printHtmlDocument, navigateTo */
 (function () {
     'use strict';
     const V = window.Vyapar;
@@ -50,7 +50,8 @@
 
     async function renderDomain(domain, companyId, templateType, mode) {
         const type = templateType || (await defaultTemplate(companyId));
-        const settings = await repo.getEffective(companyId, type);
+        // Region blocks come from the enabled modules ('document.blocks', e.g. India GST)
+        const settings = { ...(await repo.getEffective(companyId, type)), regionModules: contrib('document.blocks').map(c => c.value) };
         return renderer.renderInvoice({ invoice: domain.invoice, org: domain.org, settings, locale: localeFor(settings), mode });
     }
 

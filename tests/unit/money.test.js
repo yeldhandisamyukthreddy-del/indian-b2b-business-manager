@@ -82,23 +82,6 @@ test('allocate splits an amount by weights and never loses a paisa', () => {
     );
 });
 
-test('computeGst keeps its API: fills each line and returns rupee totals', () => {
-    const items = [{ qty: 10, rate: 100, gstRate: 18 }];
-    const inter = money.computeGst(items, true);
-    assert.deepEqual(inter, { taxable: 1000, cgst: 0, sgst: 0, igst: 180, tax: 180, total: 1180 });
-    assert.deepEqual(items[0], { qty: 10, rate: 100, gstRate: 18, taxable: 1000, igst: 180, cgst: 0, sgst: 0, tax: 180, amount: 1000, total: 1180 });
-    const intra = money.computeGst([{ qty: 10, rate: 100, gstRate: 18 }], false);
-    assert.deepEqual(intra, { taxable: 1000, cgst: 90, sgst: 90, igst: 0, tax: 180, total: 1180 });
-    const mixed = money.computeGst(
-        [
-            { qty: 3, rate: 33.33, gstRate: 5 },
-            { qty: 0.5, rate: 99.99, gstRate: 12 }
-        ],
-        false
-    );
-    assert.deepEqual(mixed, { taxable: 149.99, cgst: 5.5, sgst: 5.5, igst: 0, tax: 11, total: 160.99 });
-});
-
 test('formatMoney uses Indian grouping and can put the symbol after the amount', () => {
     assert.equal(money.formatMoney(12345678), '₹1,23,456.78');
     assert.equal(money.formatMoney(-5000), '-₹50.00');
