@@ -2,7 +2,7 @@
 // Used by unit tests, snapshot tests and `npm run render-invoice`.
 const fs = require('fs');
 const path = require('path');
-const settings = require('../../app/js/invoice/settings.js');
+const settings = require('../../app/js/core/documents/settings.js');
 
 // A real 240×80 PNG (tests/fixtures/logo.png) so PDFs and screenshots show a logo
 const LOGO = Object.freeze({

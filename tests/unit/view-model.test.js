@@ -1,9 +1,9 @@
 // View-model builder: one normalized, formatted, immutable object per invoice
 const { test } = require('node:test');
 const assert = require('node:assert/strict');
-const { buildInvoiceViewModel } = require('../../app/js/invoice/view-model.js');
-const { validateViewModel } = require('../../app/js/invoice/schema.js');
-const { formatMoney } = require('../../app/js/money.js');
+const { buildInvoiceViewModel } = require('../../app/js/core/documents/view-model.js');
+const { validateViewModel } = require('../../app/js/core/documents/schema.js');
+const { formatMoney } = require('../../app/js/core/shared/money.js');
 const fx = require('../fixtures/invoices.js');
 
 const build = (inv = fx.simple, s = fx.settingsFor('standard'), locale = 'en-IN', mode = 'preview', org = fx.ORG) =>

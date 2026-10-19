@@ -1,7 +1,7 @@
 // Unit tests for the integer money core: `npm run test:unit`
 const { test } = require('node:test');
 const assert = require('node:assert/strict');
-const money = require('../../app/js/money.js');
+const money = require('../../app/js/core/shared/money.js');
 
 test('toPaise converts rupees exactly, rounding half away from zero', () => {
     assert.equal(money.toPaise(1180), 118000);

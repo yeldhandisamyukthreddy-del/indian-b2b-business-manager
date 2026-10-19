@@ -1,7 +1,7 @@
 // Template settings: defaults, merging, validation on write and the repository
 const { test } = require('node:test');
 const assert = require('node:assert/strict');
-const settings = require('../../app/js/invoice/settings.js');
+const settings = require('../../app/js/core/documents/settings.js');
 
 const { defaultSettings, mergeSettings, validateSettingsPatch, validatePrefsPatch, validateAsset, createRepository, ValidationError } = settings;
 

@@ -1,7 +1,7 @@
 // The Mustache subset used by invoice templates
 const { test } = require('node:test');
 const assert = require('node:assert/strict');
-const { render, TemplateError } = require('../../app/js/invoice/mustache.js');
+const { render, TemplateError } = require('../../app/js/core/documents/mustache.js');
 
 test('variables are escaped; triple mustache is raw', () => {
     assert.equal(render('<p>{{name}}</p>', { name: '<b>&' }), '<p>&lt;b&gt;&amp;</p>');

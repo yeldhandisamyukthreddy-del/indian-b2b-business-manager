@@ -1,7 +1,7 @@
 // Unit and property tests for the document totals engine
 const { test } = require('node:test');
 const assert = require('node:assert/strict');
-const { computeTotals } = require('../../app/js/invoice/totals.js');
+const { computeTotals } = require('../../app/js/core/documents/totals.js');
 
 const sum = (arr, k) => arr.reduce((a, x) => a + (k ? x[k] : x), 0);
 

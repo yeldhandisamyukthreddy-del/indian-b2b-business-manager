@@ -3,7 +3,7 @@ const { test } = require('node:test');
 const assert = require('node:assert/strict');
 const fs = require('fs');
 const path = require('path');
-const registry = require('../../app/js/invoice/registry.js');
+const registry = require('../../app/js/core/documents/registry.js');
 
 const APP = path.join(__dirname, '..', '..', 'app');
 const list = dir => fs.readdirSync(path.join(APP, dir)).map(f => `${dir}/${f}`);
@@ -11,12 +11,12 @@ const sw = fs.readFileSync(path.join(APP, 'sw.js'), 'utf8');
 const html = fs.readFileSync(path.join(APP, 'index.html'), 'utf8');
 
 test('the service worker caches every module and template file', () => {
-    for (const f of ['js/money.js', ...list('js/invoice'), ...list('templates/invoices'), ...list('templates/partial')])
+    for (const f of ['js/core/shared/money.js', ...list('js/core/documents'), ...list('templates/invoices'), ...list('templates/partial')])
         assert.ok(sw.includes(`'${f}'`), `${f} is missing from app/sw.js`);
 });
 
 test('index.html loads every invoice module', () => {
-    for (const f of ['js/money.js', ...list('js/invoice')])
+    for (const f of ['js/core/shared/money.js', ...list('js/core/documents')])
         assert.match(html, new RegExp(`<script src="${f}"( defer)?></script>`), `${f} is not loaded by app/index.html`);
 });
 

@@ -1,7 +1,7 @@
 // Boundary validation of the domain input and of the view model
 const { test } = require('node:test');
 const assert = require('node:assert/strict');
-const { validateDomain, validateViewModel, VM_FLAGS } = require('../../app/js/invoice/schema.js');
+const { validateDomain, validateViewModel, VM_FLAGS } = require('../../app/js/core/documents/schema.js');
 const fx = require('../fixtures/invoices.js');
 
 const errorsFor = (patch, org = fx.ORG) => validateDomain({ ...fx.simple, ...patch }, org);

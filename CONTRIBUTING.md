@@ -48,7 +48,7 @@ CI runs the first four on every pull request. After an intended change to an inv
 | Path                                     | What it is                                                                                          |
 | ---------------------------------------- | --------------------------------------------------------------------------------------------------- |
 | `app/index.html`                         | The entire app: HTML, CSS and JavaScript in one file, with no framework and no build step           |
-| `app/js/money.js`, `app/js/invoice/`     | Money in paise and the invoice-template system (also loaded by the Node unit tests)                 |
+| `app/js/core/shared/money.js`, `app/js/core/documents/`     | Money in paise and the invoice-template system (also loaded by the Node unit tests)                 |
 | `app/templates/`                         | Invoice layouts and partials (Mustache); see [docs/invoice-templates.md](docs/invoice-templates.md) |
 | `app/sw.js`, `app/manifest.webmanifest`  | Offline support and install metadata for the web app                                                |
 | `app/fonts/`, `app/icons/`               | Bundled font and icons (`npm run icons` regenerates PNGs from `icon.svg`)                           |
@@ -65,8 +65,8 @@ These rules exist because breaking them caused real bugs:
 
 - **Escape user text** with `esc()` whenever it goes into HTML (`${esc(c.name)}`). A name like `Ravi's "Best" Traders` must not break a form.
 - **Dates** are local `'YYYY-MM-DD'` strings. Use `todayStr()`, `localDateStr()`, `parseLocalDate()` and `periodRange()`. **Never** use `toISOString()` for a date: it switches to UTC, which is the previous day before 05:30 IST.
-- **Money:** round with `round2()`. Compute GST only through `computeGst(items, interstate)` (it runs on whole paise in `app/js/money.js`), and read the split of a saved document with `gstSplit()` (older records don't have CGST/SGST/IGST stored).
-- **Printed invoices** come from `app/templates/` through the view model in `app/js/invoice/`. Change a layout in its template, not in code; new files must also go into `FILES` in `app/sw.js` (a test checks).
+- **Money:** round with `round2()`. Compute GST only through `computeGst(items, interstate)` (it runs on whole paise in `app/js/core/shared/money.js`), and read the split of a saved document with `gstSplit()` (older records don't have CGST/SGST/IGST stored).
+- **Printed invoices** come from `app/templates/` through the view model in `app/js/core/documents/`. Change a layout in its template, not in code; new files must also go into `FILES` in `app/sw.js` (a test checks).
 - **Balances and stock** change only through `adjustPartyBalance()`, `adjustBankBalance()` and `adjustStock()`, and every delete reverses what the save did.
 - **Numbers, printing, long lists:** use `getNextNumber(type)`, `printDocument(title, html)`, and `listRows()` / `listFooter()`.
 - **Old data must keep working.** If you change how something is stored, handle records saved by older versions (see `migrateLegacyData()` and the "previous version" test).

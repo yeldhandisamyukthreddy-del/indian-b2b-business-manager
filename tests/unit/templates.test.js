@@ -5,9 +5,9 @@ const assert = require('node:assert/strict');
 const fs = require('fs');
 const path = require('path');
 const Mustache = require('mustache');
-const registry = require('../../app/js/invoice/registry.js');
-const { createRenderer, splitStyle } = require('../../app/js/invoice/renderer.js');
-const { buildInvoiceViewModel } = require('../../app/js/invoice/view-model.js');
+const registry = require('../../app/js/core/documents/registry.js');
+const { createRenderer, splitStyle } = require('../../app/js/core/documents/renderer.js');
+const { buildInvoiceViewModel } = require('../../app/js/core/documents/view-model.js');
 const fx = require('../fixtures/invoices.js');
 
 const APP = path.join(__dirname, '..', '..', 'app');

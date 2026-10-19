@@ -6,7 +6,7 @@
     const node = typeof module === 'object' && module.exports;
     const deps = node
         ? {
-              money: require('../money.js'),
+              money: require('../shared/money.js'),
               totals: require('./totals.js'),
               format: require('./format.js'),
               labels: require('./labels.js'),

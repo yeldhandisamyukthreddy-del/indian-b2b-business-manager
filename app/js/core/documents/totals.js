@@ -2,7 +2,7 @@
 // shipping, CGST/SGST/IGST split, tax rows grouped by tax and rate, and round off.
 // Pure: returns a new object and never changes its input.
 (function (root, factory) {
-    const deps = typeof module === 'object' && module.exports ? { money: require('../money.js') } : root.Vyapar;
+    const deps = typeof module === 'object' && module.exports ? { money: require('../shared/money.js') } : root.Vyapar;
     const api = factory(deps.money);
     if (typeof module === 'object' && module.exports) module.exports = api;
     else (root.Vyapar = root.Vyapar || {}).totals = api;

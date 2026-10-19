@@ -1,7 +1,7 @@
 // The allowlist sanitizer is the only way user HTML reaches a printed invoice
 const { test } = require('node:test');
 const assert = require('node:assert/strict');
-const { escapeHtml, sanitizeRichText, cssString } = require('../../app/js/invoice/sanitize.js');
+const { escapeHtml, sanitizeRichText, cssString } = require('../../app/js/core/documents/sanitize.js');
 
 test('escapeHtml escapes the same characters as Mustache', () => {
     assert.equal(escapeHtml(`<a href="x">'&'</a> = \`/`), '&lt;a href&#x3D;&quot;x&quot;&gt;&#39;&amp;&#39;&lt;&#x2F;a&gt; &#x3D; &#x60;&#x2F;');

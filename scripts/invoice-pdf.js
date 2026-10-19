@@ -1,7 +1,7 @@
 // HTML → PDF with headless Chromium (Playwright), for tests and `npm run render-invoice`.
 // The page runs with JavaScript disabled and every non-inline request blocked.
 // Thermal rolls get their real content height, so the receipt has no blank tail.
-const registry = require('../app/js/invoice/registry.js');
+const registry = require('../app/js/core/documents/registry.js');
 
 const PX_TO_MM = 25.4 / 96;
 

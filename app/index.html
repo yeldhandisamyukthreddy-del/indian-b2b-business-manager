@@ -797,7 +797,7 @@
         /* Forms with item tables and statements need more room */
         .modal:has(#lineItemsTable), .modal:has(#returnItemsList table), .modal:has(.ledger-running-balance) { max-width: 1000px; }
         .modal-body { overflow-x: auto; }
-        /* Invoice preview and template editor (app/js/invoice/) */
+        /* Invoice preview and template editor (app/js/core/documents/) */
         .modal:has(.invoice-preview-frame) { max-width: 1000px; }
         .invoice-preview-bar { display: flex; gap: 10px; align-items: center; flex-wrap: wrap; margin-bottom: 10px; }
         .invoice-preview-bar select { flex: 1; min-width: 200px; }
@@ -1834,20 +1834,20 @@
     </div>
 
     <!-- Money core (used while the app starts) and the invoice-template modules (deferred: they run after the page is parsed, in order) -->
-    <script src="js/money.js"></script>
-    <script src="js/invoice/sanitize.js" defer></script>
-    <script src="js/invoice/format.js" defer></script>
-    <script src="js/invoice/labels.js" defer></script>
-    <script src="js/invoice/registry.js" defer></script>
-    <script src="js/invoice/settings.js" defer></script>
-    <script src="js/invoice/totals.js" defer></script>
-    <script src="js/invoice/mustache.js" defer></script>
-    <script src="js/invoice/regions.js" defer></script>
-    <script src="js/invoice/schema.js" defer></script>
-    <script src="js/invoice/view-model-table.js" defer></script>
-    <script src="js/invoice/view-model.js" defer></script>
-    <script src="js/invoice/renderer.js" defer></script>
-    <script src="js/invoice/adapter.js" defer></script>
+    <script src="js/core/shared/money.js"></script>
+    <script src="js/core/documents/sanitize.js" defer></script>
+    <script src="js/core/documents/format.js" defer></script>
+    <script src="js/core/documents/labels.js" defer></script>
+    <script src="js/core/documents/registry.js" defer></script>
+    <script src="js/core/documents/settings.js" defer></script>
+    <script src="js/core/documents/totals.js" defer></script>
+    <script src="js/core/documents/mustache.js" defer></script>
+    <script src="js/core/documents/regions.js" defer></script>
+    <script src="js/core/documents/schema.js" defer></script>
+    <script src="js/core/documents/view-model-table.js" defer></script>
+    <script src="js/core/documents/view-model.js" defer></script>
+    <script src="js/core/documents/renderer.js" defer></script>
+    <script src="js/core/documents/adapter.js" defer></script>
     <script>
         /* global Vyapar, InvoiceTemplates, TemplateSettingsPage -- from the js/ scripts loaded around this one */
         // ===== CONFIG =====
@@ -1985,7 +1985,7 @@
         // Inter-state when the supplier's state differs from the place of supply. Unknown states are treated as intra-state.
         const isInterstate = (fromState, toState) => !!(fromState && toState && fromState !== toState);
         // Fill taxable/cgst/sgst/igst/tax/total on each line and return document totals.
-        // Calculated in whole paise (app/js/money.js), half away from zero per line.
+        // Calculated in whole paise (app/js/core/shared/money.js), half away from zero per line.
         const { computeGst } = Vyapar.money;
         // CGST/SGST/IGST of a saved document. Older records only stored total tax, so split it using the party's state.
         function gstSplit(doc, company, party) {
@@ -2619,7 +2619,7 @@
         const partyBlock = (label, name, address, gstin, stateCode) => `<div><strong>${label}</strong><br><strong>${esc(name)}</strong><br>${esc(address).replace(/\n/g, '<br>')}${address ? '<br>' : ''}
             ${gstin ? `GSTIN: ${esc(gstin)}<br>` : ''}${stateCode ? `State: ${esc(stateName(stateCode))} (Code: ${esc(stateCode)})` : ''}</div>`;
 
-        // Printed tax invoice, from the company's default template (Settings → Invoice templates, app/js/invoice/)
+        // Printed tax invoice, from the company's default template (Settings → Invoice templates, app/js/core/documents/)
         async function printInvoice(id) {
             await InvoiceTemplates.print(id);
         }
@@ -4582,8 +4582,8 @@
             window.addEventListener('load', () => navigator.serviceWorker.register('sw.js').catch(err => console.warn('Service worker not registered', err)));
         }
     </script>
-    <script src="js/invoice/ui.js" defer></script>
-    <script src="js/invoice/settings-page.js" defer></script>
+    <script src="js/core/documents/ui.js" defer></script>
+    <script src="js/core/documents/settings-page.js" defer></script>
 
 </body>
 

@@ -5,7 +5,7 @@ const fs = require('fs');
 const os = require('os');
 const path = require('path');
 const { pathToFileURL } = require('url');
-const registry = require('../app/js/invoice/registry.js');
+const registry = require('../app/js/core/documents/registry.js');
 
 const MAX_HTML = 10 * 1024 * 1024;
 const MAX_PDF = 50 * 1024 * 1024;

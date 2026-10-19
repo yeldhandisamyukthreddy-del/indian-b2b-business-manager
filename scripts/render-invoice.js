@@ -3,8 +3,8 @@
 const fs = require('fs');
 const path = require('path');
 const { chromium } = require('@playwright/test');
-const registry = require('../app/js/invoice/registry.js');
-const { createRenderer } = require('../app/js/invoice/renderer.js');
+const registry = require('../app/js/core/documents/registry.js');
+const { createRenderer } = require('../app/js/core/documents/renderer.js');
 const fx = require('../tests/fixtures/invoices.js');
 const { htmlToPdf, htmlToPng, pdfPageCount } = require('./invoice-pdf.js');
 

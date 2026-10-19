@@ -1,8 +1,8 @@
 // The adapter turns the app's stored records (current and older shapes) into the builder's input
 const { test } = require('node:test');
 const assert = require('node:assert/strict');
-const { toDomain, addDays } = require('../../app/js/invoice/adapter.js');
-const { buildInvoiceViewModel } = require('../../app/js/invoice/view-model.js');
+const { toDomain, addDays } = require('../../app/js/core/documents/adapter.js');
+const { buildInvoiceViewModel } = require('../../app/js/core/documents/view-model.js');
 const fx = require('../fixtures/invoices.js');
 
 const STATES = { 36: 'Telangana', 29: 'Karnataka' };

@@ -2,7 +2,7 @@
 // Columns and cells are built from the same list, so a header and its cells always line up.
 (function (root, factory) {
     const node = typeof module === 'object' && module.exports;
-    const deps = node ? { money: require('../money.js'), format: require('./format.js') } : root.Vyapar;
+    const deps = node ? { money: require('../shared/money.js'), format: require('./format.js') } : root.Vyapar;
     const api = factory(deps.money, deps.format);
     if (node) module.exports = api;
     else (root.Vyapar = root.Vyapar || {}).viewModelTable = api;
